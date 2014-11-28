@@ -1,0 +1,134 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="Keywords" content="blog"/>
+    <meta name="Description" content="blog"/>
+    <title>Hellc</title>
+    <link rel="shortcut icon" href="/static/favicon.png"/>
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+</head>
+<body>
+<div class="main">
+    <div class="header">
+    	<ul id="pages">
+            <li><a href="/">home</a></li>
+            <li><a href="/#/tags">tags</a></li>
+            <li><a href="/#/archive">archive</a></li>
+    	</ul>
+    </div>
+	<div class="wrap-header">
+	<h1>
+    <a href="/" id="title"></a>
+	</h1>
+	</div>
+<div id="md" style="display: none;">
+<!-- markdown -->
+This is a Test Blog.
+
+#Hello World!
+##test1
+###test2
+test3 `test4`
+
+~~~~{python}
+print 'hello world'
+~~~~
+
+$E=MC^2$
+
+
+[Apple](http://Apple.com)
+
+<!-- markdown end -->
+</div>
+<div class="entry" id="main">
+<!-- content -->
+<p>This is a Test Blog.</p>
+
+<h1 id="helloworld">Hello World!</h1>
+
+<h2 id="test1">test1</h2>
+
+<h3 id="test2">test2</h3>
+
+<p>test3 <code>test4</code></p>
+
+<pre class=" language-python"><code class=" language-python"><span class="token keyword">print</span> <span class="token string">'hello world'</span>
+</code></pre>
+
+<p><span class="MathJax_Preview"></span><span class="MathJax" id="MathJax-Element-32-Frame" role="textbox" aria-readonly="true"><nobr><span class="math" id="MathJax-Span-249" style="width: 5.752em; display: inline-block;"><span style="display: inline-block; position: relative; width: 4.603em; height: 0px; font-size: 125%;"><span style="position: absolute; clip: rect(1.652em 1000.002em 2.853em -0.398em); top: -2.698em; left: 0.003em;"><span class="mrow" id="MathJax-Span-250"><span class="mi" id="MathJax-Span-251" style="font-family: MathJax_Math-italic;">E<span style="display: inline-block; overflow: hidden; height: 1px; width: 0.053em;"></span></span><span class="mo" id="MathJax-Span-252" style="font-family: MathJax_Main; padding-left: 0.302em;">=</span><span class="mi" id="MathJax-Span-253" style="font-family: MathJax_Math-italic; padding-left: 0.302em;">M<span style="display: inline-block; overflow: hidden; height: 1px; width: 0.102em;"></span></span><span class="msubsup" id="MathJax-Span-254"><span style="display: inline-block; position: relative; width: 1.353em; height: 0px;"><span style="position: absolute; clip: rect(1.702em 1000.002em 2.702em -0.398em); top: -2.548em; left: 0.003em;"><span class="mi" id="MathJax-Span-255" style="font-family: MathJax_Math-italic;">C<span style="display: inline-block; overflow: hidden; height: 1px; width: 0.053em;"></span></span><span style="display: inline-block; width: 0px; height: 2.552em;"></span></span><span style="position: absolute; top: -2.897em; left: 0.853em;"><span class="mn" id="MathJax-Span-256" style="font-size: 70.7%; font-family: MathJax_Main;">2</span><span style="display: inline-block; width: 0px; height: 2.452em;"></span></span></span></span></span><span style="display: inline-block; width: 0px; height: 2.702em;"></span></span></span><span style="border-left-width: 0.003em; border-left-style: solid; display: inline-block; overflow: hidden; width: 0px; height: 1.253em; vertical-align: -0.059em;"></span></span></nobr></span><script type="math/tex" id="MathJax-Element-32">E=MC^2</script></p>
+
+<p><a href="http://Apple.com">Apple</a></p>
+<!-- content end -->
+</div>
+<br>
+<br>
+    <div id="disqus_thread"></div>
+	<div class="footer">
+		<p>© Copyright 2014 by Hellc, Designed by Hellc</p>
+	</div>
+</div>
+<script src="main.js"></script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ["\\(", "\\)"]], processEscapes: true}});
+</script>
+<script id="content" type="text/mustache">
+    <h1>{{title}}</h1>
+    <div class="tag">
+    {{date}}
+    {{#tags}}
+    <a href="/#/tag/{{name}}">#{{name}}</a>
+    {{/tags}}
+    </div>
+</script>
+<script id="pagesTemplate" type="text/mustache">
+    {{#pages}}
+    <li>
+        <a href="{{path}}">{{title}}</a>
+    </li>
+    {{/pages}}
+</script>
+<script>
+$(document).ready(function() {
+    $.ajax({
+        url: "main.json",
+        type: "GET",
+        dataType: "json",
+        success: function(data) {
+            $("#title").html(data.name);
+            var pagesTemplate = Hogan.compile($("#pagesTemplate").html());
+            var pagesHtml = pagesTemplate.render({"pages": data.pages});
+            $("#pages").append(pagesHtml);
+            //path
+            var path = "helloworld.html";
+            //path end
+            var now = 0;
+            for (var i = 0; i < data.posts.length; ++i)
+                if (path == data.posts[i].path)
+                    now = i;
+            var post = data.posts[now];
+            var tmp = post.tags.split(" ");
+            var tags = [];
+            for (var i = 0; i < tmp.length; ++i)
+                if (tmp[i].length > 0)
+                    tags.push({"name": tmp[i]});
+            var contentTemplate = Hogan.compile($("#content").html());
+            var contentHtml = contentTemplate.render({"title": post.title, "tags": tags, "date": post.date});
+            $("#main").prepend(contentHtml);
+            if (data.disqus_shortname.length > 0) {
+                var disqus_shortname = data.disqus_shortname;
+                (function() {
+                    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                })();
+            }
+        }
+    });
+});
+</script>
+</body>
+</html>

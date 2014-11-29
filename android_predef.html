@@ -1,0 +1,265 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="Keywords" content="blog"/>
+    <meta name="Description" content="blog"/>
+    <title>Hellc</title>
+    <link rel="shortcut icon" href="/static/favicon.png"/>
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+</head>
+<body>
+<div class="main">
+    <div class="header">
+    	<ul id="pages">
+            <li><a href="/">home</a></li>
+            <li><a href="/#/tags">tags</a></li>
+            <li><a href="/#/archive">archive</a></li>
+    	</ul>
+    </div>
+	<div class="wrap-header">
+	<h1>
+    <a href="/" id="title"></a>
+	</h1>
+	</div>
+<div id="md" style="display: none;">
+<!-- markdown -->
+[ Android预定义样式 ](http://caiwb1990.iteye.com/blog/1231931)
+
+##字体大小 
+
+对于能够显示文字的控件（如TextView EditText RadioButton Button CheckBox Chronometer等等），你有时需要控制字体的大小。
+
+###Android平台定义了三种字体大小。 
+~~~~{java}
+"?android:attr/textAppearanceLarge"    
+"?android:attr/textAppearanceMedium"    
+"?android:attr/textAppearanceSmall"  
+~~~~
+
+###使用方法为： 
+~~~~{java}
+android:textAppearance="?android:attr/textAppearanceLarge"     
+android:textAppearance="?android:attr/textAppearanceMedium"     
+android:textAppearance="?android:attr/textAppearanceSmall"    
+
+或    
+
+style="?android:attr/textAppearanceLarge"     
+style="?android:attr/textAppearanceMedium"     
+style="?android:attr/textAppearanceSmall"   
+~~~~
+
+
+###字体颜色 
+~~~~{java}
+android:textColor="?android:attr/textColorPrimary"     
+android:textColor="?android:attr/textColorSecondary"     
+android:textColor="?android:attr/textColorTertiary"     
+android:textColor="?android:attr/textColorPrimaryInverse"     
+android:textColor="?android:attr/textColorSecondaryInverse"    
+~~~~
+
+###ProgressBar 
+~~~~{java}
+style="?android:attr/progressBarStyleHorizontal"     
+style="?android:attr/progressBarStyleLarge"     
+style="?android:attr/progressBarStyleSmall"     
+style="?android:attr/progressBarStyleSmallTitle"  
+~~~~
+###分隔符 
+~~~~{java}
+横向：    
+<View android:layout_width="fill_parent"     
+      android:layout_height="1dip"     
+      android:background="?android:attr/listDivider" />    
+    
+纵向：        
+<View android:layout_width="1dip"     
+      android:layout_height="fill_parent"     
+      android:background="?android:attr/listDivider" />   
+~~~~
+
+###CheckBox 
+~~~~{java}
+style="?android:attr/starStyle"    
+~~~~
+
+###类似标题栏效果的TextView 
+~~~~{java}
+style="?android:attr/listSeparatorTextViewStyle"   
+~~~~
+
+其它有用的样式 
+~~~~{java}
+android:layout_height="?android:attr/listPreferredItemHeight"    
+    
+android:paddingRight="?android:attr/scrollbarSize"    
+    
+style="?android:attr/windowTitleBackgroundStyle"    
+    
+style="?android:attr/windowTitleStyle"    
+    
+android:layout_height="?android:attr/windowTitleSize"    
+    
+android:background="?android:attr/windowBackground"    
+~~~~
+
+更多细节可参考SDK文档的R.attr类。 
+
+
+<!-- markdown end -->
+</div>
+<div class="entry" id="main">
+<!-- content -->
+<p><a href="http://caiwb1990.iteye.com/blog/1231931"> Android预定义样式 </a></p>
+
+<h2 id="">字体大小</h2>
+
+<p>对于能够显示文字的控件（如TextView EditText RadioButton Button CheckBox Chronometer等等），你有时需要控制字体的大小。</p>
+
+<h3 id="android">Android平台定义了三种字体大小。</h3>
+
+<pre class=" language-java"><code class=" language-java"><span class="token string">"?android:attr/textAppearanceLarge"</span>    
+<span class="token string">"?android:attr/textAppearanceMedium"</span>    
+<span class="token string">"?android:attr/textAppearanceSmall"</span>  
+</code></pre>
+
+<h3 id="">使用方法为：</h3>
+
+<pre class=" language-java"><code class=" language-java">android<span class="token operator">:</span>textAppearance<span class="token operator">=</span><span class="token string">"?android:attr/textAppearanceLarge"</span>     
+android<span class="token operator">:</span>textAppearance<span class="token operator">=</span><span class="token string">"?android:attr/textAppearanceMedium"</span>     
+android<span class="token operator">:</span>textAppearance<span class="token operator">=</span><span class="token string">"?android:attr/textAppearanceSmall"</span>    
+
+或    
+
+style<span class="token operator">=</span><span class="token string">"?android:attr/textAppearanceLarge"</span>     
+style<span class="token operator">=</span><span class="token string">"?android:attr/textAppearanceMedium"</span>     
+style<span class="token operator">=</span><span class="token string">"?android:attr/textAppearanceSmall"</span>   
+</code></pre>
+
+<h3 id="">字体颜色</h3>
+
+<pre class=" language-java"><code class=" language-java">android<span class="token operator">:</span>textColor<span class="token operator">=</span><span class="token string">"?android:attr/textColorPrimary"</span>     
+android<span class="token operator">:</span>textColor<span class="token operator">=</span><span class="token string">"?android:attr/textColorSecondary"</span>     
+android<span class="token operator">:</span>textColor<span class="token operator">=</span><span class="token string">"?android:attr/textColorTertiary"</span>     
+android<span class="token operator">:</span>textColor<span class="token operator">=</span><span class="token string">"?android:attr/textColorPrimaryInverse"</span>     
+android<span class="token operator">:</span>textColor<span class="token operator">=</span><span class="token string">"?android:attr/textColorSecondaryInverse"</span>    
+</code></pre>
+
+<h3 id="progressbar">ProgressBar</h3>
+
+<pre class=" language-java"><code class=" language-java">style<span class="token operator">=</span><span class="token string">"?android:attr/progressBarStyleHorizontal"</span>     
+style<span class="token operator">=</span><span class="token string">"?android:attr/progressBarStyleLarge"</span>     
+style<span class="token operator">=</span><span class="token string">"?android:attr/progressBarStyleSmall"</span>     
+style<span class="token operator">=</span><span class="token string">"?android:attr/progressBarStyleSmallTitle"</span>  
+</code></pre>###分隔符 
+<pre class=" language-java"><code class=" language-java">横向：    
+<span class="token operator">&lt;</span>View android<span class="token operator">:</span>layout_width<span class="token operator">=</span><span class="token string">"fill_parent"</span>     
+      android<span class="token operator">:</span>layout_height<span class="token operator">=</span><span class="token string">"1dip"</span>     
+      android<span class="token operator">:</span>background<span class="token operator">=</span><span class="token string">"?android:attr/listDivider"</span> <span class="token operator">/</span>&gt;    
+
+纵向：        
+<span class="token operator">&lt;</span>View android<span class="token operator">:</span>layout_width<span class="token operator">=</span><span class="token string">"1dip"</span>     
+      android<span class="token operator">:</span>layout_height<span class="token operator">=</span><span class="token string">"fill_parent"</span>     
+      android<span class="token operator">:</span>background<span class="token operator">=</span><span class="token string">"?android:attr/listDivider"</span> <span class="token operator">/</span>&gt;   
+</code></pre>
+
+<h3 id="checkbox">CheckBox</h3>
+
+<pre class=" language-java"><code class=" language-java">style<span class="token operator">=</span><span class="token string">"?android:attr/starStyle"</span>    
+</code></pre>
+
+<h3 id="textview">类似标题栏效果的TextView</h3>
+
+<pre class=" language-java"><code class=" language-java">style<span class="token operator">=</span><span class="token string">"?android:attr/listSeparatorTextViewStyle"</span>   
+</code></pre>
+
+<p>其它有用的样式 </p>
+
+<pre class=" language-java"><code class=" language-java">android<span class="token operator">:</span>layout_height<span class="token operator">=</span><span class="token string">"?android:attr/listPreferredItemHeight"</span>    
+
+android<span class="token operator">:</span>paddingRight<span class="token operator">=</span><span class="token string">"?android:attr/scrollbarSize"</span>    
+
+style<span class="token operator">=</span><span class="token string">"?android:attr/windowTitleBackgroundStyle"</span>    
+
+style<span class="token operator">=</span><span class="token string">"?android:attr/windowTitleStyle"</span>    
+
+android<span class="token operator">:</span>layout_height<span class="token operator">=</span><span class="token string">"?android:attr/windowTitleSize"</span>    
+
+android<span class="token operator">:</span>background<span class="token operator">=</span><span class="token string">"?android:attr/windowBackground"</span>    
+</code></pre>
+
+<p>更多细节可参考SDK文档的R.attr类。 </p>
+<!-- content end -->
+</div>
+<br>
+<br>
+    <div id="disqus_thread"></div>
+	<div class="footer">
+		<p>© Copyright 2014 by Hellc, Designed by Hellc</p>
+	</div>
+</div>
+<script src="main.js"></script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ["\\(", "\\)"]], processEscapes: true}});
+</script>
+<script id="content" type="text/mustache">
+    <h1>{{title}}</h1>
+    <div class="tag">
+    {{date}}
+    {{#tags}}
+    <a href="/#/tag/{{name}}">#{{name}}</a>
+    {{/tags}}
+    </div>
+</script>
+<script id="pagesTemplate" type="text/mustache">
+    {{#pages}}
+    <li>
+        <a href="{{path}}">{{title}}</a>
+    </li>
+    {{/pages}}
+</script>
+<script>
+$(document).ready(function() {
+    $.ajax({
+        url: "main.json",
+        type: "GET",
+        dataType: "json",
+        success: function(data) {
+            $("#title").html(data.name);
+            var pagesTemplate = Hogan.compile($("#pagesTemplate").html());
+            var pagesHtml = pagesTemplate.render({"pages": data.pages});
+            $("#pages").append(pagesHtml);
+            //path
+            var path = "android_predef.html";
+            //path end
+            var now = 0;
+            for (var i = 0; i < data.posts.length; ++i)
+                if (path == data.posts[i].path)
+                    now = i;
+            var post = data.posts[now];
+            var tmp = post.tags.split(" ");
+            var tags = [];
+            for (var i = 0; i < tmp.length; ++i)
+                if (tmp[i].length > 0)
+                    tags.push({"name": tmp[i]});
+            var contentTemplate = Hogan.compile($("#content").html());
+            var contentHtml = contentTemplate.render({"title": post.title, "tags": tags, "date": post.date});
+            $("#main").prepend(contentHtml);
+            if (data.disqus_shortname.length > 0) {
+                var disqus_shortname = data.disqus_shortname;
+                (function() {
+                    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                })();
+            }
+        }
+    });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,169 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="Keywords" content="blog"/>
+    <meta name="Description" content="blog"/>
+    <title>Hellc</title>
+    <link rel="shortcut icon" href="/static/favicon.png"/>
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+</head>
+<body>
+<div class="main">
+    <div class="header">
+    	<ul id="pages">
+            <li><a href="/">home</a></li>
+            <li><a href="/#/tags">tags</a></li>
+            <li><a href="/#/archive">archive</a></li>
+    	</ul>
+    </div>
+	<div class="wrap-header">
+	<h1>
+    <a href="/" id="title"></a>
+	</h1>
+	</div>
+<div id="md" style="display: none;">
+<!-- markdown -->
+[联合编译工具推荐IncrediBuild ](http://caiwb1990.iteye.com/blog/2159755)
+
+**Xoreax IncrediBuild**是分布式编译(多线程处理)技术,我们也称之为联合编译.如果局域网内存在多台电脑安装了这个,在编译C/C++时,它会使用空闲的CPU一起编译,大大缩短了编译的时间,对于大工程来说,是一件非常爽的事情. 
+
+>IncrediBuild分为服务端(Coordinator)和客户端(Agent).简单的理解是服务端是协调任务的分配,客户端把分到手的任务编译后再返还回去.注意的是,服务端只负责分配工作,之后者最客户端之间P2P的操作,如果二个客户端建立好链接后,此时再与服务端断开也不会影响他们之间的编译了. 
+
+##1) 服务端(Coordinator)的安装: 
+运行IncrediBuild安装程序,选择Install IncrediBuild,并点Next下一步.同意那什么License Agreement继续下一步.来到安装组件选择(Component Selection).这里做为服务端我们要钩先上IncrediBuild Coordinator.这里是一个复选框,一般来说服务端也可以参与编译工作,如果不想让服务端参与编译工作的话,就把上面的IncrediBuild Agent前的钩点掉就可以 
+![服务端安装](http://dl2.iteye.com/upload/attachment/0103/5950/5f626ea3-93d6-3dc0-88ab-8f45ffec55ba.jpg)
+
+###继续下一步,选择安装路径,和使用的一些端口号.参与编译的CPU数(这个只有钩选了Agent后才会有)等,这些使用默认的就可以了.之后安装完成.IncrediBuild的服务端就安装好了. 
+
+##2) 客户端(Agent)的安装: 
+在其它的电脑上,运行IncrediBuild的安装程序,运行到安装组件选择(Component Selection),只钩选IncrediBuild Agnet并下一步 
+![客户端安装](http://dl2.iteye.com/upload/attachment/0103/5952/31951772-213d-306c-b2c5-e3740d24ed3c.jpg)
+
+###选择安装路径,并下一步.在这要填入服务端的IP地址和端口号.
+![](http://dl2.iteye.com/upload/attachment/0103/5954/10b4d90b-9529-309a-a48f-c33bc1cad1ea.jpg)
+
+填好之后下一步,它会与服务器进行验证一下.然后设置一下编译通讯的端口之类的.这与网内安装的其它的一至就行了,一般情况都使用默认.然后选择参与编译的CPU数.最后安装就行了. 
+
+###到这步,基本上服务器与客户端都安装完成.在Coordinator Monitor中可以看到各成员的状态. 
+![](http://dl2.iteye.com/upload/attachment/0103/5956/07c5be3d-93c5-3dd1-b3a0-17ebb56642f2.jpg)
+
+###打开VS你将会发现菜单栏上多出了一项IncrediBuild的选项.这就是那个所谓的联合编译了. 
+![](http://dl2.iteye.com/upload/attachment/0103/5958/3c3a0511-92a4-30d6-a156-fbc5679c7434.jpg)
+
+###找个工程试一下就知道了. 
+![](http://dl2.iteye.com/upload/attachment/0103/5960/7cfc3be3-128d-38ab-a251-68de099c5c67.jpg)
+
+<!-- markdown end -->
+</div>
+<div class="entry" id="main">
+<!-- content -->
+<p><a href="http://caiwb1990.iteye.com/blog/2159755">联合编译工具推荐IncrediBuild </a></p>
+
+<p><strong>Xoreax IncrediBuild</strong>是分布式编译(多线程处理)技术,我们也称之为联合编译.如果局域网内存在多台电脑安装了这个,在编译C/C++时,它会使用空闲的CPU一起编译,大大缩短了编译的时间,对于大工程来说,是一件非常爽的事情. </p>
+
+<blockquote>
+  <p>IncrediBuild分为服务端(Coordinator)和客户端(Agent).简单的理解是服务端是协调任务的分配,客户端把分到手的任务编译后再返还回去.注意的是,服务端只负责分配工作,之后者最客户端之间P2P的操作,如果二个客户端建立好链接后,此时再与服务端断开也不会影响他们之间的编译了. </p>
+</blockquote>
+
+<h2 id="1coordinator">1) 服务端(Coordinator)的安装:</h2>
+
+<p>运行IncrediBuild安装程序,选择Install IncrediBuild,并点Next下一步.同意那什么License Agreement继续下一步.来到安装组件选择(Component Selection).这里做为服务端我们要钩先上IncrediBuild Coordinator.这里是一个复选框,一般来说服务端也可以参与编译工作,如果不想让服务端参与编译工作的话,就把上面的IncrediBuild Agent前的钩点掉就可以 
+<img src="http://dl2.iteye.com/upload/attachment/0103/5950/5f626ea3-93d6-3dc0-88ab-8f45ffec55ba.jpg" alt="服务端安装" title=""></p>
+
+<h3 id="cpuagentincredibuild">继续下一步,选择安装路径,和使用的一些端口号.参与编译的CPU数(这个只有钩选了Agent后才会有)等,这些使用默认的就可以了.之后安装完成.IncrediBuild的服务端就安装好了.</h3>
+
+<h2 id="2agent">2) 客户端(Agent)的安装:</h2>
+
+<p>在其它的电脑上,运行IncrediBuild的安装程序,运行到安装组件选择(Component Selection),只钩选IncrediBuild Agnet并下一步 
+<img src="http://dl2.iteye.com/upload/attachment/0103/5952/31951772-213d-306c-b2c5-e3740d24ed3c.jpg" alt="客户端安装" title=""></p>
+
+<h3 id="ip">选择安装路径,并下一步.在这要填入服务端的IP地址和端口号.</h3>
+
+<p><img src="http://dl2.iteye.com/upload/attachment/0103/5954/10b4d90b-9529-309a-a48f-c33bc1cad1ea.jpg" alt="" title=""></p>
+
+<p>填好之后下一步,它会与服务器进行验证一下.然后设置一下编译通讯的端口之类的.这与网内安装的其它的一至就行了,一般情况都使用默认.然后选择参与编译的CPU数.最后安装就行了. </p>
+
+<h3 id="coordinatormonitor">到这步,基本上服务器与客户端都安装完成.在Coordinator Monitor中可以看到各成员的状态.</h3>
+
+<p><img src="http://dl2.iteye.com/upload/attachment/0103/5956/07c5be3d-93c5-3dd1-b3a0-17ebb56642f2.jpg" alt="" title=""></p>
+
+<h3 id="vsincredibuild">打开VS你将会发现菜单栏上多出了一项IncrediBuild的选项.这就是那个所谓的联合编译了.</h3>
+
+<p><img src="http://dl2.iteye.com/upload/attachment/0103/5958/3c3a0511-92a4-30d6-a156-fbc5679c7434.jpg" alt="" title=""></p>
+
+<h3 id="">找个工程试一下就知道了.</h3>
+
+<p><img src="http://dl2.iteye.com/upload/attachment/0103/5960/7cfc3be3-128d-38ab-a251-68de099c5c67.jpg" alt="" title=""></p>
+<!-- content end -->
+</div>
+<br>
+<br>
+    <div id="disqus_thread"></div>
+	<div class="footer">
+		<p>© Copyright 2014 by Hellc, Designed by Hellc</p>
+	</div>
+</div>
+<script src="main.js"></script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ["\\(", "\\)"]], processEscapes: true}});
+</script>
+<script id="content" type="text/mustache">
+    <h1>{{title}}</h1>
+    <div class="tag">
+    {{date}}
+    {{#tags}}
+    <a href="/#/tag/{{name}}">#{{name}}</a>
+    {{/tags}}
+    </div>
+</script>
+<script id="pagesTemplate" type="text/mustache">
+    {{#pages}}
+    <li>
+        <a href="{{path}}">{{title}}</a>
+    </li>
+    {{/pages}}
+</script>
+<script>
+$(document).ready(function() {
+    $.ajax({
+        url: "main.json",
+        type: "GET",
+        dataType: "json",
+        success: function(data) {
+            $("#title").html(data.name);
+            var pagesTemplate = Hogan.compile($("#pagesTemplate").html());
+            var pagesHtml = pagesTemplate.render({"pages": data.pages});
+            $("#pages").append(pagesHtml);
+            //path
+            var path = "unioin_compile_tools.html";
+            //path end
+            var now = 0;
+            for (var i = 0; i < data.posts.length; ++i)
+                if (path == data.posts[i].path)
+                    now = i;
+            var post = data.posts[now];
+            var tmp = post.tags.split(" ");
+            var tags = [];
+            for (var i = 0; i < tmp.length; ++i)
+                if (tmp[i].length > 0)
+                    tags.push({"name": tmp[i]});
+            var contentTemplate = Hogan.compile($("#content").html());
+            var contentHtml = contentTemplate.render({"title": post.title, "tags": tags, "date": post.date});
+            $("#main").prepend(contentHtml);
+            if (data.disqus_shortname.length > 0) {
+                var disqus_shortname = data.disqus_shortname;
+                (function() {
+                    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                })();
+            }
+        }
+    });
+});
+</script>
+</body>
+</html>

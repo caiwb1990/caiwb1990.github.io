@@ -1,0 +1,237 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="Keywords" content="blog"/>
+    <meta name="Description" content="blog"/>
+    <title>Hellc</title>
+    <link rel="shortcut icon" href="/static/favicon.png"/>
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+</head>
+<body>
+<div class="main">
+    <div class="header">
+    	<ul id="pages">
+            <li><a href="/">home</a></li>
+            <li><a href="/#/tags">tags</a></li>
+            <li><a href="/#/archive">archive</a></li>
+    	</ul>
+    </div>
+	<div class="wrap-header">
+	<h1>
+    <a href="/" id="title"></a>
+	</h1>
+	</div>
+<div id="md" style="display: none;">
+<!-- markdown -->
+[Jquery Mobile事件](http://caiwb1990.iteye.com/blog/1264919)
+
+**Jquery Mobile**提供了一些建于本地事件的自定义事件以用来创建一些有用的钩子. 要注意这些事件是建立于各种已存在的触摸事件之上，比如 鼠标和窗口事件，所以你可以通过使用live()或者 bind()将他们绑定到其他的Jquery事件 
+
+##触摸事件 Touch events 
+tap(轻击)：一次快速完整的轻击后触 
+taphold（轻击不放）：轻击并不放（大约一秒）后触 
+swipe(划动)：一秒内水平拖拽大于30PX，同时纵向拖曳小?0px的事件发生时触发 
+swipeleft（左划）：划动事件为向左的方向时触发 
+swiperight（右划）：划动事件为向右的方向时触发 
+
+##设备方向变化事件 Orientation change event 
+orientationchange 
+当设备的方向变化（设备横向持或纵向持）此事件被触发。绑定此事件时，你的回调函数可以加入第二个参数，作用为描述设备横或纵向的属性，"portrait"?quot;landscape"。这些值也会作为class值加入到html的元素中，使你可以通过css中的选择器改变他们的样式。注意当浏览器不支持orientationChange事件的时候可以通过resize 事件绑定 
+
+##滚屏事件 Scroll events 
+scrollstart 
+当屏幕滚动开始的时候触发。苹果的设备会在滚屏时冻结DOM的操作，当滚屏结束时按队列执行这些dom操作，我们现在正在研究方法让苹果的设备在滚屏开始前执行dom操作 
+
+##scrollstop 
+滚屏结束时触发 
+
+##页面显示/隐藏事件 Page show/hide events 
+在Jquery Mobile中，无论页面显示或是隐藏，都在该页面触发两个事件。哪个事件被触发取决于页面被显示还是隐藏，所以当页面转场发生时，实际?个事件被触发了，每个页面有两个： 
+
+pagebeforeshow：转场之前，页面被显示时触发 
+
+pagebeforehide：转场之前，页面被隐藏时触发 
+
+pageshow：转场之后，页面被显示时触发 
+
+pagehide：转场之后，页面被隐藏时触发 
+
+请注意这4个事件都引用了”上一页“，或”下一页“，这取决于哪一页被显示或者隐藏，以及”上一页“或者”下一页“是否存在。（第一个被显示的page并没?quot;上一?quot;可以引用，但是同样会引用一个空的Jquery对象 ），你可以通过将第二个参数作为一个绑定的回调函数访问这一引用 
+~~~~{java}
+$('div').live('pageshow',function(event, ui){  
+　alert('This page was just hidden: '+ ui.prevPage);  
+});  
+
+$('div').live('pagehide',function(event, ui){  
+　alert('This page was just shown: '+ ui.nextPage);  
+});  
+~~~~
+而且，务必在 Jquery Mobile 执行前绑定这些函数，以使 他们在初始化页面加载时被调用。在 mobileinit 事件的处理函数中使用它们既可.
+
+
+##页面初始化事件 Page initialization events 
+Jquery Mobile会自动基于page"内的增强的约定自动初始化一些插件?例如：给一个input输入框约定了type=range属性会自动生成一个自定义滑动条 
+这些自动初始化的行为是受"page"插件控制的，它在执行前后部署部署事件，允许你在初始化前后操作页面，或者甚至自己提供初始化行为，禁止自动初始化。注以下的页面初始化事件在每个“page”只被触发一次，而显?隐藏 事件则不同，在页面显示或者隐藏的每次，它们都会被触发 
+pagebeforecreate：页面初始化时，初始化之前触 
+pagecreate：页面初始化时，初始化之后触 
+~~~~{java}
+$('#aboutPage').live('pagebeforecreate',function(event){  
+alert('This page was just inserted into the dom!');  
+});  
+  
+$('#aboutPage').live('pagecreate',function(event){  
+alert('This page was just enhanced by Jquery Mobile!');  
+});  
+~~~~
+注意：通过绑定pagebeforecreate然后return false，你禁止页面插件自己的操作 
+而且，务必在 Jquery Mobile 执行前绑定这些函数，以使 他们在初始化页面加载时被调用。在 mobileinit 事件的处理函数中使用它们既可.
+
+##动画事件 Animation Events 
+Jquery Mobile提供了animationComplete 插件，你可以用来添加或删除一个class来应用CSS转场效果 
+
+
+
+<!-- markdown end -->
+</div>
+<div class="entry" id="main">
+<!-- content -->
+<p><a href="http://caiwb1990.iteye.com/blog/1264919">Jquery Mobile事件</a></p>
+
+<p><strong>Jquery Mobile</strong>提供了一些建于本地事件的自定义事件以用来创建一些有用的钩子. 要注意这些事件是建立于各种已存在的触摸事件之上，比如 鼠标和窗口事件，所以你可以通过使用live()或者 bind()将他们绑定到其他的Jquery事件 </p>
+
+<h2 id="touchevents">触摸事件 Touch events</h2>
+
+<p>tap(轻击)：一次快速完整的轻击后触 
+taphold（轻击不放）：轻击并不放（大约一秒）后触 
+swipe(划动)：一秒内水平拖拽大于30PX，同时纵向拖曳小?0px的事件发生时触发 
+swipeleft（左划）：划动事件为向左的方向时触发 
+swiperight（右划）：划动事件为向右的方向时触发 </p>
+
+<h2 id="orientationchangeevent">设备方向变化事件 Orientation change event</h2>
+
+<p>orientationchange 
+当设备的方向变化（设备横向持或纵向持）此事件被触发。绑定此事件时，你的回调函数可以加入第二个参数，作用为描述设备横或纵向的属性，"portrait"?quot;landscape"。这些值也会作为class值加入到html的元素中，使你可以通过css中的选择器改变他们的样式。注意当浏览器不支持orientationChange事件的时候可以通过resize 事件绑定 </p>
+
+<h2 id="scrollevents">滚屏事件 Scroll events</h2>
+
+<p>scrollstart 
+当屏幕滚动开始的时候触发。苹果的设备会在滚屏时冻结DOM的操作，当滚屏结束时按队列执行这些dom操作，我们现在正在研究方法让苹果的设备在滚屏开始前执行dom操作 </p>
+
+<h2 id="scrollstop">scrollstop</h2>
+
+<p>滚屏结束时触发 </p>
+
+<h2 id="pageshowhideevents">页面显示/隐藏事件 Page show/hide events</h2>
+
+<p>在Jquery Mobile中，无论页面显示或是隐藏，都在该页面触发两个事件。哪个事件被触发取决于页面被显示还是隐藏，所以当页面转场发生时，实际?个事件被触发了，每个页面有两个： </p>
+
+<p>pagebeforeshow：转场之前，页面被显示时触发 </p>
+
+<p>pagebeforehide：转场之前，页面被隐藏时触发 </p>
+
+<p>pageshow：转场之后，页面被显示时触发 </p>
+
+<p>pagehide：转场之后，页面被隐藏时触发 </p>
+
+<p>请注意这4个事件都引用了”上一页“，或”下一页“，这取决于哪一页被显示或者隐藏，以及”上一页“或者”下一页“是否存在。（第一个被显示的page并没?quot;上一?quot;可以引用，但是同样会引用一个空的Jquery对象 ），你可以通过将第二个参数作为一个绑定的回调函数访问这一引用 
+</p><pre class=" language-java"><code class=" language-java">$<span class="token punctuation">(</span><span class="token string">'div'</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">live<span class="token punctuation">(</span></span><span class="token string">'pageshow'</span><span class="token punctuation">,</span><span class="token function">function<span class="token punctuation">(</span></span>event<span class="token punctuation">,</span> ui<span class="token punctuation">)</span><span class="token punctuation">{</span> 
+　<span class="token function">alert<span class="token punctuation">(</span></span><span class="token string">'This page was just hidden: '</span><span class="token operator">+</span> ui<span class="token punctuation">.</span>prevPage<span class="token punctuation">)</span><span class="token punctuation">;</span> 
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+
+</code><p><code class=" language-java">$<span class="token punctuation">(</span><span class="token string">'div'</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">live<span class="token punctuation">(</span></span><span class="token string">'pagehide'</span><span class="token punctuation">,</span><span class="token function">function<span class="token punctuation">(</span></span>event<span class="token punctuation">,</span> ui<span class="token punctuation">)</span><span class="token punctuation">{</span> 
+　<span class="token function">alert<span class="token punctuation">(</span></span><span class="token string">'This page was just shown: '</span><span class="token operator">+</span> ui<span class="token punctuation">.</span>nextPage<span class="token punctuation">)</span><span class="token punctuation">;</span> 
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span> 
+</code></p></pre>而且，务必在 Jquery Mobile 执行前绑定这些函数，以使 他们在初始化页面加载时被调用。在 mobileinit 事件的处理函数中使用它们既可.<p></p>
+
+<h2 id="pageinitializationevents">页面初始化事件 Page initialization events</h2>
+
+<p>Jquery Mobile会自动基于page"内的增强的约定自动初始化一些插件?例如：给一个input输入框约定了type=range属性会自动生成一个自定义滑动条 
+这些自动初始化的行为是受"page"插件控制的，它在执行前后部署部署事件，允许你在初始化前后操作页面，或者甚至自己提供初始化行为，禁止自动初始化。注以下的页面初始化事件在每个“page”只被触发一次，而显?隐藏 事件则不同，在页面显示或者隐藏的每次，它们都会被触发 
+pagebeforecreate：页面初始化时，初始化之前触 
+pagecreate：页面初始化时，初始化之后触 
+</p><pre class=" language-java"><code class=" language-java">$<span class="token punctuation">(</span><span class="token string">'#aboutPage'</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">live<span class="token punctuation">(</span></span><span class="token string">'pagebeforecreate'</span><span class="token punctuation">,</span><span class="token function">function<span class="token punctuation">(</span></span>event<span class="token punctuation">)</span><span class="token punctuation">{</span> 
+<span class="token function">alert<span class="token punctuation">(</span></span><span class="token string">'This page was just inserted into the dom!'</span><span class="token punctuation">)</span><span class="token punctuation">;</span> 
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+
+</code><p><code class=" language-java">$<span class="token punctuation">(</span><span class="token string">'#aboutPage'</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">live<span class="token punctuation">(</span></span><span class="token string">'pagecreate'</span><span class="token punctuation">,</span><span class="token function">function<span class="token punctuation">(</span></span>event<span class="token punctuation">)</span><span class="token punctuation">{</span> 
+<span class="token function">alert<span class="token punctuation">(</span></span><span class="token string">'This page was just enhanced by Jquery Mobile!'</span><span class="token punctuation">)</span><span class="token punctuation">;</span> 
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span> 
+</code></p></pre>注意：通过绑定pagebeforecreate然后return false，你禁止页面插件自己的操作 
+而且，务必在 Jquery Mobile 执行前绑定这些函数，以使 他们在初始化页面加载时被调用。在 mobileinit 事件的处理函数中使用它们既可.<p></p>
+
+<h2 id="animationevents">动画事件 Animation Events</h2>
+
+<p>Jquery Mobile提供了animationComplete 插件，你可以用来添加或删除一个class来应用CSS转场效果 </p>
+<!-- content end -->
+</div>
+<br>
+<br>
+    <div id="disqus_thread"></div>
+	<div class="footer">
+		<p>© Copyright 2014 by Hellc, Designed by Hellc</p>
+	</div>
+</div>
+<script src="main.js"></script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ["\\(", "\\)"]], processEscapes: true}});
+</script>
+<script id="content" type="text/mustache">
+    <h1>{{title}}</h1>
+    <div class="tag">
+    {{date}}
+    {{#tags}}
+    <a href="/#/tag/{{name}}">#{{name}}</a>
+    {{/tags}}
+    </div>
+</script>
+<script id="pagesTemplate" type="text/mustache">
+    {{#pages}}
+    <li>
+        <a href="{{path}}">{{title}}</a>
+    </li>
+    {{/pages}}
+</script>
+<script>
+$(document).ready(function() {
+    $.ajax({
+        url: "main.json",
+        type: "GET",
+        dataType: "json",
+        success: function(data) {
+            $("#title").html(data.name);
+            var pagesTemplate = Hogan.compile($("#pagesTemplate").html());
+            var pagesHtml = pagesTemplate.render({"pages": data.pages});
+            $("#pages").append(pagesHtml);
+            //path
+            var path = "jqm_event.html";
+            //path end
+            var now = 0;
+            for (var i = 0; i < data.posts.length; ++i)
+                if (path == data.posts[i].path)
+                    now = i;
+            var post = data.posts[now];
+            var tmp = post.tags.split(" ");
+            var tags = [];
+            for (var i = 0; i < tmp.length; ++i)
+                if (tmp[i].length > 0)
+                    tags.push({"name": tmp[i]});
+            var contentTemplate = Hogan.compile($("#content").html());
+            var contentHtml = contentTemplate.render({"title": post.title, "tags": tags, "date": post.date});
+            $("#main").prepend(contentHtml);
+            if (data.disqus_shortname.length > 0) {
+                var disqus_shortname = data.disqus_shortname;
+                (function() {
+                    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                })();
+            }
+        }
+    });
+});
+</script>
+</body>
+</html>

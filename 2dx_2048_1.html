@@ -1,0 +1,397 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="Keywords" content="blog"/>
+    <meta name="Description" content="blog"/>
+    <title>Hellc</title>
+    <link rel="shortcut icon" href="/static/favicon.png"/>
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+</head>
+<body>
+<div class="main">
+    <div class="header">
+    	<ul id="pages">
+            <li><a href="/">home</a></li>
+            <li><a href="/#/tags">tags</a></li>
+            <li><a href="/#/archive">archive</a></li>
+    	</ul>
+    </div>
+	<div class="wrap-header">
+	<h1>
+    <a href="/" id="title"></a>
+	</h1>
+	</div>
+<div id="md" style="display: none;">
+<!-- markdown -->
+[cocos2dx教你做2048 (一) ]( http://caiwb1990.iteye.com/blog/2061675)
+
+2048最近火到不行，今天就教大家做一个自己的2048~ 
+2dx版本cocos2d-2.1rc0-x-2.1.3 
+
+##分析: 
+游戏输入: 
+手势滑动来判断是向哪个方向来滑动. 
+
+所以,第一部分我来教大家来做接收手势这部分. 
+
+
+##coding
+首先，在.h文件里重写生命周期函数 
+用来注册和移除委托。 
+
+~~~~{c++}
+//重写生命周期函数  
+   virtual void onEnter();  
+   virtual void onExit();  
+~~~~
+
+实现： 
+~~~~{c++}
+Gamescene.cpp代码 
+void game2048::onEnter()  
+{  
+    CCDirector::sharedDirector()->getTouchDispatcher()->addTargetedDelegate(this, 0, false);  
+    CCLayer::onEnter();  
+}  
+ 
+void game2048::onExit()  
+{  
+    CCDirector::sharedDirector()->getTouchDispatcher()->removeDelegate(this);  
+    CCLayer::onExit();  
+}  
+~~~~
+
+    一定要记得，委托一般都是成对出现的，有注册就要对应有移除。如果你想对一个CCnode进行委托监听，那么创建这个类的时候就可以进行监听了，而当本类退出时也可以对应删除其监听。 
+    所以一班情况，推荐大家将触屏时间的注册与移除代码都写在onEnter和onExit里。如果注册委托不及时移除掉，就有可能造成程序的异常退出。 
+
+
+接下来，定义一些变量，和触摸事件后的方法。 
+~~~~{c++}
+//坐标  
+float beginX;  
+float beginY;  
+float endX;  
+float endY;  
+  
+//滑向上下左右的方法  
+bool swipeUp();  
+bool swipeDown();  
+bool swipeLeft();  
+bool swipeRight();  
+~~~~
+
+实现
+~~~~{c++}
+bool game2048::swipeUp()  
+{  
+    CCLOG("doUp");  
+    return true;  
+}  
+  
+bool game2048::swipeDown()  
+{  
+    CCLOG("doDown");  
+    return true;  
+}  
+  
+bool game2048::swipeLeft()  
+{  
+    CCLOG("doLeft");  
+    return true;  
+}  
+  
+bool game2048::swipeRight()  
+{  
+    CCLOG("doRight");  
+    return true;  
+}  
+~~~~
+
+先不写实现，只是为了测试触屏事件，CCLOG即可~ 
+
+
+然后，我们重写触屏回调函数 
+
+~~~~{c++}
+virtual bool ccTouchBegan(cocos2d::CCTouch *touch, cocos2d::CCEvent *unused_event);  
+virtual void ccTouchEnded(cocos2d::CCTouch *touch, cocos2d::CCEvent *unused_event);  
+~~~~
+
+实现：
+~~~~{c++}
+bool game2048::ccTouchBegan(cocos2d::CCTouch *touch, cocos2d::CCEvent *unused_event)  
+{  
+    //记录初始点   
+    CCPoint curPoint = touch->getLocation();  
+    touch->getLocationInView();  
+    beginX=curPoint.x;  
+    beginY=curPoint.y;  
+      
+    return true;  
+}  
+  
+void game2048::ccTouchEnded(cocos2d::CCTouch *touch, cocos2d::CCEvent *unused_event)  
+{  
+    //获取X轴和Y轴的移动范围  
+    CCPoint curPoint=touch->getLocation();  
+      
+    endX=beginX - curPoint.x;  
+    endY=beginY - curPoint.y;  
+      
+    //判断X轴和Y轴的移动距离，如果X轴的绝对值大，则向左右滑动，如果Y轴的绝对值大，则向上下滑动  
+    if(abs(endX) > abs(endY))  
+    {  
+        //判断向左还是向右  
+        if(endX + 5 >= 0)  
+        {  
+            swipeLeft();  
+        }  
+        else  
+        {  
+            swipeRight();  
+        }  
+    }  
+    else  
+    {  
+        //判断手势向上还是向下  
+        if(endY + 5 >= 0)  
+        {  
+            swipeDown();  
+        }  
+        else  
+        {  
+            swipeUp();  
+        }  
+    }  
+}  
+~~~~
+
+
+OK，这样简单的触屏测试就写完了~ 
+看看效果~ 
+ ![http://dl2.iteye.com/upload/attachment/0096/7856/75f24363-c04f-3e2e-813c-65e636f66408.jpg](http://dl2.iteye.com/upload/attachment/0096/7856/75f24363-c04f-3e2e-813c-65e636f66408.jpg)
+
+OK，接下来更精彩~
+<!-- markdown end -->
+</div>
+<div class="entry" id="main">
+<!-- content -->
+<p><a href="http://caiwb1990.iteye.com/blog/2061675">cocos2dx教你做2048 (一) </a></p>
+
+<p>2048最近火到不行，今天就教大家做一个自己的2048~ 
+2dx版本cocos2d-2.1rc0-x-2.1.3 </p>
+
+<h2 id="">分析:</h2>
+
+<p>游戏输入: 
+手势滑动来判断是向哪个方向来滑动. </p>
+
+<p>所以,第一部分我来教大家来做接收手势这部分. </p>
+
+<h2 id="coding">coding</h2>
+
+<p>首先，在.h文件里重写生命周期函数 
+用来注册和移除委托。 </p>
+
+<pre class=" language-c"><code class="++ language-c"><span class="token comment" spellcheck="true">//重写生命周期函数  
+</span>   virtual <span class="token keyword">void</span> <span class="token function">onEnter<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+   virtual <span class="token keyword">void</span> <span class="token function">onExit<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+</code></pre>
+
+<p>实现： </p>
+
+<pre class=" language-c"><code class="++ language-c">Gamescene<span class="token punctuation">.</span>cpp代码 
+<span class="token keyword">void</span> game2048<span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token function">onEnter<span class="token punctuation">(</span></span><span class="token punctuation">)</span>  
+<span class="token punctuation">{</span>  
+    CCDirector<span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token function">sharedDirector<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token operator">-</span>&gt;<span class="token function">getTouchDispatcher<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token operator">-</span>&gt;<span class="token function">addTargetedDelegate<span class="token punctuation">(</span></span>this<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token boolean">false</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+    CCLayer<span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token function">onEnter<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+<span class="token punctuation">}</span>  
+
+<span class="token keyword">void</span> game2048<span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token function">onExit<span class="token punctuation">(</span></span><span class="token punctuation">)</span>  
+<span class="token punctuation">{</span>  
+    CCDirector<span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token function">sharedDirector<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token operator">-</span>&gt;<span class="token function">getTouchDispatcher<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token operator">-</span>&gt;<span class="token function">removeDelegate<span class="token punctuation">(</span></span>this<span class="token punctuation">)</span><span class="token punctuation">;</span>  
+    CCLayer<span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token function">onExit<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+<span class="token punctuation">}</span>  
+</code></pre>
+
+<pre><code>一定要记得，委托一般都是成对出现的，有注册就要对应有移除。如果你想对一个CCnode进行委托监听，那么创建这个类的时候就可以进行监听了，而当本类退出时也可以对应删除其监听。 
+所以一班情况，推荐大家将触屏时间的注册与移除代码都写在onEnter和onExit里。如果注册委托不及时移除掉，就有可能造成程序的异常退出。 
+</code></pre>
+
+<p>接下来，定义一些变量，和触摸事件后的方法。 </p>
+
+<pre class=" language-c"><code class="++ language-c"><span class="token comment" spellcheck="true">//坐标  
+</span><span class="token keyword">float</span> beginX<span class="token punctuation">;</span>  
+<span class="token keyword">float</span> beginY<span class="token punctuation">;</span>  
+<span class="token keyword">float</span> endX<span class="token punctuation">;</span>  
+<span class="token keyword">float</span> endY<span class="token punctuation">;</span>  
+<span class="token comment" spellcheck="true">
+//滑向上下左右的方法  
+</span>bool <span class="token function">swipeUp<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+bool <span class="token function">swipeDown<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+bool <span class="token function">swipeLeft<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+bool <span class="token function">swipeRight<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+</code></pre>
+
+<p>实现</p>
+
+<pre class=" language-c"><code class="++ language-c">bool game2048<span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token function">swipeUp<span class="token punctuation">(</span></span><span class="token punctuation">)</span>  
+<span class="token punctuation">{</span>  
+    <span class="token function">CCLOG<span class="token punctuation">(</span></span><span class="token string">"doUp"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+    <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>  
+<span class="token punctuation">}</span>  
+
+bool game2048<span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token function">swipeDown<span class="token punctuation">(</span></span><span class="token punctuation">)</span>  
+<span class="token punctuation">{</span>  
+    <span class="token function">CCLOG<span class="token punctuation">(</span></span><span class="token string">"doDown"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+    <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>  
+<span class="token punctuation">}</span>  
+
+bool game2048<span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token function">swipeLeft<span class="token punctuation">(</span></span><span class="token punctuation">)</span>  
+<span class="token punctuation">{</span>  
+    <span class="token function">CCLOG<span class="token punctuation">(</span></span><span class="token string">"doLeft"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+    <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>  
+<span class="token punctuation">}</span>  
+
+bool game2048<span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token function">swipeRight<span class="token punctuation">(</span></span><span class="token punctuation">)</span>  
+<span class="token punctuation">{</span>  
+    <span class="token function">CCLOG<span class="token punctuation">(</span></span><span class="token string">"doRight"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+    <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>  
+<span class="token punctuation">}</span>  
+</code></pre>
+
+<p>先不写实现，只是为了测试触屏事件，CCLOG即可~ </p>
+
+<p>然后，我们重写触屏回调函数 </p>
+
+<pre class=" language-c"><code class="++ language-c">virtual bool <span class="token function">ccTouchBegan<span class="token punctuation">(</span></span>cocos2d<span class="token punctuation">:</span><span class="token punctuation">:</span>CCTouch <span class="token operator">*</span>touch<span class="token punctuation">,</span> cocos2d<span class="token punctuation">:</span><span class="token punctuation">:</span>CCEvent <span class="token operator">*</span>unused_event<span class="token punctuation">)</span><span class="token punctuation">;</span>  
+virtual <span class="token keyword">void</span> <span class="token function">ccTouchEnded<span class="token punctuation">(</span></span>cocos2d<span class="token punctuation">:</span><span class="token punctuation">:</span>CCTouch <span class="token operator">*</span>touch<span class="token punctuation">,</span> cocos2d<span class="token punctuation">:</span><span class="token punctuation">:</span>CCEvent <span class="token operator">*</span>unused_event<span class="token punctuation">)</span><span class="token punctuation">;</span>  
+</code></pre>
+
+<p>实现：</p>
+
+<pre class=" language-c"><code class="++ language-c">bool game2048<span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token function">ccTouchBegan<span class="token punctuation">(</span></span>cocos2d<span class="token punctuation">:</span><span class="token punctuation">:</span>CCTouch <span class="token operator">*</span>touch<span class="token punctuation">,</span> cocos2d<span class="token punctuation">:</span><span class="token punctuation">:</span>CCEvent <span class="token operator">*</span>unused_event<span class="token punctuation">)</span>  
+<span class="token punctuation">{</span>  
+   <span class="token comment" spellcheck="true"> //记录初始点   
+</span>    CCPoint curPoint <span class="token operator">=</span> touch<span class="token operator">-</span>&gt;<span class="token function">getLocation<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+    touch<span class="token operator">-</span>&gt;<span class="token function">getLocationInView<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+    beginX<span class="token operator">=</span>curPoint<span class="token punctuation">.</span>x<span class="token punctuation">;</span>  
+    beginY<span class="token operator">=</span>curPoint<span class="token punctuation">.</span>y<span class="token punctuation">;</span>  
+
+    <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>  
+<span class="token punctuation">}</span>  
+
+<span class="token keyword">void</span> game2048<span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token function">ccTouchEnded<span class="token punctuation">(</span></span>cocos2d<span class="token punctuation">:</span><span class="token punctuation">:</span>CCTouch <span class="token operator">*</span>touch<span class="token punctuation">,</span> cocos2d<span class="token punctuation">:</span><span class="token punctuation">:</span>CCEvent <span class="token operator">*</span>unused_event<span class="token punctuation">)</span>  
+<span class="token punctuation">{</span>  
+   <span class="token comment" spellcheck="true"> //获取X轴和Y轴的移动范围  
+</span>    CCPoint curPoint<span class="token operator">=</span>touch<span class="token operator">-</span>&gt;<span class="token function">getLocation<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+
+    endX<span class="token operator">=</span>beginX <span class="token operator">-</span> curPoint<span class="token punctuation">.</span>x<span class="token punctuation">;</span>  
+    endY<span class="token operator">=</span>beginY <span class="token operator">-</span> curPoint<span class="token punctuation">.</span>y<span class="token punctuation">;</span>  
+
+   <span class="token comment" spellcheck="true"> //判断X轴和Y轴的移动距离，如果X轴的绝对值大，则向左右滑动，如果Y轴的绝对值大，则向上下滑动  
+</span>    <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token function">abs<span class="token punctuation">(</span></span>endX<span class="token punctuation">)</span> &gt; <span class="token function">abs<span class="token punctuation">(</span></span>endY<span class="token punctuation">)</span><span class="token punctuation">)</span>  
+    <span class="token punctuation">{</span>  
+       <span class="token comment" spellcheck="true"> //判断向左还是向右  
+</span>        <span class="token keyword">if</span><span class="token punctuation">(</span>endX <span class="token operator">+</span> <span class="token number">5</span> &gt;<span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">)</span>  
+        <span class="token punctuation">{</span>  
+            <span class="token function">swipeLeft<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+        <span class="token punctuation">}</span>  
+        <span class="token keyword">else</span>  
+        <span class="token punctuation">{</span>  
+            <span class="token function">swipeRight<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+        <span class="token punctuation">}</span>  
+    <span class="token punctuation">}</span>  
+    <span class="token keyword">else</span>  
+    <span class="token punctuation">{</span>  
+       <span class="token comment" spellcheck="true"> //判断手势向上还是向下  
+</span>        <span class="token keyword">if</span><span class="token punctuation">(</span>endY <span class="token operator">+</span> <span class="token number">5</span> &gt;<span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">)</span>  
+        <span class="token punctuation">{</span>  
+            <span class="token function">swipeDown<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+        <span class="token punctuation">}</span>  
+        <span class="token keyword">else</span>  
+        <span class="token punctuation">{</span>  
+            <span class="token function">swipeUp<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+        <span class="token punctuation">}</span>  
+    <span class="token punctuation">}</span>  
+<span class="token punctuation">}</span>  
+</code></pre>
+
+<p>OK，这样简单的触屏测试就写完了~ 
+看看效果~ 
+ <img src="http://dl2.iteye.com/upload/attachment/0096/7856/75f24363-c04f-3e2e-813c-65e636f66408.jpg" alt="http://dl2.iteye.com/upload/attachment/0096/7856/75f24363-c04f-3e2e-813c-65e636f66408.jpg" title=""></p>
+
+<p>OK，接下来更精彩~</p>
+<!-- content end -->
+</div>
+<br>
+<br>
+    <div id="disqus_thread"></div>
+	<div class="footer">
+		<p>© Copyright 2014 by Hellc, Designed by Hellc</p>
+	</div>
+</div>
+<script src="main.js"></script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ["\\(", "\\)"]], processEscapes: true}});
+</script>
+<script id="content" type="text/mustache">
+    <h1>{{title}}</h1>
+    <div class="tag">
+    {{date}}
+    {{#tags}}
+    <a href="/#/tag/{{name}}">#{{name}}</a>
+    {{/tags}}
+    </div>
+</script>
+<script id="pagesTemplate" type="text/mustache">
+    {{#pages}}
+    <li>
+        <a href="{{path}}">{{title}}</a>
+    </li>
+    {{/pages}}
+</script>
+<script>
+$(document).ready(function() {
+    $.ajax({
+        url: "main.json",
+        type: "GET",
+        dataType: "json",
+        success: function(data) {
+            $("#title").html(data.name);
+            var pagesTemplate = Hogan.compile($("#pagesTemplate").html());
+            var pagesHtml = pagesTemplate.render({"pages": data.pages});
+            $("#pages").append(pagesHtml);
+            //path
+            var path = "2dx_2048_1.html";
+            //path end
+            var now = 0;
+            for (var i = 0; i < data.posts.length; ++i)
+                if (path == data.posts[i].path)
+                    now = i;
+            var post = data.posts[now];
+            var tmp = post.tags.split(" ");
+            var tags = [];
+            for (var i = 0; i < tmp.length; ++i)
+                if (tmp[i].length > 0)
+                    tags.push({"name": tmp[i]});
+            var contentTemplate = Hogan.compile($("#content").html());
+            var contentHtml = contentTemplate.render({"title": post.title, "tags": tags, "date": post.date});
+            $("#main").prepend(contentHtml);
+            if (data.disqus_shortname.length > 0) {
+                var disqus_shortname = data.disqus_shortname;
+                (function() {
+                    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                })();
+            }
+        }
+    });
+});
+</script>
+</body>
+</html>

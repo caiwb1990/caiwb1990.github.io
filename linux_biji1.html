@@ -1,0 +1,452 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="Keywords" content="blog"/>
+    <meta name="Description" content="blog"/>
+    <title>Hellc</title>
+    <link rel="shortcut icon" href="/static/favicon.png"/>
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+</head>
+<body>
+<div class="main">
+    <div class="header">
+    	<ul id="pages">
+            <li><a href="/">home</a></li>
+            <li><a href="/#/tags">tags</a></li>
+            <li><a href="/#/archive">archive</a></li>
+    	</ul>
+    </div>
+	<div class="wrap-header">
+	<h1>
+    <a href="/" id="title"></a>
+	</h1>
+	</div>
+<div id="md" style="display: none;">
+<!-- markdown -->
+[Linux笔记(一)  ](http://caiwb1990.iteye.com/blog/1396207)
+
+
+##Linux的特点 
+开放性，多用户多任务,丰富的网络功能, 
+可靠的系统安全,良好的可移植性,具有标准兼容性 
+基于GPL 
+
+##Linux的组成 
+内核：运行程序和管理磁盘等核心程序 
+Shell:系统的用户界面 
+接收用户输入的命令并把它送入内核去执行,是一个命令解释器 
+还是高级编程语言, shell编程。 
+文件系统:Linux的所有内容都是以文件的形式进行管理的 
+应用程序:Open Office, X-Window 
+
+##Linux版本 
+发型版本: RedHat Debian Ubuntu Novell/SuSE 
+
+##常用指令介绍 
+
+###文件目录操作命令
+~~~~{linux}
+ls 显示文件和目录列表 　 
+-l 列出文件的详细信息 
+-a 列出当前目录所有文件，包含隐藏文件 
+mkdir 创建目录 　 
+-p 父目录不存在情况下先生成父目录 
+cd 切换目录 
+touch 生成一个空文件 
+echo 生成一个带内容文件 
+cat、tac 显示文本文件内容 
+cp 复制文件或目录 
+rm 删除文件 
+-r 同时删除该目录下的所有文件 
+-f 强制删除文件或目录 
+mv 移动文件或目录、文件或 
+mv  aaa bbb 将aaa改名为bbb 
+find 在文件系统中查找指定的文件 
+-name  文件名 
+wc 统计文本文档的行数，字数，字符数 
+grep 在指定的文本文件中查找指定的字符串 
+rmdir 删除空目录 
+tree 显示目录目录改名树 
+pwd 显示当前工作目录 
+ln 建立链接文件 
+more、less 分页显示文本文件内容 
+head,tail分别显示文件开头和结尾内容 
+~~~~
+
+###系统管理命令 
+~~~~{linux}
+stat 显示指定文件的相关信息,比ls命令显示内容更多 
+who 显示在线登录用户 
+hostname 显示主机名称 
+uname显示系统信息 
+top 显示当前系统中耗费资源最多的进程 
+ps 显示瞬间的进程状态 
+du 显示指定的文件（目录）已使用的磁盘空间的总量 
+df 显示文件系统磁盘空间的使用情况 
+free 显示当前内存和交换空间的使用情况 
+ifconfig 显示网络接口信息 
+ping 测试网络的连通性 
+netstat 显示网络状态信息 
+man 命令帮助信息查询 
+clear 清屏 
+kill 杀死一个进程 
+~~~~
+
+###备份压缩命令 
+~~~~{linux}
+gzip 压缩（解压）文件或目录，压缩文件后缀为gz 
+bzip2 压缩（解压）文件或目录，压缩文件后缀为bz2 
+tar 文件、目录打（解）包 
+~~~~
+
+###gzip命令 
+~~~~{linux}
+命令格式： 
+gzip [选项] 压缩（解压缩）的文件名 
+参数： 
+-d 将压缩文件解压。 
+-l 对每个压缩文件，显示压缩文件的大小，未压缩文件的大小，压缩比，未压缩文件的名字 
+-v 对每一个压缩和解压的文件，显示文件名和压缩比。 
+-num 用指定的数字num调整压缩的速度，-1或--fast表示最快压缩方法（低压缩比），-9或--best表示最慢压缩方法（高压缩比）。系统缺省值为6 
+~~~~
+
+###bzip2命令 
+~~~~{linux}
+命令格式： 
+bzip2 [-cdz] 档名 
+参数： 
+-d ：解压缩的参数 
+-z ：压缩的参数 
+-num 用指定的数字num调整压缩的速度，-1或--fast表示最快压缩方法（低压缩比），-9或--best表示最慢压缩方法（高压缩比）。系统缺省值为6 
+~~~~
+
+###tar命令 
+~~~~{linux}
+命令格式： 
+tar [-cxzjvf]   压缩打包文档的名称 欲打包目录 
+参数： 
+-c ：建立一个归档文件的参数指令 
+-x ：解开一个归档文件的参数指令！ 
+-z ：是否需要用 gzip 压缩？ 
+-j ：是否需要用 bzip2 压缩？ 
+-v ：压缩的过程中显示文件 
+-f ：使用档名，在 f 之后要立即接档名 
+-tf ：查看归档文件里面的文件 
+~~~~
+
+###关机/重启命令 
+~~~~{linux}
+shutdown系统关机 
+r 关机后重启 
+h 关机后不重新启动 
+now 立即关机 
+halt 关机后关闭电源 
+reboot 重新启动 
+~~~~
+
+###Linux 通道 
+简单地说，一个通道接受一个工具软件的输出，然后把那个输出输入到其它工具软件。使用UNIX/Linux的词汇，这个通道接受了一个过程的标准输出，并把这个标准的输出作为另一个过程的标准输入。如果你没有重新定向这个输出，这个输出就在屏幕上显示出来。使用一个通道，你可以重新定向这个输出，这样它就变成了另一个工具软件的标准的输入。 
+   例如：
+~~~~{linux}
+grep best /home/*  | more 
+~~~~
+
+##Ubuntu目录结构 
+~~~~{linux}
+  bin  存放二进制可执行文件(ls,cat,mkdir等) 
+  boot 存放用于系统引导时使用的各种文件 
+  dev  用于存放设备文件 
+  etc  存放系统配置文件 
+  home 存放所有用户文件的根目录 
+  lib  存放跟文件系统中的程序运行所需要的共享库及内核模块 
+  mnt  系统管理员安装临时文件系统的安装点 
+  opt  额外安装的可选应用程序包所放置的位置 
+  proc 虚拟文件系统，存放当前内存的映射 
+  root 超级用户目录 
+  sbin 存放二进制可执行文件，只有root才能访问 
+  tmp  用于存放各种临时文件 
+  usr  用于存放系统应用程序，比较重要的目录/usr/local 本地管理员软件安装目录 
+  var  用于存放运行时需要改变数据的文件 
+~~~~
+
+##软件包管理 
+~~~~{linux}
+安装.deb 
+sudo dpkg -i package_file.deb   来安装 .deb 文件。 
+如需卸载 .deb 文件输入： 
+sudo dpkg -r package_name 
+
+APT 
+安装软件包： 
+sudo apt-get install packagename   
+
+删除软件包： 
+sudo apt-get remove packagename   
+
+获取新的软件包列表： 
+sudo apt-get update   
+
+升级有可用更新的系统： 
+sudo apt-get upgrade   
+
+列出更多命令和选项： 
+apt-get help   
+
+将 .rpm 文件转为 .deb 文件 
+sudo alien package_file.rpm
+~~~~
+
+ 
+
+<!-- markdown end -->
+</div>
+<div class="entry" id="main">
+<!-- content -->
+<p><a href="http://caiwb1990.iteye.com/blog/1396207">Linux笔记(一)  </a></p>
+
+<h2 id="linux">Linux的特点</h2>
+
+<p>开放性，多用户多任务,丰富的网络功能, 
+可靠的系统安全,良好的可移植性,具有标准兼容性 
+基于GPL </p>
+
+<h2 id="linux">Linux的组成</h2>
+
+<p>内核：运行程序和管理磁盘等核心程序 
+Shell:系统的用户界面 
+接收用户输入的命令并把它送入内核去执行,是一个命令解释器 
+还是高级编程语言, shell编程。 
+文件系统:Linux的所有内容都是以文件的形式进行管理的 
+应用程序:Open Office, X-Window </p>
+
+<h2 id="linux">Linux版本</h2>
+
+<p>发型版本: RedHat Debian Ubuntu Novell/SuSE </p>
+
+<h2 id="">常用指令介绍</h2>
+
+<h3 id="">文件目录操作命令</h3>
+
+<pre><code class="language-linux">ls 显示文件和目录列表 　 
+-l 列出文件的详细信息 
+-a 列出当前目录所有文件，包含隐藏文件 
+mkdir 创建目录 　 
+-p 父目录不存在情况下先生成父目录 
+cd 切换目录 
+touch 生成一个空文件 
+echo 生成一个带内容文件 
+cat、tac 显示文本文件内容 
+cp 复制文件或目录 
+rm 删除文件 
+-r 同时删除该目录下的所有文件 
+-f 强制删除文件或目录 
+mv 移动文件或目录、文件或 
+mv  aaa bbb 将aaa改名为bbb 
+find 在文件系统中查找指定的文件 
+-name  文件名 
+wc 统计文本文档的行数，字数，字符数 
+grep 在指定的文本文件中查找指定的字符串 
+rmdir 删除空目录 
+tree 显示目录目录改名树 
+pwd 显示当前工作目录 
+ln 建立链接文件 
+more、less 分页显示文本文件内容 
+head,tail分别显示文件开头和结尾内容 
+</code></pre>
+
+<h3 id="">系统管理命令</h3>
+
+<pre><code class="language-linux">stat 显示指定文件的相关信息,比ls命令显示内容更多 
+who 显示在线登录用户 
+hostname 显示主机名称 
+uname显示系统信息 
+top 显示当前系统中耗费资源最多的进程 
+ps 显示瞬间的进程状态 
+du 显示指定的文件（目录）已使用的磁盘空间的总量 
+df 显示文件系统磁盘空间的使用情况 
+free 显示当前内存和交换空间的使用情况 
+ifconfig 显示网络接口信息 
+ping 测试网络的连通性 
+netstat 显示网络状态信息 
+man 命令帮助信息查询 
+clear 清屏 
+kill 杀死一个进程 
+</code></pre>
+
+<h3 id="">备份压缩命令</h3>
+
+<pre><code class="language-linux">gzip 压缩（解压）文件或目录，压缩文件后缀为gz 
+bzip2 压缩（解压）文件或目录，压缩文件后缀为bz2 
+tar 文件、目录打（解）包 
+</code></pre>
+
+<h3 id="gzip">gzip命令</h3>
+
+<pre><code class="language-linux">命令格式： 
+gzip [选项] 压缩（解压缩）的文件名 
+参数： 
+-d 将压缩文件解压。 
+-l 对每个压缩文件，显示压缩文件的大小，未压缩文件的大小，压缩比，未压缩文件的名字 
+-v 对每一个压缩和解压的文件，显示文件名和压缩比。 
+-num 用指定的数字num调整压缩的速度，-1或--fast表示最快压缩方法（低压缩比），-9或--best表示最慢压缩方法（高压缩比）。系统缺省值为6 
+</code></pre>
+
+<h3 id="bzip2">bzip2命令</h3>
+
+<pre><code class="language-linux">命令格式： 
+bzip2 [-cdz] 档名 
+参数： 
+-d ：解压缩的参数 
+-z ：压缩的参数 
+-num 用指定的数字num调整压缩的速度，-1或--fast表示最快压缩方法（低压缩比），-9或--best表示最慢压缩方法（高压缩比）。系统缺省值为6 
+</code></pre>
+
+<h3 id="tar">tar命令</h3>
+
+<pre><code class="language-linux">命令格式： 
+tar [-cxzjvf]   压缩打包文档的名称 欲打包目录 
+参数： 
+-c ：建立一个归档文件的参数指令 
+-x ：解开一个归档文件的参数指令！ 
+-z ：是否需要用 gzip 压缩？ 
+-j ：是否需要用 bzip2 压缩？ 
+-v ：压缩的过程中显示文件 
+-f ：使用档名，在 f 之后要立即接档名 
+-tf ：查看归档文件里面的文件 
+</code></pre>
+
+<h3 id="">关机/重启命令</h3>
+
+<pre><code class="language-linux">shutdown系统关机 
+r 关机后重启 
+h 关机后不重新启动 
+now 立即关机 
+halt 关机后关闭电源 
+reboot 重新启动 
+</code></pre>
+
+<h3 id="linux">Linux 通道</h3>
+
+<p>简单地说，一个通道接受一个工具软件的输出，然后把那个输出输入到其它工具软件。使用UNIX/Linux的词汇，这个通道接受了一个过程的标准输出，并把这个标准的输出作为另一个过程的标准输入。如果你没有重新定向这个输出，这个输出就在屏幕上显示出来。使用一个通道，你可以重新定向这个输出，这样它就变成了另一个工具软件的标准的输入。 
+   例如：</p>
+
+<pre><code class="language-linux">grep best /home/*  | more 
+</code></pre>
+
+<h2 id="ubuntu">Ubuntu目录结构</h2>
+
+<pre><code class="language-linux">  bin  存放二进制可执行文件(ls,cat,mkdir等) 
+  boot 存放用于系统引导时使用的各种文件 
+  dev  用于存放设备文件 
+  etc  存放系统配置文件 
+  home 存放所有用户文件的根目录 
+  lib  存放跟文件系统中的程序运行所需要的共享库及内核模块 
+  mnt  系统管理员安装临时文件系统的安装点 
+  opt  额外安装的可选应用程序包所放置的位置 
+  proc 虚拟文件系统，存放当前内存的映射 
+  root 超级用户目录 
+  sbin 存放二进制可执行文件，只有root才能访问 
+  tmp  用于存放各种临时文件 
+  usr  用于存放系统应用程序，比较重要的目录/usr/local 本地管理员软件安装目录 
+  var  用于存放运行时需要改变数据的文件 
+</code></pre>
+
+<h2 id="">软件包管理</h2>
+
+<pre><code class="language-linux">安装.deb 
+sudo dpkg -i package_file.deb   来安装 .deb 文件。 
+如需卸载 .deb 文件输入： 
+sudo dpkg -r package_name 
+
+APT 
+安装软件包： 
+sudo apt-get install packagename   
+
+删除软件包： 
+sudo apt-get remove packagename   
+
+获取新的软件包列表： 
+sudo apt-get update   
+
+升级有可用更新的系统： 
+sudo apt-get upgrade   
+
+列出更多命令和选项： 
+apt-get help   
+
+将 .rpm 文件转为 .deb 文件 
+sudo alien package_file.rpm
+</code></pre>
+<!-- content end -->
+</div>
+<br>
+<br>
+    <div id="disqus_thread"></div>
+	<div class="footer">
+		<p>© Copyright 2014 by Hellc, Designed by Hellc</p>
+	</div>
+</div>
+<script src="main.js"></script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ["\\(", "\\)"]], processEscapes: true}});
+</script>
+<script id="content" type="text/mustache">
+    <h1>{{title}}</h1>
+    <div class="tag">
+    {{date}}
+    {{#tags}}
+    <a href="/#/tag/{{name}}">#{{name}}</a>
+    {{/tags}}
+    </div>
+</script>
+<script id="pagesTemplate" type="text/mustache">
+    {{#pages}}
+    <li>
+        <a href="{{path}}">{{title}}</a>
+    </li>
+    {{/pages}}
+</script>
+<script>
+$(document).ready(function() {
+    $.ajax({
+        url: "main.json",
+        type: "GET",
+        dataType: "json",
+        success: function(data) {
+            $("#title").html(data.name);
+            var pagesTemplate = Hogan.compile($("#pagesTemplate").html());
+            var pagesHtml = pagesTemplate.render({"pages": data.pages});
+            $("#pages").append(pagesHtml);
+            //path
+            var path = "linux_biji1.html";
+            //path end
+            var now = 0;
+            for (var i = 0; i < data.posts.length; ++i)
+                if (path == data.posts[i].path)
+                    now = i;
+            var post = data.posts[now];
+            var tmp = post.tags.split(" ");
+            var tags = [];
+            for (var i = 0; i < tmp.length; ++i)
+                if (tmp[i].length > 0)
+                    tags.push({"name": tmp[i]});
+            var contentTemplate = Hogan.compile($("#content").html());
+            var contentHtml = contentTemplate.render({"title": post.title, "tags": tags, "date": post.date});
+            $("#main").prepend(contentHtml);
+            if (data.disqus_shortname.length > 0) {
+                var disqus_shortname = data.disqus_shortname;
+                (function() {
+                    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                })();
+            }
+        }
+    });
+});
+</script>
+</body>
+</html>

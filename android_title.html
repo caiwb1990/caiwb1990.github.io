@@ -1,0 +1,213 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="Keywords" content="blog"/>
+    <meta name="Description" content="blog"/>
+    <title>Hellc</title>
+    <link rel="shortcut icon" href="/static/favicon.png"/>
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+</head>
+<body>
+<div class="main">
+    <div class="header">
+    	<ul id="pages">
+            <li><a href="/">home</a></li>
+            <li><a href="/#/tags">tags</a></li>
+            <li><a href="/#/archive">archive</a></li>
+    	</ul>
+    </div>
+	<div class="wrap-header">
+	<h1>
+    <a href="/" id="title"></a>
+	</h1>
+	</div>
+<div id="md" style="display: none;">
+<!-- markdown -->
+[ Android的标题栏](http://caiwb1990.iteye.com/blog/1564440)
+
+
+忙了断时间,终于闲了下来.也一直没有来iteye。最近在弄Ios和Wp，我会陆续发博的。 
+
+
+介绍下Android的标题栏的各种用法知识把。 
+
+1、隐藏标题栏 
+~~~~{java}
+requestWindowFeature(Window.FEATURE_NO_TITLE);  
+~~~~
+
+
+2、在标题栏显示进度条 
+~~~~{java}
+requestWindowFeature(Window.FEATURE_PROGRESS);  
+setContentView(R.layout.progressbar_1);  
+setProgressBarVisibility(true);  
+  
+final ProgressBar progressHorizontal = (ProgressBar) findViewById(R.id.progress_horizontal);  
+setProgress(progressHorizontal.getProgress() * 100);  
+setSecondaryProgress(progressHorizontal.getSecondaryProgress() * 100);  
+~~~~
+
+
+3、使用自定义标题栏 
+~~~~{java}
+requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);  
+setContentView(R.layout.xxx);  
+getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE,R.layout.my_title_bar);  
+~~~~
+
+
+4、清除标题栏内容，而区域保留 
+~~~~{java}
+((ViewGroup) getWindow().findViewById(com.android.internal.R.id.title_container)).removeAllViews();  
+~~~~
+
+
+5、隐藏标题栏 
+~~~~{java}
+((ViewGroup)getWindow().findViewById(com.android.internal.R.id.title_container)).setVisibility(View.GONE);  
+~~~~
+
+
+
+6、显示标题栏 
+~~~~{java}
+...setVisibility(View.VISIBLE);  
+~~~~
+
+
+其他注意事项 
+
+(1) requestWindowFeature()要在setContentView()之前调用； 
+
+(2) 设置各种Feature，是具有排它性的，一旦设置，后续不可更改为别的类型； 
+
+(3) 当使用TabHost(由ActivityGroup派生)时，各个Tab里的Activity，要么都是NO_TITLE，要么都是CUSTOM_TITLE，无法分别进行设置。
+<!-- markdown end -->
+</div>
+<div class="entry" id="main">
+<!-- content -->
+<p><a href="http://caiwb1990.iteye.com/blog/1564440"> Android的标题栏</a></p>
+
+<p>忙了断时间,终于闲了下来.也一直没有来iteye。最近在弄Ios和Wp，我会陆续发博的。 </p>
+
+<p>介绍下Android的标题栏的各种用法知识把。 </p>
+
+<p>1、隐藏标题栏 </p>
+
+<pre class=" language-java"><code class=" language-java"><span class="token function">requestWindowFeature<span class="token punctuation">(</span></span>Window<span class="token punctuation">.</span>FEATURE_NO_TITLE<span class="token punctuation">)</span><span class="token punctuation">;</span>  
+</code></pre>
+
+<p>2、在标题栏显示进度条 </p>
+
+<pre class=" language-java"><code class=" language-java"><span class="token function">requestWindowFeature<span class="token punctuation">(</span></span>Window<span class="token punctuation">.</span>FEATURE_PROGRESS<span class="token punctuation">)</span><span class="token punctuation">;</span>  
+<span class="token function">setContentView<span class="token punctuation">(</span></span>R<span class="token punctuation">.</span>layout<span class="token punctuation">.</span>progressbar_1<span class="token punctuation">)</span><span class="token punctuation">;</span>  
+<span class="token function">setProgressBarVisibility<span class="token punctuation">(</span></span><span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+
+<span class="token keyword">final</span> ProgressBar progressHorizontal <span class="token operator">=</span> <span class="token punctuation">(</span>ProgressBar<span class="token punctuation">)</span> <span class="token function">findViewById<span class="token punctuation">(</span></span>R<span class="token punctuation">.</span>id<span class="token punctuation">.</span>progress_horizontal<span class="token punctuation">)</span><span class="token punctuation">;</span>  
+<span class="token function">setProgress<span class="token punctuation">(</span></span>progressHorizontal<span class="token punctuation">.</span><span class="token function">getProgress<span class="token punctuation">(</span></span><span class="token punctuation">)</span> <span class="token operator">*</span><span class="token number"> 100</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+<span class="token function">setSecondaryProgress<span class="token punctuation">(</span></span>progressHorizontal<span class="token punctuation">.</span><span class="token function">getSecondaryProgress<span class="token punctuation">(</span></span><span class="token punctuation">)</span> <span class="token operator">*</span><span class="token number"> 100</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+</code></pre>
+
+<p>3、使用自定义标题栏 </p>
+
+<pre class=" language-java"><code class=" language-java"><span class="token function">requestWindowFeature<span class="token punctuation">(</span></span>Window<span class="token punctuation">.</span>FEATURE_CUSTOM_TITLE<span class="token punctuation">)</span><span class="token punctuation">;</span>  
+<span class="token function">setContentView<span class="token punctuation">(</span></span>R<span class="token punctuation">.</span>layout<span class="token punctuation">.</span>xxx<span class="token punctuation">)</span><span class="token punctuation">;</span>  
+<span class="token function">getWindow<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">setFeatureInt<span class="token punctuation">(</span></span>Window<span class="token punctuation">.</span>FEATURE_CUSTOM_TITLE<span class="token punctuation">,</span>R<span class="token punctuation">.</span>layout<span class="token punctuation">.</span>my_title_bar<span class="token punctuation">)</span><span class="token punctuation">;</span>  
+</code></pre>
+
+<p>4、清除标题栏内容，而区域保留 </p>
+
+<pre class=" language-java"><code class=" language-java"><span class="token punctuation">(</span><span class="token punctuation">(</span>ViewGroup<span class="token punctuation">)</span> <span class="token function">getWindow<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">findViewById<span class="token punctuation">(</span></span>com<span class="token punctuation">.</span>android<span class="token punctuation">.</span>internal<span class="token punctuation">.</span>R<span class="token punctuation">.</span>id<span class="token punctuation">.</span>title_container<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">removeAllViews<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+</code></pre>
+
+<p>5、隐藏标题栏 </p>
+
+<pre class=" language-java"><code class=" language-java"><span class="token punctuation">(</span><span class="token punctuation">(</span>ViewGroup<span class="token punctuation">)</span><span class="token function">getWindow<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">findViewById<span class="token punctuation">(</span></span>com<span class="token punctuation">.</span>android<span class="token punctuation">.</span>internal<span class="token punctuation">.</span>R<span class="token punctuation">.</span>id<span class="token punctuation">.</span>title_container<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">setVisibility<span class="token punctuation">(</span></span>View<span class="token punctuation">.</span>GONE<span class="token punctuation">)</span><span class="token punctuation">;</span>  
+</code></pre>
+
+<p>6、显示标题栏 </p>
+
+<pre class=" language-java"><code class=" language-java"><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token function">setVisibility<span class="token punctuation">(</span></span>View<span class="token punctuation">.</span>VISIBLE<span class="token punctuation">)</span><span class="token punctuation">;</span>  
+</code></pre>
+
+<p>其他注意事项 </p>
+
+<p>(1) requestWindowFeature()要在setContentView()之前调用； </p>
+
+<p>(2) 设置各种Feature，是具有排它性的，一旦设置，后续不可更改为别的类型； </p>
+
+<p>(3) 当使用TabHost(由ActivityGroup派生)时，各个Tab里的Activity，要么都是NO<em>TITLE，要么都是CUSTOM</em>TITLE，无法分别进行设置。</p>
+<!-- content end -->
+</div>
+<br>
+<br>
+    <div id="disqus_thread"></div>
+	<div class="footer">
+		<p>© Copyright 2014 by Hellc, Designed by Hellc</p>
+	</div>
+</div>
+<script src="main.js"></script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ["\\(", "\\)"]], processEscapes: true}});
+</script>
+<script id="content" type="text/mustache">
+    <h1>{{title}}</h1>
+    <div class="tag">
+    {{date}}
+    {{#tags}}
+    <a href="/#/tag/{{name}}">#{{name}}</a>
+    {{/tags}}
+    </div>
+</script>
+<script id="pagesTemplate" type="text/mustache">
+    {{#pages}}
+    <li>
+        <a href="{{path}}">{{title}}</a>
+    </li>
+    {{/pages}}
+</script>
+<script>
+$(document).ready(function() {
+    $.ajax({
+        url: "main.json",
+        type: "GET",
+        dataType: "json",
+        success: function(data) {
+            $("#title").html(data.name);
+            var pagesTemplate = Hogan.compile($("#pagesTemplate").html());
+            var pagesHtml = pagesTemplate.render({"pages": data.pages});
+            $("#pages").append(pagesHtml);
+            //path
+            var path = "android_title.html";
+            //path end
+            var now = 0;
+            for (var i = 0; i < data.posts.length; ++i)
+                if (path == data.posts[i].path)
+                    now = i;
+            var post = data.posts[now];
+            var tmp = post.tags.split(" ");
+            var tags = [];
+            for (var i = 0; i < tmp.length; ++i)
+                if (tmp[i].length > 0)
+                    tags.push({"name": tmp[i]});
+            var contentTemplate = Hogan.compile($("#content").html());
+            var contentHtml = contentTemplate.render({"title": post.title, "tags": tags, "date": post.date});
+            $("#main").prepend(contentHtml);
+            if (data.disqus_shortname.length > 0) {
+                var disqus_shortname = data.disqus_shortname;
+                (function() {
+                    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                })();
+            }
+        }
+    });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,246 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="Keywords" content="blog"/>
+    <meta name="Description" content="blog"/>
+    <title>Hellc</title>
+    <link rel="shortcut icon" href="/static/favicon.png"/>
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+</head>
+<body>
+<div class="main">
+    <div class="header">
+    	<ul id="pages">
+            <li><a href="/">home</a></li>
+            <li><a href="/#/tags">tags</a></li>
+            <li><a href="/#/archive">archive</a></li>
+    	</ul>
+    </div>
+	<div class="wrap-header">
+	<h1>
+    <a href="/" id="title"></a>
+	</h1>
+	</div>
+<div id="md" style="display: none;">
+<!-- markdown -->
+[cocos-2dx Shader(一) 着色器和GLSL ](http://caiwb1990.iteye.com/blog/2064688)
+
+在移动游戏中，GPU大部分时间都是闲着的，而我们很多时刻可以直接来操作着色器在屏幕上的显示来节约我们的图片资源，容量以及内存等等。 
+
+##着色器 
+着色器（英语：shader）应用于计算机图形学领域，指一组供计算机图形资源在执行渲染任务时使用的指令。程序员将着色器应用于图形处理器（GPU）的可编程流水线，来实现三维应用程序。这样的图形处理器有别于传统的固定流水线处理器，为GPU编程带来更高的灵活性和适应性。 
+
+用过opengl的同学对着色器应该不会陌生，作为移动游戏终端设备的开发者，对于图形图像的了解是必不可少的，对于opengl es 2.x才引入的着色器，WWDC的专题讲座有一节就是讲opengl es的新特性的，结合AVFoundation那一节，我们也能从中可以学到不少东西的。 
+
+opengl es的着色器 有.fsh和.vsh两个文件 这两个文件在被编译和链接后就可以产生可执行程序 与GPU交互.vsh 是顶点shader 用与顶点计算 可以理解控制顶点的位置 在这个文件中我们通常会传入当前顶点的位置，和纹理的坐标. 
+
+##GLSL 
+GLSL - OpenGL Shading Language 也称作 GLslang，是一个以C语言为基础的高阶着色语言。它是由 OpenGL ARB 所建立，提供开发者对绘图管线更多的直接控制，而无需使用汇编语言或硬件规格语言。 
+
+随着近年来绘图卡的进步， 已在渲染管线中的顶点（vertex）和片断（fragment）层次中，加入更具弹性的新功能。 达到在这个层次中，使用片断和顶点着色器的可编程性。 
+
+
+Glsl 顶点着色器的简单范例代码
+
+~~~~{C++}
+void main(void)  
+{  
+    gl_Position = ftransform();  
+}  
+~~~~
+
+Glsl 片段着色器的简单范例代码 
+~~~~{C++}
+void main(void)  
+{  
+    gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);  
+}  
+~~~~
+
+GLSL的函式和控制结构 
+~~~~{C++}
+类似于 C语言，GLSL 支援循环和分支，包括 if、else、if/else、for、do-while、break、continue 等。  
+ ~~~~
+支援使用者定义函式，且各种常用的函式也已内建。这也就让绘图卡制造商，能够在硬件层次上最佳化这些内建的函式。许多函式与 C 语言相同，如 exp() 以及 abs()，其它绘图编程特有的，如 smoothstep() 以及 texture2D()  
+
+
+OpenGL 着色语言规格定义了 22 个基本资料类型，有些用法与 C 相同，其它的是绘图处理器特有的。 
+~~~~{C++}
+.  
+void – 用于没有返回值的函式  
+bool – 条件类型，其值可以是真或假  
+int – 带负号整数  
+float – 浮点数  
+vec2 – 2 个浮点数组成的向量  
+vec3 – 3 个浮点数组成的向量  
+vec4 – 4 个浮点数组成的向量  
+bvec2 – 2 个布林组成的向量  
+bvec3 – 3 个布林组成的向量  
+bvec4 – 4 个布林组成的向量  
+ivec2 – 2 个整数组成的向量  
+ivec3 – 3 个整数组成的向量  
+ivec4 – 4 个整数组成的向量  
+mat2 – 浮点数的 2X2 矩阵  
+mat3 – 浮点数的 3X3 矩阵  
+mat4 – 浮点数的 4X4 矩阵  
+sampler1D – 用来存取一维纹理的句柄（handle）（或：操作，作名词解。）  
+sampler2D – 用来存取二维纹理的句柄  
+sampler3D – 用来存取三维纹理的句柄  
+samplerCube – 用来存取立方映射纹理的句柄  
+sampler1Dshadow – 用来存取一维深度纹理的句柄  
+sampler2Dshadow – 用来存取二维深度纹理的句柄  
+
+~~~~
+
+下面一章，我会举例介绍一下操作着色器在移动游戏（cocos-2dx）开发中的应用。 
+
+
+
+[部分资料来源于wiki ]
+<!-- markdown end -->
+</div>
+<div class="entry" id="main">
+<!-- content -->
+<p><a href="http://caiwb1990.iteye.com/blog/2064688">cocos-2dx Shader(一) 着色器和GLSL </a></p>
+
+<p>在移动游戏中，GPU大部分时间都是闲着的，而我们很多时刻可以直接来操作着色器在屏幕上的显示来节约我们的图片资源，容量以及内存等等。 </p>
+
+<h2 id="">着色器</h2>
+
+<p>着色器（英语：shader）应用于计算机图形学领域，指一组供计算机图形资源在执行渲染任务时使用的指令。程序员将着色器应用于图形处理器（GPU）的可编程流水线，来实现三维应用程序。这样的图形处理器有别于传统的固定流水线处理器，为GPU编程带来更高的灵活性和适应性。 </p>
+
+<p>用过opengl的同学对着色器应该不会陌生，作为移动游戏终端设备的开发者，对于图形图像的了解是必不可少的，对于opengl es 2.x才引入的着色器，WWDC的专题讲座有一节就是讲opengl es的新特性的，结合AVFoundation那一节，我们也能从中可以学到不少东西的。 </p>
+
+<p>opengl es的着色器 有.fsh和.vsh两个文件 这两个文件在被编译和链接后就可以产生可执行程序 与GPU交互.vsh 是顶点shader 用与顶点计算 可以理解控制顶点的位置 在这个文件中我们通常会传入当前顶点的位置，和纹理的坐标. </p>
+
+<h2 id="glsl">GLSL</h2>
+
+<p>GLSL - OpenGL Shading Language 也称作 GLslang，是一个以C语言为基础的高阶着色语言。它是由 OpenGL ARB 所建立，提供开发者对绘图管线更多的直接控制，而无需使用汇编语言或硬件规格语言。 </p>
+
+<p>随着近年来绘图卡的进步， 已在渲染管线中的顶点（vertex）和片断（fragment）层次中，加入更具弹性的新功能。 达到在这个层次中，使用片断和顶点着色器的可编程性。 </p>
+
+<p>Glsl 顶点着色器的简单范例代码</p>
+
+<pre><code class="language-C++">void main(void)  
+{  
+    gl_Position = ftransform();  
+}  
+</code></pre>
+
+<p>Glsl 片段着色器的简单范例代码 </p>
+
+<pre><code class="language-C++">void main(void)  
+{  
+    gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);  
+}  
+</code></pre>
+
+<p>GLSL的函式和控制结构 </p>
+
+<pre><code class="language-C++">类似于 C语言，GLSL 支援循环和分支，包括 if、else、if/else、for、do-while、break、continue 等。  
+ </code></pre>支援使用者定义函式，且各种常用的函式也已内建。这也就让绘图卡制造商，能够在硬件层次上最佳化这些内建的函式。许多函式与 C 语言相同，如 exp() 以及 abs()，其它绘图编程特有的，如 smoothstep() 以及 texture2D()  
+
+
+OpenGL 着色语言规格定义了 22 个基本资料类型，有些用法与 C 相同，其它的是绘图处理器特有的。 
+<pre><code class="language-C++">.  
+void – 用于没有返回值的函式  
+bool – 条件类型，其值可以是真或假  
+int – 带负号整数  
+float – 浮点数  
+vec2 – 2 个浮点数组成的向量  
+vec3 – 3 个浮点数组成的向量  
+vec4 – 4 个浮点数组成的向量  
+bvec2 – 2 个布林组成的向量  
+bvec3 – 3 个布林组成的向量  
+bvec4 – 4 个布林组成的向量  
+ivec2 – 2 个整数组成的向量  
+ivec3 – 3 个整数组成的向量  
+ivec4 – 4 个整数组成的向量  
+mat2 – 浮点数的 2X2 矩阵  
+mat3 – 浮点数的 3X3 矩阵  
+mat4 – 浮点数的 4X4 矩阵  
+sampler1D – 用来存取一维纹理的句柄（handle）（或：操作，作名词解。）  
+sampler2D – 用来存取二维纹理的句柄  
+sampler3D – 用来存取三维纹理的句柄  
+samplerCube – 用来存取立方映射纹理的句柄  
+sampler1Dshadow – 用来存取一维深度纹理的句柄  
+sampler2Dshadow – 用来存取二维深度纹理的句柄  
+
+</code></pre>
+
+<p>下面一章，我会举例介绍一下操作着色器在移动游戏（cocos-2dx）开发中的应用。 </p>
+
+<p>[部分资料来源于wiki ]</p>
+<!-- content end -->
+</div>
+<br>
+<br>
+    <div id="disqus_thread"></div>
+	<div class="footer">
+		<p>© Copyright 2014 by Hellc, Designed by Hellc</p>
+	</div>
+</div>
+<script src="main.js"></script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ["\\(", "\\)"]], processEscapes: true}});
+</script>
+<script id="content" type="text/mustache">
+    <h1>{{title}}</h1>
+    <div class="tag">
+    {{date}}
+    {{#tags}}
+    <a href="/#/tag/{{name}}">#{{name}}</a>
+    {{/tags}}
+    </div>
+</script>
+<script id="pagesTemplate" type="text/mustache">
+    {{#pages}}
+    <li>
+        <a href="{{path}}">{{title}}</a>
+    </li>
+    {{/pages}}
+</script>
+<script>
+$(document).ready(function() {
+    $.ajax({
+        url: "main.json",
+        type: "GET",
+        dataType: "json",
+        success: function(data) {
+            $("#title").html(data.name);
+            var pagesTemplate = Hogan.compile($("#pagesTemplate").html());
+            var pagesHtml = pagesTemplate.render({"pages": data.pages});
+            $("#pages").append(pagesHtml);
+            //path
+            var path = "cocos2dx_shader_1.html";
+            //path end
+            var now = 0;
+            for (var i = 0; i < data.posts.length; ++i)
+                if (path == data.posts[i].path)
+                    now = i;
+            var post = data.posts[now];
+            var tmp = post.tags.split(" ");
+            var tags = [];
+            for (var i = 0; i < tmp.length; ++i)
+                if (tmp[i].length > 0)
+                    tags.push({"name": tmp[i]});
+            var contentTemplate = Hogan.compile($("#content").html());
+            var contentHtml = contentTemplate.render({"title": post.title, "tags": tags, "date": post.date});
+            $("#main").prepend(contentHtml);
+            if (data.disqus_shortname.length > 0) {
+                var disqus_shortname = data.disqus_shortname;
+                (function() {
+                    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                })();
+            }
+        }
+    });
+});
+</script>
+</body>
+</html>

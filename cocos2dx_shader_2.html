@@ -1,0 +1,218 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="Keywords" content="blog"/>
+    <meta name="Description" content="blog"/>
+    <title>Hellc</title>
+    <link rel="shortcut icon" href="/static/favicon.png"/>
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+</head>
+<body>
+<div class="main">
+    <div class="header">
+    	<ul id="pages">
+            <li><a href="/">home</a></li>
+            <li><a href="/#/tags">tags</a></li>
+            <li><a href="/#/archive">archive</a></li>
+    	</ul>
+    </div>
+	<div class="wrap-header">
+	<h1>
+    <a href="/" id="title"></a>
+	</h1>
+	</div>
+<div id="md" style="display: none;">
+<!-- markdown -->
+[cocos-2dx Shader(二) 实例应用 ](http://caiwb1990.iteye.com/blog/2065278)
+
+
+shader在处理资源上有很多种应用。 
+比如按钮的变灰，角色的冰冻，石化，中毒等效果，再比如水波的滤镜实现~ 
+. 
+
+先来个类似于最近比较火的刀塔传奇里的中毒效果把。（ps：抽的亚龙不怎么给力。o(︶︿︶)o 唉）。 
+资源我就拿天天酷跑里的loading男孩了。 
+
+先来个对比效果图把~ 
+![http://dl2.iteye.com/upload/attachment/0097/0233/09319699-d1eb-3d8f-891f-d97eded9b2d6.jpg](http://dl2.iteye.com/upload/attachment/0097/0233/09319699-d1eb-3d8f-891f-d97eded9b2d6.jpg)
+ 
+
+~~~~{glsl}
+#ifdef GL_ES   
+precision mediump float;   
+#endif   
+uniform sampler2D u_texture;   
+varying vec2 v_texCoord;   
+varying vec4 v_fragmentColor;   
+void main(void)   
+{   
+    gl_FragColor = texture2D(u_texture, v_texCoord) * v_fragmentColor;  
+    gl_FragColor.r *= 0.8;  
+    gl_FragColor.r += 0.08 * gl_FragColor.a;  
+    gl_FragColor.g *= 0.8;  
+    gl_FragColor.b *= 0.8;  
+    gl_FragColor.g += 0.2 * gl_FragColor.a;  
+   //gl_FragColor= vec4(color.r,color.g, color.b,color.a) ;  
+}  
+~~~~
+
+
+
+再来个冰冻效果， 
+还是先上图： 
+
+![http://dl2.iteye.com/upload/attachment/0097/0235/bc389fe8-8c44-3950-88bb-02e7d02964a3.jpg](http://dl2.iteye.com/upload/attachment/0097/0235/bc389fe8-8c44-3950-88bb-02e7d02964a3.jpg)
+
+
+
+~~~~{glsl}
+#ifdef GL_ES   
+precision mediump float;   
+#endif   
+uniform sampler2D u_texture;   
+varying vec2 v_texCoord;   
+varying vec4 v_fragmentColor;   
+void main(void)   
+{   
+    vec4 normalColor = v_fragmentColor * texture2D(u_texture, v_texCoord);  
+    normalColor *= vec4(0.8, 0.8, 0.8, 1);  
+    normalColor.b += normalColor.a * 0.2;  
+    gl_FragColor = normalColor;  
+}  
+~~~~
+
+
+实现都很简单，就是操作argb值，具体的语法可以看前一张有介绍。 
+
+
+OK，就是给大家简单介绍了下shader的应用~
+<!-- markdown end -->
+</div>
+<div class="entry" id="main">
+<!-- content -->
+<p><a href="http://caiwb1990.iteye.com/blog/2065278">cocos-2dx Shader(二) 实例应用 </a></p>
+
+<p>shader在处理资源上有很多种应用。 
+比如按钮的变灰，角色的冰冻，石化，中毒等效果，再比如水波的滤镜实现~ 
+. </p>
+
+<p>先来个类似于最近比较火的刀塔传奇里的中毒效果把。（ps：抽的亚龙不怎么给力。o(︶︿︶)o 唉）。 
+资源我就拿天天酷跑里的loading男孩了。 </p>
+
+<p>先来个对比效果图把~ 
+<img src="http://dl2.iteye.com/upload/attachment/0097/0233/09319699-d1eb-3d8f-891f-d97eded9b2d6.jpg" alt="http://dl2.iteye.com/upload/attachment/0097/0233/09319699-d1eb-3d8f-891f-d97eded9b2d6.jpg" title=""></p>
+
+<pre><code class="language-glsl">#ifdef GL_ES   
+precision mediump float;   
+#endif   
+uniform sampler2D u_texture;   
+varying vec2 v_texCoord;   
+varying vec4 v_fragmentColor;   
+void main(void)   
+{   
+    gl_FragColor = texture2D(u_texture, v_texCoord) * v_fragmentColor;  
+    gl_FragColor.r *= 0.8;  
+    gl_FragColor.r += 0.08 * gl_FragColor.a;  
+    gl_FragColor.g *= 0.8;  
+    gl_FragColor.b *= 0.8;  
+    gl_FragColor.g += 0.2 * gl_FragColor.a;  
+   //gl_FragColor= vec4(color.r,color.g, color.b,color.a) ;  
+}  
+</code></pre>
+
+<p>再来个冰冻效果， 
+还是先上图： </p>
+
+<p><img src="http://dl2.iteye.com/upload/attachment/0097/0235/bc389fe8-8c44-3950-88bb-02e7d02964a3.jpg" alt="http://dl2.iteye.com/upload/attachment/0097/0235/bc389fe8-8c44-3950-88bb-02e7d02964a3.jpg" title=""></p>
+
+<pre><code class="language-glsl">#ifdef GL_ES   
+precision mediump float;   
+#endif   
+uniform sampler2D u_texture;   
+varying vec2 v_texCoord;   
+varying vec4 v_fragmentColor;   
+void main(void)   
+{   
+    vec4 normalColor = v_fragmentColor * texture2D(u_texture, v_texCoord);  
+    normalColor *= vec4(0.8, 0.8, 0.8, 1);  
+    normalColor.b += normalColor.a * 0.2;  
+    gl_FragColor = normalColor;  
+}  
+</code></pre>
+
+<p>实现都很简单，就是操作argb值，具体的语法可以看前一张有介绍。 </p>
+
+<p>OK，就是给大家简单介绍了下shader的应用~</p>
+<!-- content end -->
+</div>
+<br>
+<br>
+    <div id="disqus_thread"></div>
+	<div class="footer">
+		<p>© Copyright 2014 by Hellc, Designed by Hellc</p>
+	</div>
+</div>
+<script src="main.js"></script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ["\\(", "\\)"]], processEscapes: true}});
+</script>
+<script id="content" type="text/mustache">
+    <h1>{{title}}</h1>
+    <div class="tag">
+    {{date}}
+    {{#tags}}
+    <a href="/#/tag/{{name}}">#{{name}}</a>
+    {{/tags}}
+    </div>
+</script>
+<script id="pagesTemplate" type="text/mustache">
+    {{#pages}}
+    <li>
+        <a href="{{path}}">{{title}}</a>
+    </li>
+    {{/pages}}
+</script>
+<script>
+$(document).ready(function() {
+    $.ajax({
+        url: "main.json",
+        type: "GET",
+        dataType: "json",
+        success: function(data) {
+            $("#title").html(data.name);
+            var pagesTemplate = Hogan.compile($("#pagesTemplate").html());
+            var pagesHtml = pagesTemplate.render({"pages": data.pages});
+            $("#pages").append(pagesHtml);
+            //path
+            var path = "cocos2dx_shader_2.html";
+            //path end
+            var now = 0;
+            for (var i = 0; i < data.posts.length; ++i)
+                if (path == data.posts[i].path)
+                    now = i;
+            var post = data.posts[now];
+            var tmp = post.tags.split(" ");
+            var tags = [];
+            for (var i = 0; i < tmp.length; ++i)
+                if (tmp[i].length > 0)
+                    tags.push({"name": tmp[i]});
+            var contentTemplate = Hogan.compile($("#content").html());
+            var contentHtml = contentTemplate.render({"title": post.title, "tags": tags, "date": post.date});
+            $("#main").prepend(contentHtml);
+            if (data.disqus_shortname.length > 0) {
+                var disqus_shortname = data.disqus_shortname;
+                (function() {
+                    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                })();
+            }
+        }
+    });
+});
+</script>
+</body>
+</html>

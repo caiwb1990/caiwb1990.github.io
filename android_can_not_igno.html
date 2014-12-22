@@ -1,0 +1,182 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="Keywords" content="blog"/>
+    <meta name="Description" content="blog"/>
+    <title>Hellc</title>
+    <link rel="shortcut icon" href="/static/favicon.png"/>
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+</head>
+<body>
+<div class="main">
+    <div class="header">
+    	<ul id="pages">
+            <li><a href="/">home</a></li>
+            <li><a href="/#/tags">tags</a></li>
+            <li><a href="/#/archive">archive</a></li>
+    	</ul>
+    </div>
+	<div class="wrap-header">
+	<h1>
+    <a href="/" id="title"></a>
+	</h1>
+	</div>
+<div id="md" style="display: none;">
+<!-- markdown -->
+[ Android设备在Mac上不能识别 ](http://caiwb1990.iteye.com/blog/2149812)
+
+
+##问题 
+
+本来Mac上做Android调试非常简单，实际上大部分Android手机在Mac上都是即插即用，完全不需要安装驱动。But，偏偏就有大量的国产手机识别不出来，实在是无法吐槽。 
+
+adb命令完全不能识别，Eclipse上也就找不到设备了。 
+
+
+##解决方法 
+
+在~/.android/adb_usb.ini文件中加入供应商ID/Vender ID。 
+
+问题解决：需要将设备的usb vender id加入到 .android/adb_usb.ini中，无法连接的设备，一般都是国产手机。步骤如下： 
+
+1.打开终端，输入： 
+~~~~{bash}
+system_profiler SPUSBDataType    
+~~~~
+命令 可以查看连接的usb设备的信息 
+
+~~~~{bash}
+另一种查看ID的方式： 
+打开应用“系统信息”/“System Information”，可以在Application里找到。 
+~~~~
+
+Hardware –> USB，点击你此时连在电脑上的Android设备的一项，出现设备详细信息。Vender ID/供应商ID就在这。
+
+2.输入： 
+~~~~{bash}
+vi ~/.android/adb_usb.ini   
+~~~~
+命令，在打开的 adb_usb.ini文件中添加ID， 然后保存退出 
+
+
+3.把ID写入到adb_usb.ini，然后命令： 
+~~~~{bash}
+adb kill-server  
+adb devices  
+~~~~
+
+4.进入android开发环境发现，已经可以找到手机了
+<!-- markdown end -->
+</div>
+<div class="entry" id="main">
+<!-- content -->
+<p><a href="http://caiwb1990.iteye.com/blog/2149812"> Android设备在Mac上不能识别 </a></p>
+
+<h2 id="">问题</h2>
+
+<p>本来Mac上做Android调试非常简单，实际上大部分Android手机在Mac上都是即插即用，完全不需要安装驱动。But，偏偏就有大量的国产手机识别不出来，实在是无法吐槽。 </p>
+
+<p>adb命令完全不能识别，Eclipse上也就找不到设备了。 </p>
+
+<h2 id="">解决方法</h2>
+
+<p>在~/.android/adb_usb.ini文件中加入供应商ID/Vender ID。 </p>
+
+<p>问题解决：需要将设备的usb vender id加入到 .android/adb_usb.ini中，无法连接的设备，一般都是国产手机。步骤如下： </p>
+
+<p>1.打开终端，输入： </p>
+
+<pre class=" language-bash"><code class=" language-bash">system_profiler SPUSBDataType    
+</code></pre>命令 可以查看连接的usb设备的信息 
+
+<pre class=" language-bash"><code class=" language-bash">另一种查看ID的方式： 
+打开应用“系统信息”<span class="token operator">/</span>“System Information”，可以在Application里找到。 
+</code></pre>
+
+<p>Hardware –&gt; USB，点击你此时连在电脑上的Android设备的一项，出现设备详细信息。Vender ID/供应商ID就在这。</p>
+
+<p>2.输入： </p>
+
+<pre class=" language-bash"><code class=" language-bash">vi <span class="token operator">~</span><span class="token operator">/</span><span class="token punctuation">.</span>android<span class="token operator">/</span>adb_usb<span class="token punctuation">.</span>ini   
+</code></pre>命令，在打开的 adb_usb.ini文件中添加ID， 然后保存退出 
+
+
+3.把ID写入到adb_usb.ini，然后命令： 
+<pre class=" language-bash"><code class=" language-bash">adb kill<span class="token operator">-</span>server  
+adb devices  
+</code></pre>
+
+<p>4.进入android开发环境发现，已经可以找到手机了</p>
+<!-- content end -->
+</div>
+<br>
+<br>
+    <div id="disqus_thread"></div>
+	<div class="footer">
+		<p>© Copyright 2014 by Hellc, Designed by Hellc</p>
+	</div>
+</div>
+<script src="main.js"></script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ["\\(", "\\)"]], processEscapes: true}});
+</script>
+<script id="content" type="text/mustache">
+    <h1>{{title}}</h1>
+    <div class="tag">
+    {{date}}
+    {{#tags}}
+    <a href="/#/tag/{{name}}">#{{name}}</a>
+    {{/tags}}
+    </div>
+</script>
+<script id="pagesTemplate" type="text/mustache">
+    {{#pages}}
+    <li>
+        <a href="{{path}}">{{title}}</a>
+    </li>
+    {{/pages}}
+</script>
+<script>
+$(document).ready(function() {
+    $.ajax({
+        url: "main.json",
+        type: "GET",
+        dataType: "json",
+        success: function(data) {
+            $("#title").html(data.name);
+            var pagesTemplate = Hogan.compile($("#pagesTemplate").html());
+            var pagesHtml = pagesTemplate.render({"pages": data.pages});
+            $("#pages").append(pagesHtml);
+            //path
+            var path = "android_can_not_igno.html";
+            //path end
+            var now = 0;
+            for (var i = 0; i < data.posts.length; ++i)
+                if (path == data.posts[i].path)
+                    now = i;
+            var post = data.posts[now];
+            var tmp = post.tags.split(" ");
+            var tags = [];
+            for (var i = 0; i < tmp.length; ++i)
+                if (tmp[i].length > 0)
+                    tags.push({"name": tmp[i]});
+            var contentTemplate = Hogan.compile($("#content").html());
+            var contentHtml = contentTemplate.render({"title": post.title, "tags": tags, "date": post.date});
+            $("#main").prepend(contentHtml);
+            if (data.disqus_shortname.length > 0) {
+                var disqus_shortname = data.disqus_shortname;
+                (function() {
+                    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                })();
+            }
+        }
+    });
+});
+</script>
+</body>
+</html>

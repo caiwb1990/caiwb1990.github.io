@@ -1,0 +1,333 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="Keywords" content="blog"/>
+    <meta name="Description" content="blog"/>
+    <title>Hellc</title>
+    <link rel="shortcut icon" href="/static/favicon.png"/>
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+</head>
+<body>
+<div class="main">
+    <div class="header">
+    	<ul id="pages">
+            <li><a href="/">home</a></li>
+            <li><a href="/#/tags">tags</a></li>
+            <li><a href="/#/archive">archive</a></li>
+    	</ul>
+    </div>
+	<div class="wrap-header">
+	<h1>
+    <a href="/" id="title"></a>
+	</h1>
+	</div>
+<div id="md" style="display: none;">
+<!-- markdown -->
+[ C++ Map小结](http://caiwb1990.iteye.com/blog/2070615)
+
+##Map介绍 
+特点： 
+
+1.map将Key的object和T的Object绑定到一起，因此是一种Pair Associative Container, 表示其value type为 pair。 
+
+2.它同时也是Unique Associative Container,表示没有两个元素具有相同的Key。 
+
+3.它还是一种Sorted Associative Container,因此第三个参数只能是less,greater之类的functor, 相比较而言， 
+  hash table是 equal_to, not_equal_to之类的functor。 
+
+##map常用的方法主要有： 
+insert，erease，size，count，begin，end，find，clear，empty 
+
+##insert方法： 
+   在map中插入一个元素，map中记录的元素通常为键值对。所以，在存储时会把，键和值封装成pair然后进行插入。 
+~~~~{C++}
+phone.insert(pair<string,string>(name,number));  
+//其中name和number为string类型的变量。  
+  
+//当然也可以简单的写成  
+phone[name]=number;  
+//此处phone即为map<string,string>类型的变量。因为map在实现过程中对[]进行了重载。  
+
+~~~~
+
+   第一种方式若插入的元素的键值已经存在于map中，那么就会插入失败，不会修改元素的键值对信息，若键值在map中查找不到，那么就会将该新元素加入到map中去。
+ 
+   第二种方式比较直观，但存在一个性能的问题。插入2时,先在phone中查找主键为name的项，没发现，然后将一个新的对象插入phone，键是name，值是一个空字符串，插入完成后，将字符串赋为number， 该方法会将每个值都赋为缺省值，然后再赋为显示的值，如果元素是类对象，则开销比较大。若找到键值为name的项，则用number更改原来的number值。 
+
+~~~~{C++}
+map<string,string> map;  
+  
+int Test::input(string name,string number)    
+{    
+    //map[name]=number;    
+    map.insert(pair<string,string>(name,number));    
+    return 0;    
+}      
+~~~~
+
+
+##erease方法： 
+erease主要是删除map中的某个项，需要参数key，例如phone.erease(name);此句的意思就是删除key值为name的键值对。 
+
+
+##find方法： 
+~~~~{C++}
+   map<string,string> map;    
+   int  Test::getNum(string name)  
+   {  
+std::map<std::string, std::string>::iterator it = map.find(name);  
+  
+if(it == map.end()){    
+    return -1;    
+}else{    
+    return it->second;    
+}    
+   }  
+~~~~
+
+##size方法： 
+统计map中键值对的个数，phone.size()返回值即为phone中键值对的个数，若map为空则返回0 
+
+~~~~{C++}
+map<string,string> map;    
+  
+int Test::count(){    
+   return map.size();    
+    
+~~~~
+
+
+##count方法： 
+统计map中某个键值出现的次数，因为map中键值唯一，所以此方法可以用来检测某键值是否存在，例如在删除时可以phone.count(name)，若为0则可以提示用户此键值不存在，若为1则直接删除。Ps：erease无论要删除的键值对是否存在都能正常执行。 
+
+~~~~{C++}
+map<string,string> map;    
+~~~~
+
+
+##begin、end方法： 
+begin方法返回map迭代器类型，通过此迭代器与end方法的返回值进行比较就可以很容易的对map进行遍历。 
+
+~~~~{C++}
+map<string,string> map;    
+  
+int Test::showAll()    
+{    
+    map<string,string>::iterator ite = map.begin();    
+    while(ite!=phone.end()) {    
+        cout<<ite->first<<"\t";    
+        cout<<ite->second<<endl;    
+        ite++;    
+    }    
+    return 0;    
+}    
+~~~~
+
+
+##clear方法： 
+清空map中的所有元素 
+
+~~~~{C++}
+map<string,string> map;    
+int Test::clear()  
+{  
+    map.clear();    
+}  
+
+~~~~
+
+##empty方法： 
+判断map是否为空，若为空则返回真若非空则返回假。 
+Ps：由于map中存储的是键值对，迭代器为ite，则ite->first为key，ite->second为值 
+<!-- markdown end -->
+</div>
+<div class="entry" id="main">
+<!-- content -->
+<p><a href="http://caiwb1990.iteye.com/blog/2070615"> C++ Map小结</a></p>
+
+<h2 id="map">Map介绍</h2>
+
+<p>特点： </p>
+
+<p>1.map将Key的object和T的Object绑定到一起，因此是一种Pair Associative Container, 表示其value type为 pair。 </p>
+
+<p>2.它同时也是Unique Associative Container,表示没有两个元素具有相同的Key。 </p>
+
+<p>3.它还是一种Sorted Associative Container,因此第三个参数只能是less,greater之类的functor, 相比较而言， 
+  hash table是 equal<em>to, not</em>equal_to之类的functor。 </p>
+
+<h2 id="map">map常用的方法主要有：</h2>
+
+<p>insert，erease，size，count，begin，end，find，clear，empty </p>
+
+<h2 id="insert">insert方法：</h2>
+
+<p>在map中插入一个元素，map中记录的元素通常为键值对。所以，在存储时会把，键和值封装成pair然后进行插入。 </p>
+
+<pre><code class="language-C++">phone.insert(pair&lt;string,string&gt;(name,number));  
+//其中name和number为string类型的变量。  
+
+//当然也可以简单的写成  
+phone[name]=number;  
+//此处phone即为map&lt;string,string&gt;类型的变量。因为map在实现过程中对[]进行了重载。  
+
+</code></pre>
+
+<p>第一种方式若插入的元素的键值已经存在于map中，那么就会插入失败，不会修改元素的键值对信息，若键值在map中查找不到，那么就会将该新元素加入到map中去。</p>
+
+<p>第二种方式比较直观，但存在一个性能的问题。插入2时,先在phone中查找主键为name的项，没发现，然后将一个新的对象插入phone，键是name，值是一个空字符串，插入完成后，将字符串赋为number， 该方法会将每个值都赋为缺省值，然后再赋为显示的值，如果元素是类对象，则开销比较大。若找到键值为name的项，则用number更改原来的number值。 </p>
+
+<pre><code class="language-C++">map&lt;string,string&gt; map;  
+
+int Test::input(string name,string number)    
+{    
+    //map[name]=number;    
+    map.insert(pair&lt;string,string&gt;(name,number));    
+    return 0;    
+}      
+</code></pre>
+
+<h2 id="erease">erease方法：</h2>
+
+<p>erease主要是删除map中的某个项，需要参数key，例如phone.erease(name);此句的意思就是删除key值为name的键值对。 </p>
+
+<h2 id="find">find方法：</h2>
+
+<pre><code class="language-C++">   map&lt;string,string&gt; map;    
+   int  Test::getNum(string name)  
+   {  
+std::map&lt;std::string, std::string&gt;::iterator it = map.find(name);  
+
+if(it == map.end()){    
+    return -1;    
+}else{    
+    return it-&gt;second;    
+}    
+   }  
+</code></pre>
+
+<h2 id="size">size方法：</h2>
+
+<p>统计map中键值对的个数，phone.size()返回值即为phone中键值对的个数，若map为空则返回0 </p>
+
+<pre><code class="language-C++">map&lt;string,string&gt; map;    
+
+int Test::count(){    
+   return map.size();    
+
+</code></pre>
+
+<h2 id="count">count方法：</h2>
+
+<p>统计map中某个键值出现的次数，因为map中键值唯一，所以此方法可以用来检测某键值是否存在，例如在删除时可以phone.count(name)，若为0则可以提示用户此键值不存在，若为1则直接删除。Ps：erease无论要删除的键值对是否存在都能正常执行。 </p>
+
+<pre><code class="language-C++">map&lt;string,string&gt; map;    
+</code></pre>
+
+<h2 id="beginend">begin、end方法：</h2>
+
+<p>begin方法返回map迭代器类型，通过此迭代器与end方法的返回值进行比较就可以很容易的对map进行遍历。 </p>
+
+<pre><code class="language-C++">map&lt;string,string&gt; map;    
+
+int Test::showAll()    
+{    
+    map&lt;string,string&gt;::iterator ite = map.begin();    
+    while(ite!=phone.end()) {    
+        cout&lt;&lt;ite-&gt;first&lt;&lt;"\t";    
+        cout&lt;&lt;ite-&gt;second&lt;&lt;endl;    
+        ite++;    
+    }    
+    return 0;    
+}    
+</code></pre>
+
+<h2 id="clear">clear方法：</h2>
+
+<p>清空map中的所有元素 </p>
+
+<pre><code class="language-C++">map&lt;string,string&gt; map;    
+int Test::clear()  
+{  
+    map.clear();    
+}  
+
+</code></pre>
+
+<h2 id="empty">empty方法：</h2>
+
+<p>判断map是否为空，若为空则返回真若非空则返回假。 
+Ps：由于map中存储的是键值对，迭代器为ite，则ite-&gt;first为key，ite-&gt;second为值 </p>
+<!-- content end -->
+</div>
+<br>
+<br>
+    <div id="disqus_thread"></div>
+	<div class="footer">
+		<p>© Copyright 2014 by Hellc, Designed by Hellc</p>
+	</div>
+</div>
+<script src="main.js"></script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ["\\(", "\\)"]], processEscapes: true}});
+</script>
+<script id="content" type="text/mustache">
+    <h1>{{title}}</h1>
+    <div class="tag">
+    {{date}}
+    {{#tags}}
+    <a href="/#/tag/{{name}}">#{{name}}</a>
+    {{/tags}}
+    </div>
+</script>
+<script id="pagesTemplate" type="text/mustache">
+    {{#pages}}
+    <li>
+        <a href="{{path}}">{{title}}</a>
+    </li>
+    {{/pages}}
+</script>
+<script>
+$(document).ready(function() {
+    $.ajax({
+        url: "main.json",
+        type: "GET",
+        dataType: "json",
+        success: function(data) {
+            $("#title").html(data.name);
+            var pagesTemplate = Hogan.compile($("#pagesTemplate").html());
+            var pagesHtml = pagesTemplate.render({"pages": data.pages});
+            $("#pages").append(pagesHtml);
+            //path
+            var path = "c++_map.html";
+            //path end
+            var now = 0;
+            for (var i = 0; i < data.posts.length; ++i)
+                if (path == data.posts[i].path)
+                    now = i;
+            var post = data.posts[now];
+            var tmp = post.tags.split(" ");
+            var tags = [];
+            for (var i = 0; i < tmp.length; ++i)
+                if (tmp[i].length > 0)
+                    tags.push({"name": tmp[i]});
+            var contentTemplate = Hogan.compile($("#content").html());
+            var contentHtml = contentTemplate.render({"title": post.title, "tags": tags, "date": post.date});
+            $("#main").prepend(contentHtml);
+            if (data.disqus_shortname.length > 0) {
+                var disqus_shortname = data.disqus_shortname;
+                (function() {
+                    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                })();
+            }
+        }
+    });
+});
+</script>
+</body>
+</html>

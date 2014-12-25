@@ -1,0 +1,394 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="Keywords" content="blog"/>
+    <meta name="Description" content="blog"/>
+    <title>Hellc</title>
+    <link rel="shortcut icon" href="/static/favicon.png"/>
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+</head>
+<body>
+<div class="main">
+    <div class="header">
+    	<ul id="pages">
+            <li><a href="/">home</a></li>
+            <li><a href="/#/tags">tags</a></li>
+            <li><a href="/#/archive">archive</a></li>
+    	</ul>
+    </div>
+	<div class="wrap-header">
+	<h1>
+    <a href="/" id="title"></a>
+	</h1>
+	</div>
+<div id="md" style="display: none;">
+<!-- markdown -->
+[Java总结-基础](http://caiwb1990.iteye.com/blog/1399449)
+
+原来的Java笔记 整理了按天传上来~ 
+
+~~~~{java}
+java语言特性：
+	1，跨平台。原理：因为有一个jvm。由jvm来解释并执行java程序，注意：jvm是要分系统的。
+	2，完全面向对象的。
+	3，内存管理。对于内存空间中一部分堆内存可以进行垃圾回收。
+
+	----------------------
+	java开发环境的搭建：
+	1，下载jdk并安装。建立：直接使用绿色版。
+	2，有了工具就是那些bin目录下的可执行文件。需要使用时，要到该目录下去执行。每次都这样，太麻烦，
+		2.1可以通过在dos命令行中通过set命令，对系统已有的环境变量path进行设置。
+			可以在任意目录下都可以执行bin目录中的工具。
+			但是该配置方式是临时性的，dos窗口一关该配置消失。
+		2.2可以有一种一劳永逸的配置方式。在我的电脑-属性-高级-环境变量-path
+			这样可以在任意时间，任意目录下都可以执行这些工具。
+			技巧：每一次改动path都会带来一些风险。配置一次，动态获取自定义的环境变量值即可。
+
+			JAVA_HOME=F:\jdk1.6.1_01
+			path=%JAVA_HOME%\bin;%path%
+
+	3，打开dos窗口敲入javac，如果看到参数信息，说明本机已可以进行java开发。
+
+	技巧：为了方便使用工具，建立一个批处理文件。
+		所谓批处理文件：将需要运行的dos命令都存在一个bat文件中。一次执行一批命令。
+		
+		set path=%cd%\jdk\bin
+
+
+	如何在原有环境变量基础上添加新的值呢？
+	可以通过%%方式获取原有变量的值。
+
+	除了path以外，还有一个环境变量classpath该变量是给jvm使用。
+	jvm在对类进行运行时，先找是否已配置了classpath如果配置，那么按照classpath执行路径查找要运行的类文件。
+	如果没有配置，在当前目录下查找。
+	注意：该变量在配置建议在值的结尾处不加分号结束。
+		
+
+---------------------------------------------
+开始hello world。
+1，首先找打一个编辑器。记事本，editplus，ue。eclipse。
+	class Demo
+	{}
+	存入成Demo.java文件。
+2，通过bin目录中的工具javac对java文件进行编译。该动作是为了将java文件，变成计算机识别的二进制(字节码)文件。
+	javac Demo.java
+3，准备想要让该class运行文件得以执行。
+	NoSuchMethodError:main
+	说明该类中没有主函数。所以该类不可以独立运行。
+	程序重新编写。
+	class Demo
+	{
+		public static void main(String[] args)
+		{
+			System.out.println("hello world");
+		}
+	}
+	为了可以和我们做个互动，让编程者看到现象。
+	所在可以在主函数中添加一个输出语句。
+
+	主函数有什么作用呢：
+	1，它是程序的入口。
+	2，它被jvm所调用。
+	3，它的出现可以保证程序的独立运行。
+
+---------------------------
+
+	为了给程序加上注解说明的文字。
+	就有了注释，该注释的特点是：jvm不会去检查被注释的内容。
+	注释的最用：
+	1，注解说明解释程序。
+	2，对程序进行调试。
+	表现形式：
+	1，单行注释：//
+	2，多行注释：/**/
+	3，文档注释：/**  */这是java特有的注释可以通过javadoc命令获取该注释中的内容，并生成一套html的网页帮助文档。
+
+------------------------------
+java中的常量：
+	对于整形常量：有四种表现形式。二进制，八进制：以0开头，十六进制：0x开头 进制越大表现形式越短。
+
+
+java中的变量：
+	其实就是在内存中开辟一个空间对于一些常量进行存储。
+	为了找到并使用该空间，起了个名字。给该空间指定了类型。
+	好处：该变量可以被重复使用。
+
+	格式：
+	数据类型 变量名 =  初始化值；
+	
+	注意：
+	1，变量的作用域。
+	2，必须有初始化值。
+
+	数据类型的分类：
+	1，基本数据类型：byte short int long   float  double  char boolean
+	2，引用数据类型：数组[]  类class  接口interface
+
+	自动类型提升：自动行为。
+	强制类型转换：手动行为。double d = 2.3; int x = (int)d;
+				int y = 98; char ch = (char)y;
+
+	字符串常量和其他类型通过+是进行连接。
+
+	String s = "abc";
+
+	
+------------------------------------------------
+	运算符：
+	1，算数运算符：
+		+ - * / % ++ --
+		%：取余数。通常可用于切换，任意整数%2结果非0即1。
+		++：b=a++;先将a值赋值给b，然后a在自增。 b=++a:先对a进行自增，然后将自增后的值赋给b。
+
+
+	2，赋值运算符：
+		+= -= *= /= %= 
+
+		int x = 3;
+		x+=4;将左右两边的和付给左边。
+
+	3，比较运算符：
+		==  != > < >= <=
+		比较运算符的结果，不是true就是false。
+
+	4，逻辑运算符：
+		& | ! ^ && ||
+		该运算符用于连接boolean型的表达式。
+		&和&&的区别：
+			&：两边的表达式都运算。
+			&&: 当左边为false时，右边不参与运算。
+	5，位运算符：
+		& | ^ 
+		其实都是在对二进制进行运算。
+		<<：左移：可以对一个数进行幂运算。3<<3 = 3*8 = 24；
+		>>：带符号右移。
+		>>>：无符号右移。
+
+	
+
+
+
+~~~~
+
+<!-- markdown end -->
+</div>
+<div class="entry" id="main">
+<!-- content -->
+<p><a href="http://caiwb1990.iteye.com/blog/1399449">Java总结-基础</a></p>
+
+<p>原来的Java笔记 整理了按天传上来~ </p>
+
+<pre class=" language-java"><code class=" language-java">java语言特性：
+   <span class="token number"> 1</span>，跨平台。原理：因为有一个jvm。由jvm来解释并执行java程序，注意：jvm是要分系统的。
+   <span class="token number"> 2</span>，完全面向对象的。
+   <span class="token number"> 3</span>，内存管理。对于内存空间中一部分堆内存可以进行垃圾回收。
+
+    <span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">-</span>
+    java开发环境的搭建：
+   <span class="token number"> 1</span>，下载jdk并安装。建立：直接使用绿色版。
+   <span class="token number"> 2</span>，有了工具就是那些bin目录下的可执行文件。需要使用时，要到该目录下去执行。每次都这样，太麻烦，
+       <span class="token number"> 2.1</span>可以通过在dos命令行中通过set命令，对系统已有的环境变量path进行设置。
+            可以在任意目录下都可以执行bin目录中的工具。
+            但是该配置方式是临时性的，dos窗口一关该配置消失。
+       <span class="token number"> 2.2</span>可以有一种一劳永逸的配置方式。在我的电脑<span class="token operator">-</span>属性<span class="token operator">-</span>高级<span class="token operator">-</span>环境变量<span class="token operator">-</span>path
+            这样可以在任意时间，任意目录下都可以执行这些工具。
+            技巧：每一次改动path都会带来一些风险。配置一次，动态获取自定义的环境变量值即可。
+
+            JAVA_HOME<span class="token operator">=</span>F<span class="token operator">:</span>\jdk1<span class="token number">.6</span><span class="token punctuation">.</span>1_01
+            path<span class="token operator">=</span><span class="token operator">%</span>JAVA_HOME<span class="token operator">%</span>\bin<span class="token punctuation">;</span><span class="token operator">%</span>path<span class="token operator">%</span>
+
+   <span class="token number"> 3</span>，打开dos窗口敲入javac，如果看到参数信息，说明本机已可以进行java开发。
+
+    技巧：为了方便使用工具，建立一个批处理文件。
+        所谓批处理文件：将需要运行的dos命令都存在一个bat文件中。一次执行一批命令。
+
+        set path<span class="token operator">=</span><span class="token operator">%</span>cd<span class="token operator">%</span>\jdk\bin
+
+
+    如何在原有环境变量基础上添加新的值呢？
+    可以通过<span class="token operator">%</span><span class="token operator">%</span>方式获取原有变量的值。
+
+    除了path以外，还有一个环境变量classpath该变量是给jvm使用。
+    jvm在对类进行运行时，先找是否已配置了classpath如果配置，那么按照classpath执行路径查找要运行的类文件。
+    如果没有配置，在当前目录下查找。
+    注意：该变量在配置建议在值的结尾处不加分号结束。
+
+
+<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span><span class="token operator">-</span>
+开始hello world。<span class="token number">
+1</span>，首先找打一个编辑器。记事本，editplus，ue。eclipse。
+    <span class="token keyword">class</span> <span class="token class-name">Demo</span>
+    <span class="token punctuation">{</span><span class="token punctuation">}</span>
+    存入成Demo<span class="token punctuation">.</span>java文件。<span class="token number">
+2</span>，通过bin目录中的工具javac对java文件进行编译。该动作是为了将java文件，变成计算机识别的二进制<span class="token punctuation">(</span>字节码<span class="token punctuation">)</span>文件。
+    javac Demo<span class="token punctuation">.</span>java<span class="token number">
+3</span>，准备想要让该<span class="token keyword">class</span>运行文件得以执行。
+    NoSuchMethodError<span class="token operator">:</span>main
+    说明该类中没有主函数。所以该类不可以独立运行。
+    程序重新编写。
+    <span class="token keyword">class</span> <span class="token class-name">Demo</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main<span class="token punctuation">(</span></span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println<span class="token punctuation">(</span></span><span class="token string">"hello world"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+    为了可以和我们做个互动，让编程者看到现象。
+    所在可以在主函数中添加一个输出语句。
+
+    主函数有什么作用呢：
+   <span class="token number"> 1</span>，它是程序的入口。
+   <span class="token number"> 2</span>，它被jvm所调用。
+   <span class="token number"> 3</span>，它的出现可以保证程序的独立运行。
+
+<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span><span class="token operator">-</span>
+
+    为了给程序加上注解说明的文字。
+    就有了注释，该注释的特点是：jvm不会去检查被注释的内容。
+    注释的最用：
+   <span class="token number"> 1</span>，注解说明解释程序。
+   <span class="token number"> 2</span>，对程序进行调试。
+    表现形式：
+   <span class="token number"> 1</span>，单行注释<span class="token comment" spellcheck="true">：//
+</span>   <span class="token number"> 2</span>，多行注释：<span class="token comment" spellcheck="true">/**/</span>
+   <span class="token number"> 3</span>，文档注释：<span class="token comment" spellcheck="true">/**  */</span>这是java特有的注释可以通过javadoc命令获取该注释中的内容，并生成一套html的网页帮助文档。
+
+<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span><span class="token operator">-</span>
+java中的常量：
+    对于整形常量：有四种表现形式。二进制，八进制：<span class="token number">以0</span>开头，十六进制：0x开头 进制越大表现形式越短。
+
+
+java中的变量：
+    其实就是在内存中开辟一个空间对于一些常量进行存储。
+    为了找到并使用该空间，起了个名字。给该空间指定了类型。
+    好处：该变量可以被重复使用。
+
+    格式：
+    数据类型 变量名 <span class="token operator">=</span>  初始化值；
+
+    注意：
+   <span class="token number"> 1</span>，变量的作用域。
+   <span class="token number"> 2</span>，必须有初始化值。
+
+    数据类型的分类：
+   <span class="token number"> 1</span>，基本数据类型：<span class="token keyword">byte</span> <span class="token keyword">short</span> <span class="token keyword">int</span> <span class="token keyword">long</span>   <span class="token keyword">float</span>  <span class="token keyword">double</span>  <span class="token keyword">char</span> <span class="token keyword">boolean</span>
+   <span class="token number"> 2</span>，引用数据类型：数组<span class="token punctuation">[</span><span class="token punctuation">]</span>  类<span class="token keyword">class</span>  接口<span class="token keyword">interface</span>
+
+    自动类型提升：自动行为。
+    强制类型转换：手动行为。<span class="token keyword">double</span> d <span class="token operator">=</span><span class="token number"> 2.3</span><span class="token punctuation">;</span> <span class="token keyword">int</span> x <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">)</span>d<span class="token punctuation">;</span>
+                <span class="token keyword">int</span> y <span class="token operator">=</span><span class="token number"> 98</span><span class="token punctuation">;</span> <span class="token keyword">char</span> ch <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">char</span><span class="token punctuation">)</span>y<span class="token punctuation">;</span>
+
+    字符串常量和其他类型通过<span class="token operator">+</span>是进行连接。
+
+    String s <span class="token operator">=</span> <span class="token string">"abc"</span><span class="token punctuation">;</span>
+
+
+<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span><span class="token operator">-</span>
+    运算符：
+   <span class="token number"> 1</span>，算数运算符：
+        <span class="token operator">+</span> <span class="token operator">-</span> <span class="token operator">*</span> <span class="token operator">/</span> <span class="token operator">%</span> <span class="token operator">++</span> <span class="token operator">--</span>
+        <span class="token operator">%</span>：取余数。通常可用于切换，任意整数<span class="token number">%2</span>结果<span class="token number">非0</span><span class="token number">即1</span>。
+        <span class="token operator">++</span>：b<span class="token operator">=</span>a<span class="token operator">++</span><span class="token punctuation">;</span>先将a值赋值给b，然后a在自增。 b<span class="token operator">=</span>+<span class="token operator">+</span>a<span class="token operator">:</span>先对a进行自增，然后将自增后的值赋给b。
+
+
+   <span class="token number"> 2</span>，赋值运算符：
+        <span class="token operator">+</span><span class="token operator">=</span> <span class="token operator">-</span><span class="token operator">=</span> <span class="token operator">*</span><span class="token operator">=</span> <span class="token operator">/</span><span class="token operator">=</span> <span class="token operator">%</span><span class="token operator">=</span> 
+
+        <span class="token keyword">int</span> x <span class="token operator">=</span><span class="token number"> 3</span><span class="token punctuation">;</span>
+        x<span class="token operator">+</span><span class="token number">=4</span><span class="token punctuation">;</span>将左右两边的和付给左边。
+
+   <span class="token number"> 3</span>，比较运算符：
+        <span class="token operator">==</span>  <span class="token operator">!</span><span class="token operator">=</span> &gt; <span class="token operator">&lt;</span> &gt;<span class="token operator">=</span> <span class="token operator">&lt;</span><span class="token operator">=</span>
+        比较运算符的结果，不是<span class="token boolean">true</span>就是<span class="token boolean">false</span>。
+
+   <span class="token number"> 4</span>，逻辑运算符：
+        <span class="token operator">&amp;</span> <span class="token operator">|</span> <span class="token operator">!</span> <span class="token operator">^</span> <span class="token operator">&amp;&amp;</span> <span class="token operator">||</span>
+        该运算符用于连接<span class="token keyword">boolean</span>型的表达式。
+        <span class="token operator">&amp;</span>和<span class="token operator">&amp;&amp;</span>的区别：
+            <span class="token operator">&amp;</span>：两边的表达式都运算。
+            <span class="token operator">&amp;&amp;</span><span class="token operator">:</span> 当左边为<span class="token boolean">false</span>时，右边不参与运算。
+   <span class="token number"> 5</span>，位运算符：
+        <span class="token operator">&amp;</span> <span class="token operator">|</span> <span class="token operator">^</span> 
+        其实都是在对二进制进行运算。
+        <span class="token operator">&lt;</span><span class="token operator">&lt;</span>：左移：可以对一个数进行幂运算<span class="token number">。3</span><span class="token operator">&lt;</span>&lt;<span class="token number">;3</span> <span class="token operator">=</span><span class="token number"> 3</span><span class="token number">*8</span> <span class="token operator">=</span><span class="token number"> 24</span>；
+        &gt;&gt;：带符号右移。
+        &gt;&gt;&gt;：无符号右移。
+
+
+
+
+
+</code></pre>
+<!-- content end -->
+</div>
+<br>
+<br>
+    <div id="disqus_thread"></div>
+	<div class="footer">
+		<p>© Copyright 2014 by Hellc, Designed by Hellc</p>
+	</div>
+</div>
+<script src="main.js"></script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ["\\(", "\\)"]], processEscapes: true}});
+</script>
+<script id="content" type="text/mustache">
+    <h1>{{title}}</h1>
+    <div class="tag">
+    {{date}}
+    {{#tags}}
+    <a href="/#/tag/{{name}}">#{{name}}</a>
+    {{/tags}}
+    </div>
+</script>
+<script id="pagesTemplate" type="text/mustache">
+    {{#pages}}
+    <li>
+        <a href="{{path}}">{{title}}</a>
+    </li>
+    {{/pages}}
+</script>
+<script>
+$(document).ready(function() {
+    $.ajax({
+        url: "main.json",
+        type: "GET",
+        dataType: "json",
+        success: function(data) {
+            $("#title").html(data.name);
+            var pagesTemplate = Hogan.compile($("#pagesTemplate").html());
+            var pagesHtml = pagesTemplate.render({"pages": data.pages});
+            $("#pages").append(pagesHtml);
+            //path
+            var path = "java_base.html";
+            //path end
+            var now = 0;
+            for (var i = 0; i < data.posts.length; ++i)
+                if (path == data.posts[i].path)
+                    now = i;
+            var post = data.posts[now];
+            var tmp = post.tags.split(" ");
+            var tags = [];
+            for (var i = 0; i < tmp.length; ++i)
+                if (tmp[i].length > 0)
+                    tags.push({"name": tmp[i]});
+            var contentTemplate = Hogan.compile($("#content").html());
+            var contentHtml = contentTemplate.render({"title": post.title, "tags": tags, "date": post.date});
+            $("#main").prepend(contentHtml);
+            if (data.disqus_shortname.length > 0) {
+                var disqus_shortname = data.disqus_shortname;
+                (function() {
+                    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                })();
+            }
+        }
+    });
+});
+</script>
+</body>
+</html>

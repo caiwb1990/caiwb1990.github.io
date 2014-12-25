@@ -1,0 +1,615 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="Keywords" content="blog"/>
+    <meta name="Description" content="blog"/>
+    <title>Hellc</title>
+    <link rel="shortcut icon" href="/static/favicon.png"/>
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+</head>
+<body>
+<div class="main">
+    <div class="header">
+    	<ul id="pages">
+            <li><a href="/">home</a></li>
+            <li><a href="/#/tags">tags</a></li>
+            <li><a href="/#/archive">archive</a></li>
+    	</ul>
+    </div>
+	<div class="wrap-header">
+	<h1>
+    <a href="/" id="title"></a>
+	</h1>
+	</div>
+<div id="md" style="display: none;">
+<!-- markdown -->
+[ 集合总结](http://caiwb1990.iteye.com/blog/1402730)
+
+
+~~~~{java}
+
+Iterator：迭代器。
+	用来取出Collection集合中的元素。
+	每一个集合都在内部根据自己的特有数据结构对该结构通过内部类完成出去动作的实现。
+	并通过iterator()可以获取到迭代器对象。
+	通过该对象hasNext()判断集合中是否有下一个元素。在通过next方法取出元素。
+	注意：next()方法每调用一次，内部指针就会向下偏移。next在迭代过程被调用多次，有可能发生NoSuchElementException.
+
+	迭代器就像大型游戏中的抓布娃娃的游戏中的夹子。
+
+	通过AbstractList的源码可以查看内部类的具体实现。
+
+
+	在使用Iterator的时候，迭代元素的过程中，如果有对元素的操作，只可以使用remove方法。
+	不可以直接在迭代时使用集合对象的操作方法操作正在被迭代的数据，因为会发生ConcurrentModificationException。
+
+	如果想要对迭代中的元素进行增删操作，需要使用ListIterator这个Iterator的子接口。
+
+	注意：ListIterator只能对List集合有效。参考day12\IteratorDemo.java.
+
+
+	JDK1.5以后，将Collection中的方法，抽取到了一个父接口中，Iterable该接口的出现，提供了增强型的for循环。
+
+---------------------
+List集合中有一个Vector子类，该子类是jdk1.0出现的，该子类中有自己独特的获取元素的方式：枚举Enumeration。
+	枚举和迭代功能是一致的，很遗憾，因为名称过长，建议使用迭代。
+
+	枚举中的方法：hasMoreElements()  nextElement().
+
+	ArrayList有两种取出方式：1，迭代。2，get(index).
+	Vector有四种方式：1，迭代。2，get(index).3，elementAt(index) 4,枚举。
+
+
+	Vector的特点：1，数组数据结构，2，线程安全，3，自动延长通过100%方式。
+
+	因为Vector的低效被ArrayList取代。
+
+
+-------------------------------------
+
+LinkedList：
+	特点：1，链表数据结构，2，线程是不安全。3，对元素增删速度很快。
+
+	与ArrayList的不同的是，ArrayList查询速度很快。
+
+	特有方法：
+	addFirst():
+	addLast();
+	jdk1.6出现新的方法：
+	offsetFirst();
+	offsetLast();
+
+	
+	getFirst():获取元素，但不删除，
+	getLast();
+	jdk1.6出现新的方法：
+	peekFirst();
+	peekLast();
+
+	removeFirst()：获取元素，但删除。
+	removeLast();
+	jdk1.6出现新的方法：
+	pollFirst();
+	pollLast();
+
+
+--------------------------------
+Example：
+	1，如果通过枚举取出ArrayList中的元素。
+		public void getElmementByEnumeration()
+		{
+			ArrayList al =new ArrayList();
+			al.add("abc1");
+
+			final Iterator it = al.iterator();
+
+			Enumeration en = new Enumeration()
+			{
+				public boolean hasMoreElements()
+				{
+					return it.hasNext();
+				}
+				public Object nextElement()
+				{
+					return it.next();
+				}
+			};
+
+			while(en.hasMoreElements())
+			{
+				System.out.println(en.nextElement());
+			}
+		}
+
+	2，去除ArrayList中重复元素。
+		
+		public List getSingleElementList(List list)
+		{
+			List l = new ArrayList();
+			Iterator it = list.iterator();
+
+			while(it.hasNext())
+			{
+				Object obj = it.next();
+				if(!l.contains(obj))
+					l.add(obj);	
+			}
+			return l;
+		}
+
+	3，模拟一个队列或者堆栈数据结构，通过LinkedList完成。
+		队列：先进先出。
+		堆栈：先进后出。
+		class DuiLie
+		{
+			private LinkedList ll;
+			DuiLie()
+			{
+				ll = new LinkedList();
+			}
+
+			public void myAdd(Object obj)
+			{
+				ll.addFirst(obj);
+			}
+			public Object myGet()
+			{
+				ll.removeLast();
+			}
+			public boolean isNull()
+			{
+				return ll.isEmpty();
+			}
+		}
+		main()
+		{
+			DuiLie dl = new DieLie();
+			dl.myAdd("abc1");
+			dl.myAdd("abc3");
+
+			while(!dl.isNull())
+			{
+				System.out.println(dl.myGet());
+			}
+		}
+
+
+---------------------------------------------
+Set:无序，不可以重复元素。方法和Collection一致。
+    取出方法只有一个就是迭代器。而且set集合不可以修改元素。
+    |--HashSet:底层数据结果是哈希表，如何保证元素唯一性的呢？
+		通过每一个元素的hashCode方法返回值相同，并equals方法返回true来判断元素唯一性。
+		如果hashCode值相等，才会判断equals方法。
+
+	class Demo
+	{
+		public static void main(String[] args)
+		{
+			HashSet hs = new HashSet();
+			//hs.add("abc1");
+			//hs.add("abc2");
+			//hs.add("abc1");//返回值是false。因为String有自己的hashCode和equals方法。
+
+			
+			hs.add(new Student("lisi1",20));
+			hs.add(new Student("lisi2",20));
+			hs.add(new Student("lisi3",20));
+			hs.add(new Student("lisi1",20));
+			
+			System.out.println(hs.size());//4,对于同名同年龄的学生被视为相同对象，但已经存入。
+							//原因：因为在进行hashCode方法和equals方法判断的时候使用的是、、//Object类中的方法。
+
+							//为了保证符合自定义条件的对象相同。需要复写hashCode和equals方法。
+		}
+	}
+	
+
+	class Student
+	{
+		private String name;
+		private int age;
+		Student(String name,int age)
+		{
+			this.name = name;
+			this.age = age;
+		}
+
+		public boolean equals(Object obj)
+		{
+			
+			if(this==obj)
+				return true;
+			if(!(obj instanceOf Student))
+				return false;
+			Student s = (Student)obj;
+			//System.out.println(this.name+"..."+s.name);
+			return this.name.equals(s.name) && this.age == s.age;
+		}
+		public int hashCode()
+		{
+			return name.hashCode()+age*27;
+		}
+		public String getName()
+		{
+			return name;
+		}
+		public String getAge()
+		{
+			return age;
+		}
+	}
+
+	在HashSet判断是否包含指定元素时，使用Contains方法判断，依据哪些方法：
+		hashCode(),,equals();
+		一看hash，就要想到hash表，想到hash表，就必须要覆盖hashCode和equals方法。
+
+	在ArrayList判断是否包含指定元素，使用Contains方法判断依据是：equals。
+
+
+------------------------------------------------
+
+Map集合：
+	特点：一次存入一对元素（key Value）一定要保证键的唯一性。
+
+	添加：v put(k,v):返回去k关联的前一个值，如果没有，返回null。
+	删除：v remove(k);
+	获取: v get(k):好处，可以判断某一个键是否存在。但是注意。有null的值情况。
+	判断：containsKey(k).containsValue(v);
+
+	获取所有：
+		Set<K> keySet():将map集合中的所有键取出存入到Set集合中。在通过迭代器取出所欲的键，
+			并通过map的get方法获取键所对应的值。
+
+		Set<Map.Entry<K,V>> entrySet()：将map集合中的所有键值关系封装成Map.Entry类型的对象，存入到Set集合中。
+						该关系的类型为Map.Entry.通过迭代器取出Map.Entry对象并通过getKey。
+						getValue方法获取所有元素。
+
+		原理：就是将Map集合转成Set集合。在进行迭代。
+
+	获取所有值：Collection<V> values();
+
+	|--HashMap：底层是哈希表，线程不同步，可以存入null键null值。
+	|--Hashtable：底层也是哈希表，线程是安全的，不可以存入null键null值。
+	|--TreeMap：可以对map集合中的键进行排序。线程不安全的。
+
+
+	什么时候使用Map集合呢？
+	当对象键有映射关系时。。
+
+
+
+
+~~~~
+
+<!-- markdown end -->
+</div>
+<div class="entry" id="main">
+<!-- content -->
+<p><a href="http://caiwb1990.iteye.com/blog/1402730"> 集合总结</a></p>
+
+<pre class=" language-java"><code class=" language-java">
+Iterator：迭代器。
+    用来取出Collection集合中的元素。
+    每一个集合都在内部根据自己的特有数据结构对该结构通过内部类完成出去动作的实现。
+    并通过<span class="token function">iterator<span class="token punctuation">(</span></span><span class="token punctuation">)</span>可以获取到迭代器对象。
+    通过该对象<span class="token function">hasNext<span class="token punctuation">(</span></span><span class="token punctuation">)</span>判断集合中是否有下一个元素。在通过next方法取出元素。
+    注意：<span class="token function">next<span class="token punctuation">(</span></span><span class="token punctuation">)</span>方法每调用一次，内部指针就会向下偏移。next在迭代过程被调用多次，有可能发生NoSuchElementException<span class="token punctuation">.</span>
+
+    迭代器就像大型游戏中的抓布娃娃的游戏中的夹子。
+
+    通过AbstractList的源码可以查看内部类的具体实现。
+
+
+    在使用Iterator的时候，迭代元素的过程中，如果有对元素的操作，只可以使用remove方法。
+    不可以直接在迭代时使用集合对象的操作方法操作正在被迭代的数据，因为会发生ConcurrentModificationException。
+
+    如果想要对迭代中的元素进行增删操作，需要使用ListIterator这个Iterator的子接口。
+
+    注意：ListIterator只能对List集合有效。参考day12\IteratorDemo<span class="token punctuation">.</span>java<span class="token punctuation">.</span>
+
+
+    JDK1<span class="token number">.5</span>以后，将Collection中的方法，抽取到了一个父接口中，Iterable该接口的出现，提供了增强型的<span class="token keyword">for</span>循环。
+
+<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span><span class="token operator">-</span>
+List集合中有一个Vector子类，该子类是jdk1<span class="token number">.0</span>出现的，该子类中有自己独特的获取元素的方式：枚举Enumeration。
+    枚举和迭代功能是一致的，很遗憾，因为名称过长，建议使用迭代。
+
+    枚举中的方法：<span class="token function">hasMoreElements<span class="token punctuation">(</span></span><span class="token punctuation">)</span>  <span class="token function">nextElement<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">.</span>
+
+    ArrayList有两种取出方式<span class="token number">：1</span>，迭代<span class="token number">。2</span>，<span class="token function">get<span class="token punctuation">(</span></span>index<span class="token punctuation">)</span><span class="token punctuation">.</span>
+    Vector有四种方式<span class="token number">：1</span>，迭代<span class="token number">。2</span>，<span class="token function">get<span class="token punctuation">(</span></span>index<span class="token number">).3</span>，<span class="token function">elementAt<span class="token punctuation">(</span></span>index<span class="token punctuation">)</span><span class="token number"> 4</span><span class="token punctuation">,</span>枚举。
+
+
+    Vector的特点<span class="token number">：1</span>，数组数据结构<span class="token number">，2</span>，线程安全<span class="token number">，3</span>，自动延长通<span class="token number">过100</span><span class="token operator">%</span>方式。
+
+    因为Vector的低效被ArrayList取代。
+
+
+<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">-</span>
+
+LinkedList：
+    特点<span class="token number">：1</span>，链表数据结构<span class="token number">，2</span>，线程是不安全<span class="token number">。3</span>，对元素增删速度很快。
+
+    与ArrayList的不同的是，ArrayList查询速度很快。
+
+    特有方法：
+    <span class="token function">addFirst<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token operator">:</span>
+    <span class="token function">addLast<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    jdk1<span class="token number">.6</span>出现新的方法：
+    <span class="token function">offsetFirst<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">offsetLast<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+
+    <span class="token function">getFirst<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token operator">:</span>获取元素，但不删除，
+    <span class="token function">getLast<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    jdk1<span class="token number">.6</span>出现新的方法：
+    <span class="token function">peekFirst<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">peekLast<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token function">removeFirst<span class="token punctuation">(</span></span><span class="token punctuation">)</span>：获取元素，但删除。
+    <span class="token function">removeLast<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    jdk1<span class="token number">.6</span>出现新的方法：
+    <span class="token function">pollFirst<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">pollLast<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+
+<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>
+Example：
+   <span class="token number"> 1</span>，如果通过枚举取出ArrayList中的元素。
+        <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">getElmementByEnumeration<span class="token punctuation">(</span></span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            ArrayList al <span class="token operator">=</span><span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            al<span class="token punctuation">.</span><span class="token function">add<span class="token punctuation">(</span></span><span class="token string">"abc1"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+            <span class="token keyword">final</span> Iterator it <span class="token operator">=</span> al<span class="token punctuation">.</span><span class="token function">iterator<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+            Enumeration en <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Enumeration</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+            <span class="token punctuation">{</span>
+                <span class="token keyword">public</span> <span class="token keyword">boolean</span> <span class="token function">hasMoreElements<span class="token punctuation">(</span></span><span class="token punctuation">)</span>
+                <span class="token punctuation">{</span>
+                    <span class="token keyword">return</span> it<span class="token punctuation">.</span><span class="token function">hasNext<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token punctuation">}</span>
+                <span class="token keyword">public</span> Object <span class="token function">nextElement<span class="token punctuation">(</span></span><span class="token punctuation">)</span>
+                <span class="token punctuation">{</span>
+                    <span class="token keyword">return</span> it<span class="token punctuation">.</span><span class="token function">next<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token punctuation">}</span>
+            <span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+            <span class="token keyword">while</span><span class="token punctuation">(</span>en<span class="token punctuation">.</span><span class="token function">hasMoreElements<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+            <span class="token punctuation">{</span>
+                System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println<span class="token punctuation">(</span></span>en<span class="token punctuation">.</span><span class="token function">nextElement<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+
+   <span class="token number"> 2</span>，去除ArrayList中重复元素。
+
+        <span class="token keyword">public</span> List <span class="token function">getSingleElementList<span class="token punctuation">(</span></span>List list<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            List l <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            Iterator it <span class="token operator">=</span> list<span class="token punctuation">.</span><span class="token function">iterator<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+            <span class="token keyword">while</span><span class="token punctuation">(</span>it<span class="token punctuation">.</span><span class="token function">hasNext<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+            <span class="token punctuation">{</span>
+                Object obj <span class="token operator">=</span> it<span class="token punctuation">.</span><span class="token function">next<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token operator">!</span>l<span class="token punctuation">.</span><span class="token function">contains<span class="token punctuation">(</span></span>obj<span class="token punctuation">)</span><span class="token punctuation">)</span>
+                    l<span class="token punctuation">.</span><span class="token function">add<span class="token punctuation">(</span></span>obj<span class="token punctuation">)</span><span class="token punctuation">;</span> 
+            <span class="token punctuation">}</span>
+            <span class="token keyword">return</span> l<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+   <span class="token number"> 3</span>，模拟一个队列或者堆栈数据结构，通过LinkedList完成。
+        队列：先进先出。
+        堆栈：先进后出。
+        <span class="token keyword">class</span> <span class="token class-name">DuiLie</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">private</span> LinkedList ll<span class="token punctuation">;</span>
+            <span class="token function">DuiLie<span class="token punctuation">(</span></span><span class="token punctuation">)</span>
+            <span class="token punctuation">{</span>
+                ll <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">LinkedList</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+
+            <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">myAdd<span class="token punctuation">(</span></span>Object obj<span class="token punctuation">)</span>
+            <span class="token punctuation">{</span>
+                ll<span class="token punctuation">.</span><span class="token function">addFirst<span class="token punctuation">(</span></span>obj<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+            <span class="token keyword">public</span> Object <span class="token function">myGet<span class="token punctuation">(</span></span><span class="token punctuation">)</span>
+            <span class="token punctuation">{</span>
+                ll<span class="token punctuation">.</span><span class="token function">removeLast<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+            <span class="token keyword">public</span> <span class="token keyword">boolean</span> <span class="token function">isNull<span class="token punctuation">(</span></span><span class="token punctuation">)</span>
+            <span class="token punctuation">{</span>
+                <span class="token keyword">return</span> ll<span class="token punctuation">.</span><span class="token function">isEmpty<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+        <span class="token function">main<span class="token punctuation">(</span></span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            DuiLie dl <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">DieLie</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            dl<span class="token punctuation">.</span><span class="token function">myAdd<span class="token punctuation">(</span></span><span class="token string">"abc1"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            dl<span class="token punctuation">.</span><span class="token function">myAdd<span class="token punctuation">(</span></span><span class="token string">"abc3"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+            <span class="token keyword">while</span><span class="token punctuation">(</span><span class="token operator">!</span>dl<span class="token punctuation">.</span><span class="token function">isNull<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+            <span class="token punctuation">{</span>
+                System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println<span class="token punctuation">(</span></span>dl<span class="token punctuation">.</span><span class="token function">myGet<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+
+
+<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span><span class="token operator">-</span>
+Set<span class="token operator">:</span>无序，不可以重复元素。方法和Collection一致。
+    取出方法只有一个就是迭代器。而且set集合不可以修改元素。
+    <span class="token operator">|</span>-<span class="token operator">-</span>HashSet<span class="token operator">:</span>底层数据结果是哈希表，如何保证元素唯一性的呢？
+        通过每一个元素的hashCode方法返回值相同，并equals方法返回<span class="token boolean">true</span>来判断元素唯一性。
+        如果hashCode值相等，才会判断equals方法。
+
+    <span class="token keyword">class</span> <span class="token class-name">Demo</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main<span class="token punctuation">(</span></span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            HashSet hs <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">HashSet</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+           <span class="token comment" spellcheck="true"> //hs.add("abc1");
+</span>           <span class="token comment" spellcheck="true"> //hs.add("abc2");
+</span>           <span class="token comment" spellcheck="true"> //hs.add("abc1");//返回值是false。因为String有自己的hashCode和equals方法。
+</span>
+
+            hs<span class="token punctuation">.</span><span class="token function">add<span class="token punctuation">(</span></span><span class="token keyword">new</span> <span class="token class-name">Student</span><span class="token punctuation">(</span><span class="token string">"lisi1"</span><span class="token number">,20</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            hs<span class="token punctuation">.</span><span class="token function">add<span class="token punctuation">(</span></span><span class="token keyword">new</span> <span class="token class-name">Student</span><span class="token punctuation">(</span><span class="token string">"lisi2"</span><span class="token number">,20</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            hs<span class="token punctuation">.</span><span class="token function">add<span class="token punctuation">(</span></span><span class="token keyword">new</span> <span class="token class-name">Student</span><span class="token punctuation">(</span><span class="token string">"lisi3"</span><span class="token number">,20</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            hs<span class="token punctuation">.</span><span class="token function">add<span class="token punctuation">(</span></span><span class="token keyword">new</span> <span class="token class-name">Student</span><span class="token punctuation">(</span><span class="token string">"lisi1"</span><span class="token number">,20</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+            System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println<span class="token punctuation">(</span></span>hs<span class="token punctuation">.</span><span class="token function">size<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token comment" spellcheck="true">;//4,对于同名同年龄的学生被视为相同对象，但已经存入。
+</span>                           <span class="token comment" spellcheck="true"> //原因：因为在进行hashCode方法和equals方法判断的时候使用的是、、//Object类中的方法。
+</span>
+                           <span class="token comment" spellcheck="true"> //为了保证符合自定义条件的对象相同。需要复写hashCode和equals方法。
+</span>        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+
+    <span class="token keyword">class</span> <span class="token class-name">Student</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">private</span> String name<span class="token punctuation">;</span>
+        <span class="token keyword">private</span> <span class="token keyword">int</span> age<span class="token punctuation">;</span>
+        <span class="token function">Student<span class="token punctuation">(</span></span>String name<span class="token punctuation">,</span><span class="token keyword">int</span> age<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">this</span><span class="token punctuation">.</span>name <span class="token operator">=</span> name<span class="token punctuation">;</span>
+            <span class="token keyword">this</span><span class="token punctuation">.</span>age <span class="token operator">=</span> age<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token keyword">public</span> <span class="token keyword">boolean</span> <span class="token function">equals<span class="token punctuation">(</span></span>Object obj<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+
+            <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token keyword">this</span>=<span class="token operator">=</span>obj<span class="token punctuation">)</span>
+                <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+            <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token operator">!</span><span class="token punctuation">(</span>obj instanceOf <span class="token class-name">Student</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+                <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+            Student s <span class="token operator">=</span> <span class="token punctuation">(</span>Student<span class="token punctuation">)</span>obj<span class="token punctuation">;</span>
+           <span class="token comment" spellcheck="true"> //System.out.println(this.name+"..."+s.name);
+</span>            <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span>name<span class="token punctuation">.</span><span class="token function">equals<span class="token punctuation">(</span></span>s<span class="token punctuation">.</span>name<span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span> <span class="token keyword">this</span><span class="token punctuation">.</span>age <span class="token operator">==</span> s<span class="token punctuation">.</span>age<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">public</span> <span class="token keyword">int</span> <span class="token function">hashCode<span class="token punctuation">(</span></span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">return</span> name<span class="token punctuation">.</span><span class="token function">hashCode<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token operator">+</span>age<span class="token number">*27</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">public</span> String <span class="token function">getName<span class="token punctuation">(</span></span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">return</span> name<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">public</span> String <span class="token function">getAge<span class="token punctuation">(</span></span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">return</span> age<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    在HashSet判断是否包含指定元素时，使用Contains方法判断，依据哪些方法：
+        <span class="token function">hashCode<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token punctuation">,</span><span class="token function">equals<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        一看hash，就要想到hash表，想到hash表，就必须要覆盖hashCode和equals方法。
+
+    在ArrayList判断是否包含指定元素，使用Contains方法判断依据是：equals。
+
+
+<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span><span class="token operator">-</span>
+
+Map集合：
+    特点：一次存入一对元素（key Value）一定要保证键的唯一性。
+
+    添加：v <span class="token function">put<span class="token punctuation">(</span></span>k<span class="token punctuation">,</span>v<span class="token punctuation">)</span><span class="token operator">:</span>返回去k关联的前一个值，如果没有，返回null。
+    删除：v <span class="token function">remove<span class="token punctuation">(</span></span>k<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    获取<span class="token operator">:</span> v <span class="token function">get<span class="token punctuation">(</span></span>k<span class="token punctuation">)</span><span class="token operator">:</span>好处，可以判断某一个键是否存在。但是注意。有null的值情况。
+    判断：<span class="token function">containsKey<span class="token punctuation">(</span></span>k<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">containsValue<span class="token punctuation">(</span></span>v<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    获取所有：
+        Set<span class="token operator">&lt;</span>K&gt; <span class="token function">keySet<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token operator">:</span>将map集合中的所有键取出存入到Set集合中。在通过迭代器取出所欲的键，
+            并通过map的get方法获取键所对应的值。
+
+        Set<span class="token operator">&lt;</span>Map<span class="token punctuation">.</span>Entry<span class="token operator">&lt;</span>K<span class="token punctuation">,</span>V&gt;&gt; <span class="token function">entrySet<span class="token punctuation">(</span></span><span class="token punctuation">)</span>：将map集合中的所有键值关系封装成Map<span class="token punctuation">.</span>Entry类型的对象，存入到Set集合中。
+                        该关系的类型为Map<span class="token punctuation">.</span>Entry<span class="token punctuation">.</span>通过迭代器取出Map<span class="token punctuation">.</span>Entry对象并通过getKey。
+                        getValue方法获取所有元素。
+
+        原理：就是将Map集合转成Set集合。在进行迭代。
+
+    获取所有值：Collection<span class="token operator">&lt;</span>V&gt; <span class="token function">values<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token operator">|</span>-<span class="token operator">-</span>HashMap：底层是哈希表，线程不同步，可以存入null键null值。
+    <span class="token operator">|</span>-<span class="token operator">-</span>Hashtable：底层也是哈希表，线程是安全的，不可以存入null键null值。
+    <span class="token operator">|</span>-<span class="token operator">-</span>TreeMap：可以对map集合中的键进行排序。线程不安全的。
+
+
+    什么时候使用Map集合呢？
+    当对象键有映射关系时。。
+
+
+
+
+</code></pre>
+<!-- content end -->
+</div>
+<br>
+<br>
+    <div id="disqus_thread"></div>
+	<div class="footer">
+		<p>© Copyright 2014 by Hellc, Designed by Hellc</p>
+	</div>
+</div>
+<script src="main.js"></script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ["\\(", "\\)"]], processEscapes: true}});
+</script>
+<script id="content" type="text/mustache">
+    <h1>{{title}}</h1>
+    <div class="tag">
+    {{date}}
+    {{#tags}}
+    <a href="/#/tag/{{name}}">#{{name}}</a>
+    {{/tags}}
+    </div>
+</script>
+<script id="pagesTemplate" type="text/mustache">
+    {{#pages}}
+    <li>
+        <a href="{{path}}">{{title}}</a>
+    </li>
+    {{/pages}}
+</script>
+<script>
+$(document).ready(function() {
+    $.ajax({
+        url: "main.json",
+        type: "GET",
+        dataType: "json",
+        success: function(data) {
+            $("#title").html(data.name);
+            var pagesTemplate = Hogan.compile($("#pagesTemplate").html());
+            var pagesHtml = pagesTemplate.render({"pages": data.pages});
+            $("#pages").append(pagesHtml);
+            //path
+            var path = "java_ Collection.html";
+            //path end
+            var now = 0;
+            for (var i = 0; i < data.posts.length; ++i)
+                if (path == data.posts[i].path)
+                    now = i;
+            var post = data.posts[now];
+            var tmp = post.tags.split(" ");
+            var tags = [];
+            for (var i = 0; i < tmp.length; ++i)
+                if (tmp[i].length > 0)
+                    tags.push({"name": tmp[i]});
+            var contentTemplate = Hogan.compile($("#content").html());
+            var contentHtml = contentTemplate.render({"title": post.title, "tags": tags, "date": post.date});
+            $("#main").prepend(contentHtml);
+            if (data.disqus_shortname.length > 0) {
+                var disqus_shortname = data.disqus_shortname;
+                (function() {
+                    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                })();
+            }
+        }
+    });
+});
+</script>
+</body>
+</html>

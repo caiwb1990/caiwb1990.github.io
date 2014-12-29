@@ -1,0 +1,508 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="Keywords" content="blog"/>
+    <meta name="Description" content="blog"/>
+    <title>Hellc</title>
+    <link rel="shortcut icon" href="/static/favicon.png"/>
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+</head>
+<body>
+<div class="main">
+    <div class="header">
+    	<ul id="pages">
+            <li><a href="/">home</a></li>
+            <li><a href="/#/tags">tags</a></li>
+            <li><a href="/#/archive">archive</a></li>
+    	</ul>
+    </div>
+	<div class="wrap-header">
+	<h1>
+    <a href="/" id="title"></a>
+	</h1>
+	</div>
+<div id="md" style="display: none;">
+<!-- markdown -->
+[Java总结-流程控制](http://caiwb1990.iteye.com/blog/1399456)
+
+
+
+~~~~{java}
+程序的流程控制；
+	1，判断结构。
+		三种格式：
+			a。
+			if(条件表达式)
+			{
+				执行语句；
+			}
+
+			条件表达式：最终运算的结果要么是true要么是false。
+			当if控制的是单条语句时，大括号可以省略不写。
+
+			b，
+			if(条件表达式)
+			{
+				执行语句；
+			}
+			else
+			{
+				执行语句；
+			}
+			该格式有一种简写格式：
+			变量 = (条件表达式)?表达式1:表达式2;
+
+			其实就三元运算符。
+			和非简写格式不同：
+			简写格式是运算符所以运算后必然有一个结果。
+
+			c,
+			if(条件表达式)
+			{
+				执行语句；
+			}
+			else if(条件表达式)
+			{
+				执行语句；
+			}
+			...
+			else
+			{
+				执行语句；
+			}
+			当有一个条件满足，该语句就结束了。
+
+
+	2，选择结构。
+		switch(表达式)
+		{
+			case 取值1：
+				执行语句；
+				break;
+			case 取值2：
+				执行语句；
+				break;
+			.......
+			default:
+				执行语句；
+				break;//最后一个break可以省略不写。
+		}
+
+		特点：
+		1，表达式中可以接受的数据类型：byte short int char.
+		2，case 和default没有顺序。
+		3，当读到break，或者读到switch语句结束，switch会结束。
+			如果没有break，从匹配条件开始一直执行，将可以执行的语句执行完，知道大括号结束。
+
+	3，循环结构。
+		while(条件表达式)
+		{
+			循环体；
+		}
+
+		do 
+		{
+			循环体；
+		}while(条件表达式);
+		该语句特点：无论条件是否满足，循环体至少执行一次。
+
+		for(初始化化表达式 1 ; 循环条件表达式 2 5 8; 循环后的操作表达式 4 7)
+		{
+			循环体 3 6 ；
+		}
+
+		有了这么多语句。什么时候该用哪个语句？
+		当对几个数值进行判断的时候。
+		可以使用if也可以使用switch，建立使用switch，因为效率稍好一些。
+		当对数值区间进行判断，以及对运算后的结果只要是boolean型的，使用if。
+
+		当需要程序自动执行。或者某些语句要被执行多次时，就使用循环结构。
+		while和for其实是可以互换的。
+		也有其区别：其实就是循环所操作的变量的作用域。
+		当一个变量被循环操作后，还需要参与下面的运算。那么建立使用while循环。
+		如果一个变量只为循环存在。建立使用for语句。
+
+		书写循环需要的注意事项：
+		1，要明确循环条件。
+		2，哪些语句需要参与循环哪些不需要。
+
+		int x = 1;
+		while(x<3)
+		{
+			x++;
+		}
+		System.out.println(x);
+
+		for(int x = 1; x<3; x++)
+		{
+			System.out.println(x);
+		}
+
+		注意：无限循环的两种最简单的形式：while(true)  for(;;)
+
+
+-----------------------------------------------------
+
+	在语句中体现的一些编程思想：
+	1，累加思想。
+		应用场景：如：求和多个数的和。或者字符串的不断延长。
+			定义了一个变量记录住了，不断变化的结果。
+			需要通过循环让累加动作执行很多次。
+		示例：
+		int sum = 0;
+		for(int x=1; x<101; x++)
+		{
+			sum = sum + x;
+		}
+		System.out.println(sum);
+
+
+	2，计数器思想。
+		原理：其实就是定义一个变量，让变量一定步长不断变化。
+			以记录现象的次数。
+			也需要通过循环不断的改变该变量的值。
+
+		//1~100之间6的倍数的个数。
+		int count = 0;
+		for(int x=1; x<101; x++)
+		{
+			if(x%6==0)
+				count++;
+		}
+		System.out.println(count);
+	3，大圈套小圈思想。
+		应用场景：外边一次，里面n次。外边又一次，里面又n次。
+
+		*
+		**
+		***
+		****
+		*****
+
+		for(int x=0; x<5; x++)
+		{
+			for(int y=0; y<=x; y++)
+			{
+				System.out.print("*");
+			}
+			System.out.println();
+		}
+
+		
+		1*1=1
+		1*2=2 2*2=4
+		1*3=3 2*3=6 3*3=9
+
+		for(int x=1 ; x<=3 ; x++)
+		{
+			for(int y=1 ; y<=x; y++ )
+			{
+				System.out.print(y+"*"+x+"="+y*x+"\t");
+			}
+			System.out.println();
+		}
+
+
+
+	其他语句：
+		break:作用于选择和循环结构。
+			跳出(结束)选择语句或者循环语句。
+		continue:作用与循环结构。
+			结束本次循环继续下次循环。
+
+		当有多层循环嵌套时，两个语句默认都作用在当前循环。
+		如果想作用于其他嵌套循环，可是通过给循环起名字(标号)的方式
+		haha:for(int x=0; x<3; x++)
+		{
+			for(int y=0; y<4; y++)
+			{
+				System.out.print("*");
+				continue haha;
+			}
+			System.out.println();
+			
+		}
+
+
+
+
+~~~~
+
+<!-- markdown end -->
+</div>
+<div class="entry" id="main">
+<!-- content -->
+<p><a href="http://caiwb1990.iteye.com/blog/1399456">Java总结-流程控制</a></p>
+
+<pre class=" language-java"><code class=" language-java">程序的流程控制；
+   <span class="token number"> 1</span>，判断结构。
+        三种格式：
+            a。
+            <span class="token keyword">if</span><span class="token punctuation">(</span>条件表达式<span class="token punctuation">)</span>
+            <span class="token punctuation">{</span>
+                执行语句；
+            <span class="token punctuation">}</span>
+
+            条件表达式：最终运算的结果要么是<span class="token boolean">true</span>要么是<span class="token boolean">false</span>。
+            当<span class="token keyword">if</span>控制的是单条语句时，大括号可以省略不写。
+
+            b，
+            <span class="token keyword">if</span><span class="token punctuation">(</span>条件表达式<span class="token punctuation">)</span>
+            <span class="token punctuation">{</span>
+                执行语句；
+            <span class="token punctuation">}</span>
+            <span class="token keyword">else</span>
+            <span class="token punctuation">{</span>
+                执行语句；
+            <span class="token punctuation">}</span>
+            该格式有一种简写格式：
+            变量 <span class="token operator">=</span> <span class="token punctuation">(</span>条件表达式<span class="token punctuation">)</span><span class="token operator">?</span>表达<span class="token number">式1</span><span class="token operator">:</span>表达<span class="token number">式2</span><span class="token punctuation">;</span>
+
+            其实就三元运算符。
+            和非简写格式不同：
+            简写格式是运算符所以运算后必然有一个结果。
+
+            c<span class="token punctuation">,</span>
+            <span class="token keyword">if</span><span class="token punctuation">(</span>条件表达式<span class="token punctuation">)</span>
+            <span class="token punctuation">{</span>
+                执行语句；
+            <span class="token punctuation">}</span>
+            <span class="token keyword">else</span> <span class="token keyword">if</span><span class="token punctuation">(</span>条件表达式<span class="token punctuation">)</span>
+            <span class="token punctuation">{</span>
+                执行语句；
+            <span class="token punctuation">}</span>
+            <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+            <span class="token keyword">else</span>
+            <span class="token punctuation">{</span>
+                执行语句；
+            <span class="token punctuation">}</span>
+            当有一个条件满足，该语句就结束了。
+
+
+   <span class="token number"> 2</span>，选择结构。
+        <span class="token keyword">switch</span><span class="token punctuation">(</span>表达式<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">case</span> 取<span class="token number">值1</span>：
+                执行语句；
+                <span class="token keyword">break</span><span class="token punctuation">;</span>
+            <span class="token keyword">case</span> 取<span class="token number">值2</span>：
+                执行语句；
+                <span class="token keyword">break</span><span class="token punctuation">;</span>
+            <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+            <span class="token keyword">default</span><span class="token operator">:</span>
+                执行语句；
+                <span class="token keyword">break</span><span class="token comment" spellcheck="true">;//最后一个break可以省略不写。
+</span>        <span class="token punctuation">}</span>
+
+        特点：
+       <span class="token number"> 1</span>，表达式中可以接受的数据类型：<span class="token keyword">byte</span> <span class="token keyword">short</span> <span class="token keyword">int</span> <span class="token keyword">char</span><span class="token punctuation">.</span>
+       <span class="token number"> 2</span>，<span class="token keyword">case</span> 和<span class="token keyword">default</span>没有顺序。
+       <span class="token number"> 3</span>，当读到<span class="token keyword">break</span>，或者读到<span class="token keyword">switch</span>语句结束，<span class="token keyword">switch</span>会结束。
+            如果没有<span class="token keyword">break</span>，从匹配条件开始一直执行，将可以执行的语句执行完，知道大括号结束。
+
+   <span class="token number"> 3</span>，循环结构。
+        <span class="token keyword">while</span><span class="token punctuation">(</span>条件表达式<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            循环体；
+        <span class="token punctuation">}</span>
+
+        <span class="token keyword">do</span> 
+        <span class="token punctuation">{</span>
+            循环体；
+        <span class="token punctuation">}</span><span class="token keyword">while</span><span class="token punctuation">(</span>条件表达式<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        该语句特点：无论条件是否满足，循环体至少执行一次。
+
+        <span class="token keyword">for</span><span class="token punctuation">(</span>初始化化表达式<span class="token number"> 1</span> <span class="token punctuation">;</span> 循环条件表达式<span class="token number"> 2</span><span class="token number"> 5</span><span class="token number"> 8</span><span class="token punctuation">;</span> 循环后的操作表达式<span class="token number"> 4</span><span class="token number"> 7</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            循环体<span class="token number"> 3</span><span class="token number"> 6</span> ；
+        <span class="token punctuation">}</span>
+
+        有了这么多语句。什么时候该用哪个语句？
+        当对几个数值进行判断的时候。
+        可以使用<span class="token keyword">if</span>也可以使用<span class="token keyword">switch</span>，建立使用<span class="token keyword">switch</span>，因为效率稍好一些。
+        当对数值区间进行判断，以及对运算后的结果只要是<span class="token keyword">boolean</span>型的，使用<span class="token keyword">if</span>。
+
+        当需要程序自动执行。或者某些语句要被执行多次时，就使用循环结构。
+        <span class="token keyword">while</span>和<span class="token keyword">for</span>其实是可以互换的。
+        也有其区别：其实就是循环所操作的变量的作用域。
+        当一个变量被循环操作后，还需要参与下面的运算。那么建立使用<span class="token keyword">while</span>循环。
+        如果一个变量只为循环存在。建立使用<span class="token keyword">for</span>语句。
+
+        书写循环需要的注意事项：
+       <span class="token number"> 1</span>，要明确循环条件。
+       <span class="token number"> 2</span>，哪些语句需要参与循环哪些不需要。
+
+        <span class="token keyword">int</span> x <span class="token operator">=</span><span class="token number"> 1</span><span class="token punctuation">;</span>
+        <span class="token keyword">while</span><span class="token punctuation">(</span>x&lt;<span class="token number">;3</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            x<span class="token operator">++</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println<span class="token punctuation">(</span></span>x<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> x <span class="token operator">=</span><span class="token number"> 1</span><span class="token punctuation">;</span> x&lt;<span class="token number">;3</span><span class="token punctuation">;</span> x<span class="token operator">++</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println<span class="token punctuation">(</span></span>x<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        注意：无限循环的两种最简单的形式：<span class="token keyword">while</span><span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span>  <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token punctuation">;</span><span class="token punctuation">;</span><span class="token punctuation">)</span>
+
+
+<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>
+
+    在语句中体现的一些编程思想：
+   <span class="token number"> 1</span>，累加思想。
+        应用场景：如：求和多个数的和。或者字符串的不断延长。
+            定义了一个变量记录住了，不断变化的结果。
+            需要通过循环让累加动作执行很多次。
+        示例：
+        <span class="token keyword">int</span> sum <span class="token operator">=</span><span class="token number"> 0</span><span class="token punctuation">;</span>
+        <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> x<span class="token number">=1</span><span class="token punctuation">;</span> x&lt;<span class="token number">;101</span><span class="token punctuation">;</span> x<span class="token operator">++</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            sum <span class="token operator">=</span> sum <span class="token operator">+</span> x<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println<span class="token punctuation">(</span></span>sum<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+
+   <span class="token number"> 2</span>，计数器思想。
+        原理：其实就是定义一个变量，让变量一定步长不断变化。
+            以记录现象的次数。
+            也需要通过循环不断的改变该变量的值。
+
+       <span class="token comment" spellcheck="true"> //1~100之间6的倍数的个数。
+</span>        <span class="token keyword">int</span> count <span class="token operator">=</span><span class="token number"> 0</span><span class="token punctuation">;</span>
+        <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> x<span class="token number">=1</span><span class="token punctuation">;</span> x&lt;<span class="token number">;101</span><span class="token punctuation">;</span> x<span class="token operator">++</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">if</span><span class="token punctuation">(</span>x<span class="token number">%6</span><span class="token operator">=</span><span class="token number">=0</span><span class="token punctuation">)</span>
+                count<span class="token operator">++</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println<span class="token punctuation">(</span></span>count<span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token number"> 3</span>，大圈套小圈思想。
+        应用场景：外边一次，里面n次。外边又一次，里面又n次。
+
+        <span class="token operator">*</span>
+        <span class="token operator">*</span><span class="token operator">*</span>
+        <span class="token operator">*</span>*<span class="token operator">*</span>
+        <span class="token operator">*</span>*<span class="token operator">*</span><span class="token operator">*</span>
+        <span class="token operator">*</span>*<span class="token operator">*</span>*<span class="token operator">*</span>
+
+        <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> x<span class="token number">=0</span><span class="token punctuation">;</span> x&lt;<span class="token number">;5</span><span class="token punctuation">;</span> x<span class="token operator">++</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> y<span class="token number">=0</span><span class="token punctuation">;</span> y<span class="token operator">&lt;</span><span class="token operator">=</span>x<span class="token punctuation">;</span> y<span class="token operator">++</span><span class="token punctuation">)</span>
+            <span class="token punctuation">{</span>
+                System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">print<span class="token punctuation">(</span></span><span class="token string">"*"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+            System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+
+       <span class="token number"> 1</span><span class="token number">*1</span><span class="token number">=1</span>
+       <span class="token number"> 1</span><span class="token number">*2</span><span class="token number">=2</span><span class="token number"> 2</span><span class="token number">*2</span><span class="token number">=4</span>
+       <span class="token number"> 1</span><span class="token number">*3</span><span class="token number">=3</span><span class="token number"> 2</span><span class="token number">*3</span><span class="token number">=6</span><span class="token number"> 3</span><span class="token number">*3</span><span class="token number">=9</span>
+
+        <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> x<span class="token number">=1</span> <span class="token punctuation">;</span> x<span class="token operator">&lt;</span><span class="token number">=3</span> <span class="token punctuation">;</span> x<span class="token operator">++</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> y<span class="token number">=1</span> <span class="token punctuation">;</span> y<span class="token operator">&lt;</span><span class="token operator">=</span>x<span class="token punctuation">;</span> y<span class="token operator">++</span> <span class="token punctuation">)</span>
+            <span class="token punctuation">{</span>
+                System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">print<span class="token punctuation">(</span></span>y<span class="token operator">+</span><span class="token string">"*"</span><span class="token operator">+</span>x<span class="token operator">+</span><span class="token string">"="</span><span class="token operator">+</span>y<span class="token operator">*</span>x<span class="token operator">+</span><span class="token string">"\t"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+            System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+
+
+    其他语句：
+        <span class="token keyword">break</span><span class="token operator">:</span>作用于选择和循环结构。
+            跳出<span class="token punctuation">(</span>结束<span class="token punctuation">)</span>选择语句或者循环语句。
+        <span class="token keyword">continue</span><span class="token operator">:</span>作用与循环结构。
+            结束本次循环继续下次循环。
+
+        当有多层循环嵌套时，两个语句默认都作用在当前循环。
+        如果想作用于其他嵌套循环，可是通过给循环起名字<span class="token punctuation">(</span>标号<span class="token punctuation">)</span>的方式
+        haha<span class="token operator">:</span><span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> x<span class="token number">=0</span><span class="token punctuation">;</span> x&lt;<span class="token number">;3</span><span class="token punctuation">;</span> x<span class="token operator">++</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> y<span class="token number">=0</span><span class="token punctuation">;</span> y&lt;<span class="token number">;4</span><span class="token punctuation">;</span> y<span class="token operator">++</span><span class="token punctuation">)</span>
+            <span class="token punctuation">{</span>
+                System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">print<span class="token punctuation">(</span></span><span class="token string">"*"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token keyword">continue</span> haha<span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+            System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token punctuation">}</span>
+
+
+
+
+</code></pre>
+<!-- content end -->
+</div>
+<br>
+<br>
+    <div id="disqus_thread"></div>
+	<div class="footer">
+		<p>© Copyright 2014 by Hellc, Designed by Hellc</p>
+	</div>
+</div>
+<script src="main.js"></script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ["\\(", "\\)"]], processEscapes: true}});
+</script>
+<script id="content" type="text/mustache">
+    <h1>{{title}}</h1>
+    <div class="tag">
+    {{date}}
+    {{#tags}}
+    <a href="/#/tag/{{name}}">#{{name}}</a>
+    {{/tags}}
+    </div>
+</script>
+<script id="pagesTemplate" type="text/mustache">
+    {{#pages}}
+    <li>
+        <a href="{{path}}">{{title}}</a>
+    </li>
+    {{/pages}}
+</script>
+<script>
+$(document).ready(function() {
+    $.ajax({
+        url: "main.json",
+        type: "GET",
+        dataType: "json",
+        success: function(data) {
+            $("#title").html(data.name);
+            var pagesTemplate = Hogan.compile($("#pagesTemplate").html());
+            var pagesHtml = pagesTemplate.render({"pages": data.pages});
+            $("#pages").append(pagesHtml);
+            //path
+            var path = "java_liucheng.html";
+            //path end
+            var now = 0;
+            for (var i = 0; i < data.posts.length; ++i)
+                if (path == data.posts[i].path)
+                    now = i;
+            var post = data.posts[now];
+            var tmp = post.tags.split(" ");
+            var tags = [];
+            for (var i = 0; i < tmp.length; ++i)
+                if (tmp[i].length > 0)
+                    tags.push({"name": tmp[i]});
+            var contentTemplate = Hogan.compile($("#content").html());
+            var contentHtml = contentTemplate.render({"title": post.title, "tags": tags, "date": post.date});
+            $("#main").prepend(contentHtml);
+            if (data.disqus_shortname.length > 0) {
+                var disqus_shortname = data.disqus_shortname;
+                (function() {
+                    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                })();
+            }
+        }
+    });
+});
+</script>
+</body>
+</html>

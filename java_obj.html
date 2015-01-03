@@ -1,0 +1,554 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="Keywords" content="blog"/>
+    <meta name="Description" content="blog"/>
+    <title>Hellc</title>
+    <link rel="shortcut icon" href="/static/favicon.png"/>
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+</head>
+<body>
+<div class="main">
+    <div class="header">
+    	<ul id="pages">
+            <li><a href="/">home</a></li>
+            <li><a href="/#/tags">tags</a></li>
+            <li><a href="/#/archive">archive</a></li>
+    	</ul>
+    </div>
+	<div class="wrap-header">
+	<h1>
+    <a href="/" id="title"></a>
+	</h1>
+	</div>
+<div id="md" style="display: none;">
+<!-- markdown -->
+[Java总结-面向对象初步](http://caiwb1990.iteye.com/blog/1399461)
+
+~~~~{java}
+
+面向对象：
+	1，它是一种符合现实中人们思考习惯的一种思想。
+	2，它的出现可以将复杂问题简单化。
+	3，它的出现让程序员的角色从执行者变成了指挥者。
+
+	面对对象是相对于面向过程而言的。
+	面向过程：
+		强调的是动作，执行过程。
+	面向对象：
+		强调的是被操作的事物。
+	举例:
+		多窗口的操作：移动，关闭。
+		面向过程：移动窗口，关闭窗口。
+			只需要将移动动作完成，关闭动作完成即可。
+		面向对象：窗口移动，窗口关闭。
+			先对窗口进行描述，并将移动动作和关闭动作定义在窗口中。
+		
+		其实面对对象是基于面向过程的。
+
+
+		区别：
+			以前是程序员指定窗口操作动过，
+			现在是指挥窗口对象，调用其操作动作。
+	大象放进冰箱里：
+		1，打开冰箱。
+		2，将大象存入。
+		3，关闭冰箱。
+		将冰箱描述描述对象，将打开动作，存储动作，关闭动作定义在该冰箱对象中。
+		只要指挥冰箱做事情即可。并将大象作为参数传入。
+
+
+	面试时：
+		问:什么是面向对象呢？
+		答：面向对象的三个理解，举例：面试官其实就是在用面向对象的思想思考问题，
+		为了提高项目开发效率，你就找到我这个对象，并指挥我这个对象，调用了我的专业编程功能，
+		来为公司创造价值。
+		对于面试官您来将，就是一个指挥者，您将项目制作过程简单化。
+		面对对象还有三大特征：封装，继承，多态。
+
+
+-----------------------------------
+
+	对象和类的关系：
+		类其实就是对事物的描述。而对象其实即使该事物实实在在存在的个体。
+		我们使用计算机语言其实就是为了描述现实生活中的事物（万物皆对象）。
+
+		为什么要将事物封装成对象呢？
+		因为可以在该事物中定义和其相关的属性和行为。方便于指挥这个对象做事情。
+
+
+		
+		体现在程序中，就是开始时，先要想到是否有已有的对象可以完成所需的功能。
+		如果没有相对应的对象，自己就建立一个对象。以便后期重用。
+
+	class Person
+	{
+		int age;
+		String name;
+		public void speak()
+		{
+			System.out.println(name+","+age);
+		}
+	}
+	class PersonDemo
+	{
+		public static void main(String[] args)
+		{
+			Person p = new Person();
+			p.age = 20;
+			p.name = "lisi"
+			p.speak();
+		}
+	}
+
+
+	匿名对象：其实就是定义对象的简化形式。
+		1，当对象对应方法进行一次调用的时候，可以使用匿名对象。
+		2，匿名对象可以作为实际参数进行传递。
+
+------------------------------------
+	封装：其实就是隐藏实现细节。
+		在程序中，函数就是最小的封装体。
+			类也是一种封装形式。
+			包也是一种封装形式。
+			对于框架SSH，也是封装。
+	好处：提高安全性。
+
+	开发时，不需要对外提供都隐藏起来。
+	
+	封装的一种体现形式。
+
+	class Person
+	{
+		private int age;//私有成员只在本类中有效。这时在其他类中建立对象也访问不到。将age隐藏。
+		String name;
+		public void speak()
+		{
+			System.out.println(name+","+age);
+		}
+	}
+	class PersonDemo
+	{
+		public static void main(String[] args)
+		{
+			Person p = new Person();
+			p.age = 20;//当建立Person对象后，给年龄age赋值时，因为age是int的，所以可以赋予负数-20.
+				//但这样不符合现实中的情景。出现了安全隐患。产生问题的原因是什么呢？
+				//age直接被访问造成的。为了避免这样的问题，将age私有化。
+				
+			p.name = "lisi"
+			p.speak();
+		}
+	}
+
+
+	将成员变量私有化后，通常提供公有方法对其进行访问。
+	这样做的好处在于，可以在方法中的加入逻辑判断，以增强程序的健壮性。
+	按照规范，每一个成员变量都会对应set，get方法。
+
+	class Person
+	{
+		private int age;
+		private String name;
+		public void setAge(int a)
+		{
+			if(a>130 || a<0)
+				System.out.println("no");
+			else
+				age = a;
+		}
+		public int getAge()
+		{
+			return age;
+		}
+		public void speak()
+		{
+			
+		}
+	}
+	main()
+	{
+		Person p = new Person();
+		p.setAge(30);
+	}
+
+
+-----------------------------------
+			
+进制转换：
+	十进制-->二进制
+	十进制-->十六进制。
+	思路：
+		可以通过查表法来完成转换动作。
+		无论怎样的进制，取到其中一位都可以将该数据作为角标去查对应的表(数组)。
+
+		获取进制中某一位需要通过&运算的形式。
+		获取每一位，需要通过将原数据进行右移>>>一定的位数。
+		而且这些动作都需要重复执行。
+
+		private static String trans(int num,int base,int offset)
+		{
+
+			if(num==0)
+				return "0";
+			char[] chs = {'0','1','2','3'
+					,'4','5','6','7'
+					,'8','9','A','B'
+					,'C','D','E','F'};
+			//定义一个临时容器来存储每一次查表后的结果。
+			char[] arr = new char[32];
+			int pos = arr.length;
+
+			while(num!=0)
+			{
+				int temp = num & base;
+				arr[--pos] = chs[temp];
+				num = num >>> offset;
+			}
+			
+			return toString(arr,pos);
+
+		}
+		priavte static String toString(char[] arr,int pos)
+		{
+			String s = "";
+			for(int x=pos; x<arr.length; x++)
+			{
+				s = s + arr[x];
+			}
+
+			return s;
+
+			//return new String(arr,pos,arr.length-pos);
+		}
+
+		/*
+		十进制-->二进制
+		*/
+		public static String toBin(int num)
+		{
+			return trans(num,1,1);
+		}
+
+		/*
+		十进制-->十六进制 
+		*/
+		public static String toHex(int num)
+		{
+			return trans(num,15,4);
+		}
+
+		
+
+
+
+
+
+
+			
+
+
+~~~~
+
+<!-- markdown end -->
+</div>
+<div class="entry" id="main">
+<!-- content -->
+<p><a href="http://caiwb1990.iteye.com/blog/1399461">Java总结-面向对象初步</a></p>
+
+<pre class=" language-java"><code class=" language-java">
+面向对象：
+   <span class="token number"> 1</span>，它是一种符合现实中人们思考习惯的一种思想。
+   <span class="token number"> 2</span>，它的出现可以将复杂问题简单化。
+   <span class="token number"> 3</span>，它的出现让程序员的角色从执行者变成了指挥者。
+
+    面对对象是相对于面向过程而言的。
+    面向过程：
+        强调的是动作，执行过程。
+    面向对象：
+        强调的是被操作的事物。
+    举例<span class="token operator">:</span>
+        多窗口的操作：移动，关闭。
+        面向过程：移动窗口，关闭窗口。
+            只需要将移动动作完成，关闭动作完成即可。
+        面向对象：窗口移动，窗口关闭。
+            先对窗口进行描述，并将移动动作和关闭动作定义在窗口中。
+
+        其实面对对象是基于面向过程的。
+
+
+        区别：
+            以前是程序员指定窗口操作动过，
+            现在是指挥窗口对象，调用其操作动作。
+    大象放进冰箱里：
+       <span class="token number"> 1</span>，打开冰箱。
+       <span class="token number"> 2</span>，将大象存入。
+       <span class="token number"> 3</span>，关闭冰箱。
+        将冰箱描述描述对象，将打开动作，存储动作，关闭动作定义在该冰箱对象中。
+        只要指挥冰箱做事情即可。并将大象作为参数传入。
+
+
+    面试时：
+        问<span class="token operator">:</span>什么是面向对象呢？
+        答：面向对象的三个理解，举例：面试官其实就是在用面向对象的思想思考问题，
+        为了提高项目开发效率，你就找到我这个对象，并指挥我这个对象，调用了我的专业编程功能，
+        来为公司创造价值。
+        对于面试官您来将，就是一个指挥者，您将项目制作过程简单化。
+        面对对象还有三大特征：封装，继承，多态。
+
+
+<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>
+
+    对象和类的关系：
+        类其实就是对事物的描述。而对象其实即使该事物实实在在存在的个体。
+        我们使用计算机语言其实就是为了描述现实生活中的事物（万物皆对象）。
+
+        为什么要将事物封装成对象呢？
+        因为可以在该事物中定义和其相关的属性和行为。方便于指挥这个对象做事情。
+
+
+
+        体现在程序中，就是开始时，先要想到是否有已有的对象可以完成所需的功能。
+        如果没有相对应的对象，自己就建立一个对象。以便后期重用。
+
+    <span class="token keyword">class</span> <span class="token class-name">Person</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">int</span> age<span class="token punctuation">;</span>
+        String name<span class="token punctuation">;</span>
+        <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">speak<span class="token punctuation">(</span></span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println<span class="token punctuation">(</span></span>name<span class="token operator">+</span><span class="token string">","</span><span class="token operator">+</span>age<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">class</span> <span class="token class-name">PersonDemo</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main<span class="token punctuation">(</span></span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            Person p <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Person</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            p<span class="token punctuation">.</span>age <span class="token operator">=</span><span class="token number"> 20</span><span class="token punctuation">;</span>
+            p<span class="token punctuation">.</span>name <span class="token operator">=</span> <span class="token string">"lisi"</span>
+            p<span class="token punctuation">.</span><span class="token function">speak<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+
+    匿名对象：其实就是定义对象的简化形式。
+       <span class="token number"> 1</span>，当对象对应方法进行一次调用的时候，可以使用匿名对象。
+       <span class="token number"> 2</span>，匿名对象可以作为实际参数进行传递。
+
+<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span><span class="token operator">-</span>
+    封装：其实就是隐藏实现细节。
+        在程序中，函数就是最小的封装体。
+            类也是一种封装形式。
+            包也是一种封装形式。
+            对于框架SSH，也是封装。
+    好处：提高安全性。
+
+    开发时，不需要对外提供都隐藏起来。
+
+    封装的一种体现形式。
+
+    <span class="token keyword">class</span> <span class="token class-name">Person</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">private</span> <span class="token keyword">int</span> age<span class="token comment" spellcheck="true">;//私有成员只在本类中有效。这时在其他类中建立对象也访问不到。将age隐藏。
+</span>        String name<span class="token punctuation">;</span>
+        <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">speak<span class="token punctuation">(</span></span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println<span class="token punctuation">(</span></span>name<span class="token operator">+</span><span class="token string">","</span><span class="token operator">+</span>age<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">class</span> <span class="token class-name">PersonDemo</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main<span class="token punctuation">(</span></span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            Person p <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Person</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            p<span class="token punctuation">.</span>age <span class="token operator">=</span><span class="token number"> 20</span><span class="token comment" spellcheck="true">;//当建立Person对象后，给年龄age赋值时，因为age是int的，所以可以赋予负数-20.
+</span>               <span class="token comment" spellcheck="true"> //但这样不符合现实中的情景。出现了安全隐患。产生问题的原因是什么呢？
+</span>               <span class="token comment" spellcheck="true"> //age直接被访问造成的。为了避免这样的问题，将age私有化。
+</span>
+            p<span class="token punctuation">.</span>name <span class="token operator">=</span> <span class="token string">"lisi"</span>
+            p<span class="token punctuation">.</span><span class="token function">speak<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+
+    将成员变量私有化后，通常提供公有方法对其进行访问。
+    这样做的好处在于，可以在方法中的加入逻辑判断，以增强程序的健壮性。
+    按照规范，每一个成员变量都会对应set，get方法。
+
+    <span class="token keyword">class</span> <span class="token class-name">Person</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">private</span> <span class="token keyword">int</span> age<span class="token punctuation">;</span>
+        <span class="token keyword">private</span> String name<span class="token punctuation">;</span>
+        <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">setAge<span class="token punctuation">(</span></span><span class="token keyword">int</span> a<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">if</span><span class="token punctuation">(</span>a<span class="token number">&gt;130</span> <span class="token operator">||</span> a&lt;<span class="token number">;0</span><span class="token punctuation">)</span>
+                System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println<span class="token punctuation">(</span></span><span class="token string">"no"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">else</span>
+                age <span class="token operator">=</span> a<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">public</span> <span class="token keyword">int</span> <span class="token function">getAge<span class="token punctuation">(</span></span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">return</span> age<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">speak<span class="token punctuation">(</span></span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+    <span class="token function">main<span class="token punctuation">(</span></span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        Person p <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Person</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        p<span class="token punctuation">.</span><span class="token function">setAge<span class="token punctuation">(</span></span>30<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+
+<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>
+
+进制转换：
+    十进制<span class="token operator">--</span>&gt;二进制
+    十进制<span class="token operator">--</span>&gt;十六进制。
+    思路：
+        可以通过查表法来完成转换动作。
+        无论怎样的进制，取到其中一位都可以将该数据作为角标去查对应的表<span class="token punctuation">(</span>数组<span class="token punctuation">)</span>。
+
+        获取进制中某一位需要通过<span class="token operator">&amp;</span>运算的形式。
+        获取每一位，需要通过将原数据进行右移&gt;&gt;&gt;一定的位数。
+        而且这些动作都需要重复执行。
+
+        <span class="token keyword">private</span> <span class="token keyword">static</span> String <span class="token function">trans<span class="token punctuation">(</span></span><span class="token keyword">int</span> num<span class="token punctuation">,</span><span class="token keyword">int</span> base<span class="token punctuation">,</span><span class="token keyword">int</span> offset<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+
+            <span class="token keyword">if</span><span class="token punctuation">(</span>num<span class="token operator">=</span><span class="token number">=0</span><span class="token punctuation">)</span>
+                <span class="token keyword">return</span> <span class="token string">"0"</span><span class="token punctuation">;</span>
+            <span class="token keyword">char</span><span class="token punctuation">[</span><span class="token punctuation">]</span> chs <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token string">'0'</span><span class="token punctuation">,</span><span class="token string">'1'</span><span class="token punctuation">,</span><span class="token string">'2'</span><span class="token punctuation">,</span><span class="token string">'3'</span>
+                    <span class="token punctuation">,</span><span class="token string">'4'</span><span class="token punctuation">,</span><span class="token string">'5'</span><span class="token punctuation">,</span><span class="token string">'6'</span><span class="token punctuation">,</span><span class="token string">'7'</span>
+                    <span class="token punctuation">,</span><span class="token string">'8'</span><span class="token punctuation">,</span><span class="token string">'9'</span><span class="token punctuation">,</span><span class="token string">'A'</span><span class="token punctuation">,</span><span class="token string">'B'</span>
+                    <span class="token punctuation">,</span><span class="token string">'C'</span><span class="token punctuation">,</span><span class="token string">'D'</span><span class="token punctuation">,</span><span class="token string">'E'</span><span class="token punctuation">,</span><span class="token string">'F'</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
+           <span class="token comment" spellcheck="true"> //定义一个临时容器来存储每一次查表后的结果。
+</span>            <span class="token keyword">char</span><span class="token punctuation">[</span><span class="token punctuation">]</span> arr <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">char</span><span class="token number">[32</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+            <span class="token keyword">int</span> pos <span class="token operator">=</span> arr<span class="token punctuation">.</span>length<span class="token punctuation">;</span>
+
+            <span class="token keyword">while</span><span class="token punctuation">(</span>num<span class="token operator">!</span><span class="token number">=0</span><span class="token punctuation">)</span>
+            <span class="token punctuation">{</span>
+                <span class="token keyword">int</span> temp <span class="token operator">=</span> num <span class="token operator">&amp;</span> base<span class="token punctuation">;</span>
+                arr<span class="token punctuation">[</span><span class="token operator">--</span>pos<span class="token punctuation">]</span> <span class="token operator">=</span> chs<span class="token punctuation">[</span>temp<span class="token punctuation">]</span><span class="token punctuation">;</span>
+                num <span class="token operator">=</span> num &gt;&gt;&gt; offset<span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+
+            <span class="token keyword">return</span> <span class="token function">toString<span class="token punctuation">(</span></span>arr<span class="token punctuation">,</span>pos<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token punctuation">}</span>
+        priavte <span class="token keyword">static</span> String <span class="token function">toString<span class="token punctuation">(</span></span><span class="token keyword">char</span><span class="token punctuation">[</span><span class="token punctuation">]</span> arr<span class="token punctuation">,</span><span class="token keyword">int</span> pos<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            String s <span class="token operator">=</span> <span class="token string">""</span><span class="token punctuation">;</span>
+            <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> x<span class="token operator">=</span>pos<span class="token punctuation">;</span> x<span class="token operator">&lt;</span>arr<span class="token punctuation">.</span>length<span class="token punctuation">;</span> x<span class="token operator">++</span><span class="token punctuation">)</span>
+            <span class="token punctuation">{</span>
+                s <span class="token operator">=</span> s <span class="token operator">+</span> arr<span class="token punctuation">[</span>x<span class="token punctuation">]</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+
+            <span class="token keyword">return</span> s<span class="token punctuation">;</span>
+
+           <span class="token comment" spellcheck="true"> //return new String(arr,pos,arr.length-pos);
+</span>        <span class="token punctuation">}</span>
+
+        <span class="token comment" spellcheck="true">/*
+        十进制--&gt;二进制
+        */</span>
+        <span class="token keyword">public</span> <span class="token keyword">static</span> String <span class="token function">toBin<span class="token punctuation">(</span></span><span class="token keyword">int</span> num<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">return</span> <span class="token function">trans<span class="token punctuation">(</span></span>num<span class="token number">,1</span><span class="token number">,1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token comment" spellcheck="true">/*
+        十进制--&gt;十六进制 
+        */</span>
+        <span class="token keyword">public</span> <span class="token keyword">static</span> String <span class="token function">toHex<span class="token punctuation">(</span></span><span class="token keyword">int</span> num<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">return</span> <span class="token function">trans<span class="token punctuation">(</span></span>num<span class="token number">,15</span><span class="token number">,4</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+
+
+
+
+
+
+
+
+
+
+</code></pre>
+<!-- content end -->
+</div>
+<br>
+<br>
+    <div id="disqus_thread"></div>
+	<div class="footer">
+		<p>© Copyright 2014 by Hellc, Designed by Hellc</p>
+	</div>
+</div>
+<script src="main.js"></script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ["\\(", "\\)"]], processEscapes: true}});
+</script>
+<script id="content" type="text/mustache">
+    <h1>{{title}}</h1>
+    <div class="tag">
+    {{date}}
+    {{#tags}}
+    <a href="/#/tag/{{name}}">#{{name}}</a>
+    {{/tags}}
+    </div>
+</script>
+<script id="pagesTemplate" type="text/mustache">
+    {{#pages}}
+    <li>
+        <a href="{{path}}">{{title}}</a>
+    </li>
+    {{/pages}}
+</script>
+<script>
+$(document).ready(function() {
+    $.ajax({
+        url: "main.json",
+        type: "GET",
+        dataType: "json",
+        success: function(data) {
+            $("#title").html(data.name);
+            var pagesTemplate = Hogan.compile($("#pagesTemplate").html());
+            var pagesHtml = pagesTemplate.render({"pages": data.pages});
+            $("#pages").append(pagesHtml);
+            //path
+            var path = "java_obj.html";
+            //path end
+            var now = 0;
+            for (var i = 0; i < data.posts.length; ++i)
+                if (path == data.posts[i].path)
+                    now = i;
+            var post = data.posts[now];
+            var tmp = post.tags.split(" ");
+            var tags = [];
+            for (var i = 0; i < tmp.length; ++i)
+                if (tmp[i].length > 0)
+                    tags.push({"name": tmp[i]});
+            var contentTemplate = Hogan.compile($("#content").html());
+            var contentHtml = contentTemplate.render({"title": post.title, "tags": tags, "date": post.date});
+            $("#main").prepend(contentHtml);
+            if (data.disqus_shortname.length > 0) {
+                var disqus_shortname = data.disqus_shortname;
+                (function() {
+                    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                })();
+            }
+        }
+    });
+});
+</script>
+</body>
+</html>

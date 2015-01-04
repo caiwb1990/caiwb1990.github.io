@@ -1,0 +1,761 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="Keywords" content="blog"/>
+    <meta name="Description" content="blog"/>
+    <title>Hellc</title>
+    <link rel="shortcut icon" href="/static/favicon.png"/>
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+</head>
+<body>
+<div class="main">
+    <div class="header">
+    	<ul id="pages">
+            <li><a href="/">home</a></li>
+            <li><a href="/#/tags">tags</a></li>
+            <li><a href="/#/archive">archive</a></li>
+    	</ul>
+    </div>
+	<div class="wrap-header">
+	<h1>
+    <a href="/" id="title"></a>
+	</h1>
+	</div>
+<div id="md" style="display: none;">
+<!-- markdown -->
+[Java总结-构造和内部类](http://caiwb1990.iteye.com/blog/1401624)
+
+~~~~{java}
+
+
+构造函数：
+	格式：
+	1，函数名和类名相同。
+	2，不需要定义返回值类型。
+	3，函数中不需要return语句。
+
+	作用：给对象进行初始化。
+	构造函数在类中可以有多个，是以重载的形式体现的。
+	特点：当定义类时，类并未定义构造函数，那么系统会加上一个默认的看参数构造函数。
+		class Demo
+		{
+			//Demo(){}
+		}
+		这个默认的构造函数有什么修饰符呢？
+		如果类有public修饰，默认构造函数也有public修饰。
+		如果类没有public修饰，默认构造函数也没有public修饰。
+		当类中定义了自定义构造后，默认的就没有了。
+
+	什么时候写构造函数呢？
+	在分析事物时，该事物的实体，是否在出现时就具有一些默认的属性值或者行为。
+	如果有，就用构造函数来完成。
+
+	------------------------------
+	this关键字：
+	当成员变量和局部变量同名的时候，为了进行区分。可以使用this来完成。
+	class Person
+	{
+		private String name;
+		private int age;
+		Person()
+		{
+		
+		}
+		Person(String name,int age)
+		{
+			this.name = name;
+			this.age = age;
+		}
+		public void setName(String name)
+		{
+			this.name = name;
+		}
+		public int getAge()
+		{
+			return age;
+		}
+		public boolean compare(Person p)
+		{
+			/*
+			if(p.age==this.age)
+				return true;
+			else
+				return false;
+			*/
+
+			return p.age==this.age;
+		}
+	}
+
+	main()
+	{
+		Person p = new Person("lisi",20);
+		p.setName("haha");
+		Person p1 = new Person("wnagwu",21);
+		p1.setName("hehe");
+
+		boolean b = p.compare(p1);
+		/*
+		if(p.getAge()==p1.getAge())
+			System.out.println("同龄");
+		else
+			System.out.println("no同龄");
+		*/
+
+	}
+	this:代表的是就是一个本类对象，哪个对象调用了this所在的函数，那么this就代表哪个对象。
+
+	什么时候使用this关键字呢？
+	定义功能时，该功能又使用到了调用该功能对象。那么这是就用this来表示这个对象。
+
+	class ThisDemo
+	{
+		private int num;
+		ThisDemo(int num)
+		{
+			this.num = num;
+		}
+
+		ThisDemo()
+		{
+			//this.num = 100;
+			this(100);
+		}
+		void show()
+		{
+			System.out.println("num="+this.num);
+		}
+		void method()
+		{
+			this.show();
+		}
+	}
+	
+	this的第二种用法：
+	通过this语句，可以在构造函数间进行互相调用。
+	注意：this语句，必须要写在构造函数的第一行。因为初始化动作要先完成。
+		
+	this在本类中可以用来调用成员变量，也可以调用成员函数，还可以调用构造函数。
+	---------------------------------------
+
+
+	static关键字：
+	1，随着类的加载而加载，随着类的消失而消失，static的生命周期最长。
+	2，优先于对象存在。
+	3，static成员被所有对象所共享。
+	4，static成员可以直接被类名所调用。
+
+	静态的使用注意事项：
+	1，静态方法只能访问静态成员。非静态方法可以访问静态也可以访问非静态。
+	2，静态方法中不可以定义this和super语句。
+	3，主函数是静态的。
+
+	class StaticDemo
+	{
+		int age;
+		static String country = "中国";
+
+		public /*static*/ void show()
+		{
+			System.out.println(county+","+this.age);
+		}
+		public static void main(String[] args)
+		{
+			new StaticDemo().show();
+		}
+	}
+
+	public static void main(String[] args)
+	public :最大权限。
+	static ：该类不需要建立对象。就可以使用这个main方法。
+	void : 该函数没有具体返回值。
+	main : 固定名称。jvm认识。
+	String[] args:主函数的参数。字符串数据类型的参数。
+	
+	那么jvm在调用主函数的时候到底传递的是什么实际参数呢？
+	String[] args = new String[0];
+
+
+	练习：
+	class Demo
+	{
+		static int count = 0;//没有static前，在每一个对象中都有一个自己的count。所以输出结果是1。
+					//有了static修饰，每一个对象共享同一个count。所以结果是创建的对象数。
+		void Demo(){}//这是可以存在的。是一个一般函数，但是函数名不符合规范。
+
+		Demo()
+		{
+			count++;
+		}
+	}
+	main()
+	{
+		new Demo();
+		new Demo();
+		new Demo();
+		new Demo();
+		new Demo();
+		new Demo();
+		new Demo();
+		new Demo();
+		new Demo();
+		new Demo();
+		System.out.println(Demo.count);
+	}
+
+
+
+	----------------------------------------
+
+	static代码块：随着类的加载而执行，而且只执行一次。
+			优先于主函数执行。
+			作用:对类进行初始化。
+
+	class Demo
+	{
+		private static int num =10;
+		static
+		{
+			for(int x=0; x<10; x++)
+			{
+				num++;
+			}
+		}
+
+		public static void show()
+		{
+			System.out.println("num="+num);
+		}
+	}
+	
+
+	class Test
+	{
+		static
+		{
+			System.out.println("a");
+		}
+
+		Test()
+		{
+			System.out.println("b");
+		}
+
+		Test(int x)
+		{
+			System.out.println("c");
+		}
+
+		{
+			System.out.println("d");
+		}
+	}
+
+	class TestMain
+	{
+		public static void main(String[] args)
+		{
+			new Test();
+			new Test(3);
+			//adbdc
+		}
+	}
+	
+
+	----------------------------------
+
+
+	内部类：
+	在类中定义的类，称之为内部类。
+	内部类可以定义在外部类的成员位置上，也可以定义在局部位置上。
+
+	内部类的访问特点：
+	内部类可以直接访问外部类中的成员，包括私有的。那是因为内部类都持有一个外部类的引用。外部类名.this
+
+	外部类要访问内部类需要建立内部类的对象。
+
+	class Outer
+	{
+		private int x = 3;
+		class Inner
+		{
+			void show()
+			{
+				System.out.println(Outer.this.x);
+			}
+		}
+
+		void function()
+		{
+			Inner in = new Inner();
+			in.show();
+		}
+	}
+	
+
+	main()
+	{
+		//直接建立内部类对象，并调用内部类成员。
+		//但是这种情况较为少见，因为内部类通常都会封装。外部不可以见。
+		Outer.Inner in = new Outer().new Inner();
+		in.show();
+
+		//当内部类是static时。
+		new Outer.Inner().show();
+
+		//当内部类是static，而且show方式也是静态时，
+		Outer.Inner.show();
+
+
+	}
+	当内部类定义在成员位置上，可以被成员修饰符所修饰。
+	private，static。
+	什么时候内部类被私有呢？内部类不需要对外暴露，在外部类中隐藏时，需要private
+	什么时候内部类被静态呢？当要在内部类中定义静态成员时，内部类必须被static修饰。
+
+	注意：内部类变成静态后，就会出现访问局限性，只能访问外部类中的静态成员。
+
+	
+	class Demo
+	{
+		class Inner{}
+
+		void method()
+		{
+			new Inner();
+		}
+		public static void main(String[] args)
+		{
+			new Inner();//不可以。主函数只能访问静态成员。
+					//如果非要访问，需要将Inner用static修饰。
+		}
+	}
+
+
+	当内部类在局部位置时，内部类不可以被成员修饰符修饰。
+	内部类不可以直接访问局部的变量。只能访问被final修饰的局部变量。
+
+
+	什么时候定义内部类？
+	描述事物时，该事物内部还有具体事物。可以将该事物通过内部类来描述。
+
+	----------------------------------------
+
+
+
+
+
+
+
+
+			
+
+
+~~~~
+
+
+<!-- markdown end -->
+</div>
+<div class="entry" id="main">
+<!-- content -->
+<p><a href="http://caiwb1990.iteye.com/blog/1401624">Java总结-构造和内部类</a></p>
+
+<pre class=" language-java"><code class=" language-java">
+
+构造函数：
+    格式：
+   <span class="token number"> 1</span>，函数名和类名相同。
+   <span class="token number"> 2</span>，不需要定义返回值类型。
+   <span class="token number"> 3</span>，函数中不需要<span class="token keyword">return</span>语句。
+
+    作用：给对象进行初始化。
+    构造函数在类中可以有多个，是以重载的形式体现的。
+    特点：当定义类时，类并未定义构造函数，那么系统会加上一个默认的看参数构造函数。
+        <span class="token keyword">class</span> <span class="token class-name">Demo</span>
+        <span class="token punctuation">{</span>
+           <span class="token comment" spellcheck="true"> //Demo(){}
+</span>        <span class="token punctuation">}</span>
+        这个默认的构造函数有什么修饰符呢？
+        如果类有<span class="token keyword">public</span>修饰，默认构造函数也有<span class="token keyword">public</span>修饰。
+        如果类没有<span class="token keyword">public</span>修饰，默认构造函数也没有<span class="token keyword">public</span>修饰。
+        当类中定义了自定义构造后，默认的就没有了。
+
+    什么时候写构造函数呢？
+    在分析事物时，该事物的实体，是否在出现时就具有一些默认的属性值或者行为。
+    如果有，就用构造函数来完成。
+
+    <span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span><span class="token operator">-</span>
+    <span class="token keyword">this</span>关键字：
+    当成员变量和局部变量同名的时候，为了进行区分。可以使用<span class="token keyword">this</span>来完成。
+    <span class="token keyword">class</span> <span class="token class-name">Person</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">private</span> String name<span class="token punctuation">;</span>
+        <span class="token keyword">private</span> <span class="token keyword">int</span> age<span class="token punctuation">;</span>
+        <span class="token function">Person<span class="token punctuation">(</span></span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+
+        <span class="token punctuation">}</span>
+        <span class="token function">Person<span class="token punctuation">(</span></span>String name<span class="token punctuation">,</span><span class="token keyword">int</span> age<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">this</span><span class="token punctuation">.</span>name <span class="token operator">=</span> name<span class="token punctuation">;</span>
+            <span class="token keyword">this</span><span class="token punctuation">.</span>age <span class="token operator">=</span> age<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">setName<span class="token punctuation">(</span></span>String name<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">this</span><span class="token punctuation">.</span>name <span class="token operator">=</span> name<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">public</span> <span class="token keyword">int</span> <span class="token function">getAge<span class="token punctuation">(</span></span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">return</span> age<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">public</span> <span class="token keyword">boolean</span> <span class="token function">compare<span class="token punctuation">(</span></span>Person p<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token comment" spellcheck="true">/*
+            if(p.age==this.age)
+                return true;
+            else
+                return false;
+            */</span>
+
+            <span class="token keyword">return</span> p<span class="token punctuation">.</span>age<span class="token operator">==</span><span class="token keyword">this</span><span class="token punctuation">.</span>age<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token function">main<span class="token punctuation">(</span></span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        Person p <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Person</span><span class="token punctuation">(</span><span class="token string">"lisi"</span><span class="token number">,20</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        p<span class="token punctuation">.</span><span class="token function">setName<span class="token punctuation">(</span></span><span class="token string">"haha"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        Person p1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Person</span><span class="token punctuation">(</span><span class="token string">"wnagwu"</span><span class="token number">,21</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        p1<span class="token punctuation">.</span><span class="token function">setName<span class="token punctuation">(</span></span><span class="token string">"hehe"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token keyword">boolean</span> b <span class="token operator">=</span> p<span class="token punctuation">.</span><span class="token function">compare<span class="token punctuation">(</span></span>p1<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">/*
+        if(p.getAge()==p1.getAge())
+            System.out.println("同龄");
+        else
+            System.out.println("no同龄");
+        */</span>
+
+    <span class="token punctuation">}</span>
+    <span class="token keyword">this</span><span class="token operator">:</span>代表的是就是一个本类对象，哪个对象调用了<span class="token keyword">this</span>所在的函数，那么<span class="token keyword">this</span>就代表哪个对象。
+
+    什么时候使用<span class="token keyword">this</span>关键字呢？
+    定义功能时，该功能又使用到了调用该功能对象。那么这是就用<span class="token keyword">this</span>来表示这个对象。
+
+    <span class="token keyword">class</span> <span class="token class-name">ThisDemo</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">private</span> <span class="token keyword">int</span> num<span class="token punctuation">;</span>
+        <span class="token function">ThisDemo<span class="token punctuation">(</span></span><span class="token keyword">int</span> num<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">this</span><span class="token punctuation">.</span>num <span class="token operator">=</span> num<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token function">ThisDemo<span class="token punctuation">(</span></span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+           <span class="token comment" spellcheck="true"> //this.num = 100;
+</span>            <span class="token keyword">this</span><span class="token number">(100</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">void</span> <span class="token function">show<span class="token punctuation">(</span></span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println<span class="token punctuation">(</span></span><span class="token string">"num="</span><span class="token operator">+</span><span class="token keyword">this</span><span class="token punctuation">.</span>num<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">void</span> <span class="token function">method<span class="token punctuation">(</span></span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">show<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">this</span>的第二种用法：
+    通过<span class="token keyword">this</span>语句，可以在构造函数间进行互相调用。
+    注意：<span class="token keyword">this</span>语句，必须要写在构造函数的第一行。因为初始化动作要先完成。
+
+    <span class="token keyword">this</span>在本类中可以用来调用成员变量，也可以调用成员函数，还可以调用构造函数。
+    <span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span><span class="token operator">-</span>
+
+
+    <span class="token keyword">static</span>关键字：
+   <span class="token number"> 1</span>，随着类的加载而加载，随着类的消失而消失，<span class="token keyword">static</span>的生命周期最长。
+   <span class="token number"> 2</span>，优先于对象存在。
+   <span class="token number"> 3</span>，<span class="token keyword">static</span>成员被所有对象所共享。
+   <span class="token number"> 4</span>，<span class="token keyword">static</span>成员可以直接被类名所调用。
+
+    静态的使用注意事项：
+   <span class="token number"> 1</span>，静态方法只能访问静态成员。非静态方法可以访问静态也可以访问非静态。
+   <span class="token number"> 2</span>，静态方法中不可以定义<span class="token keyword">this</span>和<span class="token keyword">super</span>语句。
+   <span class="token number"> 3</span>，主函数是静态的。
+
+    <span class="token keyword">class</span> <span class="token class-name">StaticDemo</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">int</span> age<span class="token punctuation">;</span>
+        <span class="token keyword">static</span> String country <span class="token operator">=</span> <span class="token string">"中国"</span><span class="token punctuation">;</span>
+
+        <span class="token keyword">public</span> <span class="token comment" spellcheck="true">/*static*/</span> <span class="token keyword">void</span> <span class="token function">show<span class="token punctuation">(</span></span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println<span class="token punctuation">(</span></span>county<span class="token operator">+</span><span class="token string">","</span><span class="token operator">+</span><span class="token keyword">this</span><span class="token punctuation">.</span>age<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main<span class="token punctuation">(</span></span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">new</span> <span class="token class-name">StaticDemo</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">show<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main<span class="token punctuation">(</span></span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span>
+    <span class="token keyword">public</span> <span class="token operator">:</span>最大权限。
+    <span class="token keyword">static</span> ：该类不需要建立对象。就可以使用这个main方法。
+    <span class="token keyword">void</span> <span class="token operator">:</span> 该函数没有具体返回值。
+    main <span class="token operator">:</span> 固定名称。jvm认识。
+    String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token operator">:</span>主函数的参数。字符串数据类型的参数。
+
+    那么jvm在调用主函数的时候到底传递的是什么实际参数呢？
+    String<span class="token punctuation">[</span><span class="token punctuation">]</span> args <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">String</span><span class="token number">[0</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+
+
+    练习：
+    <span class="token keyword">class</span> <span class="token class-name">Demo</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">static</span> <span class="token keyword">int</span> count <span class="token operator">=</span><span class="token number"> 0</span><span class="token comment" spellcheck="true">;//没有static前，在每一个对象中都有一个自己的count。所以输出结果是1。
+</span>                   <span class="token comment" spellcheck="true"> //有了static修饰，每一个对象共享同一个count。所以结果是创建的对象数。
+</span>        <span class="token keyword">void</span> <span class="token function">Demo<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">{</span><span class="token comment" spellcheck="true">}//这是可以存在的。是一个一般函数，但是函数名不符合规范。
+</span>
+        <span class="token function">Demo<span class="token punctuation">(</span></span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            count<span class="token operator">++</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+    <span class="token function">main<span class="token punctuation">(</span></span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">new</span> <span class="token class-name">Demo</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">new</span> <span class="token class-name">Demo</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">new</span> <span class="token class-name">Demo</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">new</span> <span class="token class-name">Demo</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">new</span> <span class="token class-name">Demo</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">new</span> <span class="token class-name">Demo</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">new</span> <span class="token class-name">Demo</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">new</span> <span class="token class-name">Demo</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">new</span> <span class="token class-name">Demo</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">new</span> <span class="token class-name">Demo</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println<span class="token punctuation">(</span></span>Demo<span class="token punctuation">.</span>count<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+
+
+    <span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">-</span>
+
+    <span class="token keyword">static</span>代码块：随着类的加载而执行，而且只执行一次。
+            优先于主函数执行。
+            作用<span class="token operator">:</span>对类进行初始化。
+
+    <span class="token keyword">class</span> <span class="token class-name">Demo</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">int</span> num <span class="token number">=10</span><span class="token punctuation">;</span>
+        <span class="token keyword">static</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> x<span class="token number">=0</span><span class="token punctuation">;</span> x&lt;<span class="token number">;10</span><span class="token punctuation">;</span> x<span class="token operator">++</span><span class="token punctuation">)</span>
+            <span class="token punctuation">{</span>
+                num<span class="token operator">++</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">show<span class="token punctuation">(</span></span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println<span class="token punctuation">(</span></span><span class="token string">"num="</span><span class="token operator">+</span>num<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+
+    <span class="token keyword">class</span> <span class="token class-name">Test</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">static</span>
+        <span class="token punctuation">{</span>
+            System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println<span class="token punctuation">(</span></span><span class="token string">"a"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token function">Test<span class="token punctuation">(</span></span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println<span class="token punctuation">(</span></span><span class="token string">"b"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token function">Test<span class="token punctuation">(</span></span><span class="token keyword">int</span> x<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println<span class="token punctuation">(</span></span><span class="token string">"c"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token punctuation">{</span>
+            System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println<span class="token punctuation">(</span></span><span class="token string">"d"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">class</span> <span class="token class-name">TestMain</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main<span class="token punctuation">(</span></span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">new</span> <span class="token class-name">Test</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">new</span> <span class="token class-name">Test</span><span class="token number">(3</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+           <span class="token comment" spellcheck="true"> //adbdc
+</span>        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+
+    <span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">-</span>
+
+
+    内部类：
+    在类中定义的类，称之为内部类。
+    内部类可以定义在外部类的成员位置上，也可以定义在局部位置上。
+
+    内部类的访问特点：
+    内部类可以直接访问外部类中的成员，包括私有的。那是因为内部类都持有一个外部类的引用。外部类名<span class="token punctuation">.</span><span class="token keyword">this</span>
+
+    外部类要访问内部类需要建立内部类的对象。
+
+    <span class="token keyword">class</span> <span class="token class-name">Outer</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">private</span> <span class="token keyword">int</span> x <span class="token operator">=</span><span class="token number"> 3</span><span class="token punctuation">;</span>
+        <span class="token keyword">class</span> <span class="token class-name">Inner</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">void</span> <span class="token function">show<span class="token punctuation">(</span></span><span class="token punctuation">)</span>
+            <span class="token punctuation">{</span>
+                System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println<span class="token punctuation">(</span></span>Outer<span class="token punctuation">.</span><span class="token keyword">this</span><span class="token punctuation">.</span>x<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token keyword">void</span> <span class="token function">function<span class="token punctuation">(</span></span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            Inner in <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Inner</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            in<span class="token punctuation">.</span><span class="token function">show<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+
+    <span class="token function">main<span class="token punctuation">(</span></span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+       <span class="token comment" spellcheck="true"> //直接建立内部类对象，并调用内部类成员。
+</span>       <span class="token comment" spellcheck="true"> //但是这种情况较为少见，因为内部类通常都会封装。外部不可以见。
+</span>        Outer<span class="token punctuation">.</span>Inner in <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Outer</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token keyword">new</span> <span class="token class-name">Inner</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        in<span class="token punctuation">.</span><span class="token function">show<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+       <span class="token comment" spellcheck="true"> //当内部类是static时。
+</span>        <span class="token keyword">new</span> <span class="token class-name">Outer<span class="token punctuation">.</span>Inner</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">show<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+       <span class="token comment" spellcheck="true"> //当内部类是static，而且show方式也是静态时，
+</span>        Outer<span class="token punctuation">.</span>Inner<span class="token punctuation">.</span><span class="token function">show<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+
+    <span class="token punctuation">}</span>
+    当内部类定义在成员位置上，可以被成员修饰符所修饰。
+    <span class="token keyword">private</span>，<span class="token keyword">static</span>。
+    什么时候内部类被私有呢？内部类不需要对外暴露，在外部类中隐藏时，需要<span class="token keyword">private</span>
+    什么时候内部类被静态呢？当要在内部类中定义静态成员时，内部类必须被<span class="token keyword">static</span>修饰。
+
+    注意：内部类变成静态后，就会出现访问局限性，只能访问外部类中的静态成员。
+
+
+    <span class="token keyword">class</span> <span class="token class-name">Demo</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">class</span> <span class="token class-name">Inner</span><span class="token punctuation">{</span><span class="token punctuation">}</span>
+
+        <span class="token keyword">void</span> <span class="token function">method<span class="token punctuation">(</span></span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">new</span> <span class="token class-name">Inner</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main<span class="token punctuation">(</span></span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">new</span> <span class="token class-name">Inner</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token comment" spellcheck="true">;//不可以。主函数只能访问静态成员。
+</span>                   <span class="token comment" spellcheck="true"> //如果非要访问，需要将Inner用static修饰。
+</span>        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+
+    当内部类在局部位置时，内部类不可以被成员修饰符修饰。
+    内部类不可以直接访问局部的变量。只能访问被<span class="token keyword">final</span>修饰的局部变量。
+
+
+    什么时候定义内部类？
+    描述事物时，该事物内部还有具体事物。可以将该事物通过内部类来描述。
+
+    <span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">-</span>
+
+
+
+
+
+
+
+
+
+
+
+</code></pre>
+<!-- content end -->
+</div>
+<br>
+<br>
+    <div id="disqus_thread"></div>
+	<div class="footer">
+		<p>© Copyright 2014 by Hellc, Designed by Hellc</p>
+	</div>
+</div>
+<script src="main.js"></script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ["\\(", "\\)"]], processEscapes: true}});
+</script>
+<script id="content" type="text/mustache">
+    <h1>{{title}}</h1>
+    <div class="tag">
+    {{date}}
+    {{#tags}}
+    <a href="/#/tag/{{name}}">#{{name}}</a>
+    {{/tags}}
+    </div>
+</script>
+<script id="pagesTemplate" type="text/mustache">
+    {{#pages}}
+    <li>
+        <a href="{{path}}">{{title}}</a>
+    </li>
+    {{/pages}}
+</script>
+<script>
+$(document).ready(function() {
+    $.ajax({
+        url: "main.json",
+        type: "GET",
+        dataType: "json",
+        success: function(data) {
+            $("#title").html(data.name);
+            var pagesTemplate = Hogan.compile($("#pagesTemplate").html());
+            var pagesHtml = pagesTemplate.render({"pages": data.pages});
+            $("#pages").append(pagesHtml);
+            //path
+            var path = "java_cons.html";
+            //path end
+            var now = 0;
+            for (var i = 0; i < data.posts.length; ++i)
+                if (path == data.posts[i].path)
+                    now = i;
+            var post = data.posts[now];
+            var tmp = post.tags.split(" ");
+            var tags = [];
+            for (var i = 0; i < tmp.length; ++i)
+                if (tmp[i].length > 0)
+                    tags.push({"name": tmp[i]});
+            var contentTemplate = Hogan.compile($("#content").html());
+            var contentHtml = contentTemplate.render({"title": post.title, "tags": tags, "date": post.date});
+            $("#main").prepend(contentHtml);
+            if (data.disqus_shortname.length > 0) {
+                var disqus_shortname = data.disqus_shortname;
+                (function() {
+                    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                })();
+            }
+        }
+    });
+});
+</script>
+</body>
+</html>

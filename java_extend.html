@@ -1,0 +1,666 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="Keywords" content="blog"/>
+    <meta name="Description" content="blog"/>
+    <title>Hellc</title>
+    <link rel="shortcut icon" href="/static/favicon.png"/>
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+</head>
+<body>
+<div class="main">
+    <div class="header">
+    	<ul id="pages">
+            <li><a href="/">home</a></li>
+            <li><a href="/#/tags">tags</a></li>
+            <li><a href="/#/archive">archive</a></li>
+    	</ul>
+    </div>
+	<div class="wrap-header">
+	<h1>
+    <a href="/" id="title"></a>
+	</h1>
+	</div>
+<div id="md" style="display: none;">
+<!-- markdown -->
+[Java总结-继承和抽象](http://caiwb1990.iteye.com/blog/1401626)
+
+~~~~{java}
+
+继承：
+	提高了代码的复用性，增强了扩展功能。
+	让类与类之间产生了关系，该关系的出现，就有了第三个特征：多态。
+
+	出现了子父类：
+	父类如何由来：
+	对事物进行分析：不断的向上抽取相同的内容。出现父类。
+	子类可以获取父类中非私有的成员。
+
+	当子父类中出现一模一样的方法时：会出现的覆盖操作。
+
+	使用覆盖的注意事项：
+	1，子类在覆盖时，权限必须要大于等于父类的权限。
+	2，静态只能覆盖静态。
+
+
+
+	当功能一致还有使用父类中的原有功能时，需要通过super对其进行调用。
+
+	覆盖：
+	class Fu
+	{
+		void show(){}
+	}
+
+	class Zi extends Fu
+	{
+		void show(){super.show();}
+	}
+
+
+
+	super:该关键字的使用和this相同。
+		this代表的本类对象的引用。super代表的是父类对象的引用。
+
+
+	子类的实例化过程：
+	1，子类中所有的构造函数默认都会访问父类中的空参数构造函数。
+		原因：每一个构造函数的第一行有一条默认的super()语句，该语句是隐式的。
+		为什么非要访问父类中的构造函数呢？
+		因为子类会获取父类中的成员，所以要先看父类是如何对该成员进行初始化的。
+
+		为什么要放在第一行呢？
+		因为初始化的动作要先完成。
+
+	2，当父类中没有空参数的构造函数时 ？子类的构造函数必须通过this或者super语句指定要访问的构造函数。
+
+	class Fu
+	{
+		Fu()
+		{
+		
+			System.out.println("Fu");
+		}
+	}
+
+	class Zi extends Fu
+	{
+		Zi()
+		{
+			//super();
+			System.out.println("Zi");
+		}
+	}
+
+	main()
+	{
+		new Zi();// Fu Zi.
+	}
+	
+	
+	----------------
+	java只支持单继承，不支持多继承。
+	原因：如果支持多继承，会存在安全隐患。当多个父类中定义了相同功能，但功能体不一致。
+		那么子类对象在调用该功能时，不明确会运行哪一个。
+		一个儿子只能有一个父亲。不可以有多个父亲。
+
+	什么时候定义继承呢？
+	当类与类之间出现了所属关系(is a)时，可以定义继承。
+	怎么判断所属关系呢？
+	这个类是否可以获取另一个中所有的内容。如果可以，可以将这个类继承另一个类。
+	注意：千万别为了拿到其他类中的方法而进行继承。
+
+	class A
+	{
+		void show1(){}
+		void show2(){}
+		void show3(){}
+		void show4(){}
+	}
+
+	class B extends A
+	{
+		void showA(){}
+		void showB(){}
+		
+	}
+	有A,B两个类。
+	A 中有四个功能。show1 show2 show3 show4
+	B中也有四个功能。showA showB show3 show4
+
+	B中的两个功能。在A中已有。那么可不可以直接继承A，而获取这两个功能呢？
+	虽然B获取到了show3。show4功能。但是，也将不需要的show1，show2获取到了。
+	这时B和A之间是不存在继承关系的。
+
+	虽然A和B没有继承关系，但是A和B中是不是有相同内容，那么A和B可以向上抽取。提高代码的复用性。
+
+	将相同功能，抽取到C类中。
+	class C
+	{
+		void show3(){}
+		void show4(){}
+	}
+
+	class A extends C
+	{
+		void show1(){}
+		void show2(){}
+	}
+
+	class B extends C
+	{
+		void showA(){}
+		void showB(){}
+		
+	}
+
+
+	扩展：继承的出现，有一个弊端，就是打破了封装性。
+
+
+	--------------------------------
+
+	final:
+	1，final可以修饰类，方法，变量。
+	2，final修饰的类不可以被继承。
+	3，final修饰的方法不可以被覆盖。
+	4，final修饰的变量是一个常量。只能被赋值一次。
+	5，内部类在局部位置上，只能访问被final修饰的局部变量。
+
+	final其实就是用来锁住内存区域。为了增强程序的严谨性。
+
+
+	--------------------------------
+
+	抽象类：
+	1，抽象方法的出现需要存在与抽象类中。
+	2，抽象类和抽象方法需要使用abstract关键字来修饰。
+	3，抽象方法只需要声明，不需要实现。
+	4，抽象类不可以通过new进行实例化。	
+		原因：抽象类实例化，调用抽象方法没意义。
+	5，抽象类必须由自己的子类覆盖调用所有的抽象方法后，
+		子类才可以进行实例化，否则该子类还是抽象类。
+
+	
+	抽象类是怎么出现的呢？
+	其实也是向上抽取而来的。
+	方法分成两部分，一部分是方法声明，一部分是方法主体。
+	在向上抽取的过程中，出现了功能声明一致，但是功能主体不同。
+	这时，我们只抽取声明，而不抽取主体。
+	那么这个没有主体的方法，需要定义成抽象的来表示。
+	而抽象方法一定要存在与抽象类中。
+
+	示例：
+	需求：预热班学生，就业班学生。
+
+	预热班学生:学习方法(学习是基础部分)，睡觉方法(我倒)。
+	就业班学生：学习方法(学习是高级部分)，睡觉方法(我倒)。
+
+	这些学生具备一些共性。
+	为了提高复用，向上抽取相同功能。
+
+	abstract class XueYuan
+	{
+		void sleep()
+		{
+			System.out.println("wo dao");
+		}
+		abstract void study();
+	//void study(){System.out.println("xuexineirong");}
+	}
+	//抽象方法有什么好处呢？强制子类去做某些事。
+	class YuRe extends XueYuan
+	{
+	
+		vodi study()
+		{
+			System.out.println("base");
+		}
+		/**/
+	}
+	class JiuYe extends XueYuan
+	{
+		void study()
+		{
+			System.out.println("gaoji ");
+		}
+	}
+	//一年后来了个冲刺班：
+	class ChongCi extends XuYuan
+	{
+		void study()
+		{
+			System.out.println("chongci ");
+		}
+	}
+
+	抽象类的特点：
+	1，抽象类中是否有构造函数呢？
+		抽象类和一般没有太大的区别，也是一样在不断的描述事物，只不过该类可以定义抽象方法而已。
+		所以该类中是有构造函数的。该构造函数的出现为了给子类继续实例化的。
+
+	2，抽象类中可不可以不定义抽象方法呢？
+		可以，那么该类的出现只有一个作用，就是不让该类建立对象。
+		这种情况相对少见，awt，适配器类是这样设计的。如WindowAdapter。
+	
+	抽象关键字不可以和哪些关键字共存呢？
+	private  static  final 
+	
+
+
+
+	需求：
+	公司内有普通员工，和经理，所有的员工都具有姓名，工号，工资。
+	对于经理多了一个奖金。
+	请设计一下该程序的基本数据模型。
+	
+	abstract  class Employee
+	{
+		private String name;
+		private String id;
+		private double pay;
+		Employee(String name,String id,double pay)
+		{
+			this.name = name;
+			this.id = id;
+			ths.pay = pay;
+		}
+		abstract void work();
+	}
+	
+	class Pro extends Employee
+	{
+		Pro(String name,String id,double pay)
+		{
+			super(name,id,pay);
+		}
+		void work()
+		{
+			System.out.println("pro work")
+		}
+	}
+
+	class Manager extends Employee
+	{
+		private double bonus;
+		Manager(String name,String id,double pay,double bonus)
+		{
+			super(name,id,pay);
+			this.bonus = bonus;
+		}
+		void work()
+		{
+			System.out.println("manager work");
+		}
+	}
+
+	------------------------------------------------
+
+
+
+
+	
+
+			
+
+
+~~~~
+
+<!-- markdown end -->
+</div>
+<div class="entry" id="main">
+<!-- content -->
+<p><a href="http://caiwb1990.iteye.com/blog/1401626">Java总结-继承和抽象</a></p>
+
+<pre class=" language-java"><code class=" language-java">
+继承：
+    提高了代码的复用性，增强了扩展功能。
+    让类与类之间产生了关系，该关系的出现，就有了第三个特征：多态。
+
+    出现了子父类：
+    父类如何由来：
+    对事物进行分析：不断的向上抽取相同的内容。出现父类。
+    子类可以获取父类中非私有的成员。
+
+    当子父类中出现一模一样的方法时：会出现的覆盖操作。
+
+    使用覆盖的注意事项：
+   <span class="token number"> 1</span>，子类在覆盖时，权限必须要大于等于父类的权限。
+   <span class="token number"> 2</span>，静态只能覆盖静态。
+
+
+
+    当功能一致还有使用父类中的原有功能时，需要通过<span class="token keyword">super</span>对其进行调用。
+
+    覆盖：
+    <span class="token keyword">class</span> <span class="token class-name">Fu</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">void</span> <span class="token function">show<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">{</span><span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">class</span> <span class="token class-name">Zi</span> <span class="token keyword">extends</span> <span class="token class-name">Fu</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">void</span> <span class="token function">show<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">{</span><span class="token keyword">super</span><span class="token punctuation">.</span><span class="token function">show<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+
+
+    <span class="token keyword">super</span><span class="token operator">:</span>该关键字的使用和<span class="token keyword">this</span>相同。
+        <span class="token keyword">this</span>代表的本类对象的引用。<span class="token keyword">super</span>代表的是父类对象的引用。
+
+
+    子类的实例化过程：
+   <span class="token number"> 1</span>，子类中所有的构造函数默认都会访问父类中的空参数构造函数。
+        原因：每一个构造函数的第一行有一条默认的<span class="token keyword">super</span><span class="token punctuation">(</span><span class="token punctuation">)</span>语句，该语句是隐式的。
+        为什么非要访问父类中的构造函数呢？
+        因为子类会获取父类中的成员，所以要先看父类是如何对该成员进行初始化的。
+
+        为什么要放在第一行呢？
+        因为初始化的动作要先完成。
+
+   <span class="token number"> 2</span>，当父类中没有空参数的构造函数时 ？子类的构造函数必须通过<span class="token keyword">this</span>或者<span class="token keyword">super</span>语句指定要访问的构造函数。
+
+    <span class="token keyword">class</span> <span class="token class-name">Fu</span>
+    <span class="token punctuation">{</span>
+        <span class="token function">Fu<span class="token punctuation">(</span></span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+
+            System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println<span class="token punctuation">(</span></span><span class="token string">"Fu"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">class</span> <span class="token class-name">Zi</span> <span class="token keyword">extends</span> <span class="token class-name">Fu</span>
+    <span class="token punctuation">{</span>
+        <span class="token function">Zi<span class="token punctuation">(</span></span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+           <span class="token comment" spellcheck="true"> //super();
+</span>            System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println<span class="token punctuation">(</span></span><span class="token string">"Zi"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token function">main<span class="token punctuation">(</span></span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">new</span> <span class="token class-name">Zi</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token comment" spellcheck="true">;// Fu Zi.
+</span>    <span class="token punctuation">}</span>
+
+
+    <span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">-</span>
+    java只支持单继承，不支持多继承。
+    原因：如果支持多继承，会存在安全隐患。当多个父类中定义了相同功能，但功能体不一致。
+        那么子类对象在调用该功能时，不明确会运行哪一个。
+        一个儿子只能有一个父亲。不可以有多个父亲。
+
+    什么时候定义继承呢？
+    当类与类之间出现了所属关系<span class="token punctuation">(</span>is a<span class="token punctuation">)</span>时，可以定义继承。
+    怎么判断所属关系呢？
+    这个类是否可以获取另一个中所有的内容。如果可以，可以将这个类继承另一个类。
+    注意：千万别为了拿到其他类中的方法而进行继承。
+
+    <span class="token keyword">class</span> <span class="token class-name">A</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">void</span> <span class="token function">show1<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">{</span><span class="token punctuation">}</span>
+        <span class="token keyword">void</span> <span class="token function">show2<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">{</span><span class="token punctuation">}</span>
+        <span class="token keyword">void</span> <span class="token function">show3<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">{</span><span class="token punctuation">}</span>
+        <span class="token keyword">void</span> <span class="token function">show4<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">{</span><span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">class</span> <span class="token class-name">B</span> <span class="token keyword">extends</span> <span class="token class-name">A</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">void</span> <span class="token function">showA<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">{</span><span class="token punctuation">}</span>
+        <span class="token keyword">void</span> <span class="token function">showB<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">{</span><span class="token punctuation">}</span>
+
+    <span class="token punctuation">}</span>
+    有A<span class="token punctuation">,</span>B两个类。
+    A 中有四个功能。show1 show2 show3 show4
+    B中也有四个功能。showA showB show3 show4
+
+    B中的两个功能。在A中已有。那么可不可以直接继承A，而获取这两个功能呢？
+    虽然B获取到了show3。show4功能。但是，也将不需要的show1，show2获取到了。
+    这时B和A之间是不存在继承关系的。
+
+    虽然A和B没有继承关系，但是A和B中是不是有相同内容，那么A和B可以向上抽取。提高代码的复用性。
+
+    将相同功能，抽取到C类中。
+    <span class="token keyword">class</span> <span class="token class-name">C</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">void</span> <span class="token function">show3<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">{</span><span class="token punctuation">}</span>
+        <span class="token keyword">void</span> <span class="token function">show4<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">{</span><span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">class</span> <span class="token class-name">A</span> <span class="token keyword">extends</span> <span class="token class-name">C</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">void</span> <span class="token function">show1<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">{</span><span class="token punctuation">}</span>
+        <span class="token keyword">void</span> <span class="token function">show2<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">{</span><span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">class</span> <span class="token class-name">B</span> <span class="token keyword">extends</span> <span class="token class-name">C</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">void</span> <span class="token function">showA<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">{</span><span class="token punctuation">}</span>
+        <span class="token keyword">void</span> <span class="token function">showB<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">{</span><span class="token punctuation">}</span>
+
+    <span class="token punctuation">}</span>
+
+
+    扩展：继承的出现，有一个弊端，就是打破了封装性。
+
+
+    <span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>
+
+    <span class="token keyword">final</span><span class="token operator">:</span>
+   <span class="token number"> 1</span>，<span class="token keyword">final</span>可以修饰类，方法，变量。
+   <span class="token number"> 2</span>，<span class="token keyword">final</span>修饰的类不可以被继承。
+   <span class="token number"> 3</span>，<span class="token keyword">final</span>修饰的方法不可以被覆盖。
+   <span class="token number"> 4</span>，<span class="token keyword">final</span>修饰的变量是一个常量。只能被赋值一次。
+   <span class="token number"> 5</span>，内部类在局部位置上，只能访问被<span class="token keyword">final</span>修饰的局部变量。
+
+    <span class="token keyword">final</span>其实就是用来锁住内存区域。为了增强程序的严谨性。
+
+
+    <span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>
+
+    抽象类：
+   <span class="token number"> 1</span>，抽象方法的出现需要存在与抽象类中。
+   <span class="token number"> 2</span>，抽象类和抽象方法需要使用<span class="token keyword">abstract</span>关键字来修饰。
+   <span class="token number"> 3</span>，抽象方法只需要声明，不需要实现。
+   <span class="token number"> 4</span>，抽象类不可以通过<span class="token keyword">new</span>进行实例化。 
+        原因：抽象类实例化，调用抽象方法没意义。
+   <span class="token number"> 5</span>，抽象类必须由自己的子类覆盖调用所有的抽象方法后，
+        子类才可以进行实例化，否则该子类还是抽象类。
+
+
+    抽象类是怎么出现的呢？
+    其实也是向上抽取而来的。
+    方法分成两部分，一部分是方法声明，一部分是方法主体。
+    在向上抽取的过程中，出现了功能声明一致，但是功能主体不同。
+    这时，我们只抽取声明，而不抽取主体。
+    那么这个没有主体的方法，需要定义成抽象的来表示。
+    而抽象方法一定要存在与抽象类中。
+
+    示例：
+    需求：预热班学生，就业班学生。
+
+    预热班学生<span class="token operator">:</span>学习方法<span class="token punctuation">(</span>学习是基础部分<span class="token punctuation">)</span>，睡觉方法<span class="token punctuation">(</span>我倒<span class="token punctuation">)</span>。
+    就业班学生：学习方法<span class="token punctuation">(</span>学习是高级部分<span class="token punctuation">)</span>，睡觉方法<span class="token punctuation">(</span>我倒<span class="token punctuation">)</span>。
+
+    这些学生具备一些共性。
+    为了提高复用，向上抽取相同功能。
+
+    <span class="token keyword">abstract</span> <span class="token keyword">class</span> <span class="token class-name">XueYuan</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">void</span> <span class="token function">sleep<span class="token punctuation">(</span></span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println<span class="token punctuation">(</span></span><span class="token string">"wo dao"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">abstract</span> <span class="token keyword">void</span> <span class="token function">study<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token comment" spellcheck="true"> //void study(){System.out.println("xuexineirong");}
+</span>    <span class="token punctuation">}</span>
+   <span class="token comment" spellcheck="true"> //抽象方法有什么好处呢？强制子类去做某些事。
+</span>    <span class="token keyword">class</span> <span class="token class-name">YuRe</span> <span class="token keyword">extends</span> <span class="token class-name">XueYuan</span>
+    <span class="token punctuation">{</span>
+
+        vodi <span class="token function">study<span class="token punctuation">(</span></span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println<span class="token punctuation">(</span></span><span class="token string">"base"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token comment" spellcheck="true">/**/</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">class</span> <span class="token class-name">JiuYe</span> <span class="token keyword">extends</span> <span class="token class-name">XueYuan</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">void</span> <span class="token function">study<span class="token punctuation">(</span></span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println<span class="token punctuation">(</span></span><span class="token string">"gaoji "</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+   <span class="token comment" spellcheck="true"> //一年后来了个冲刺班：
+</span>    <span class="token keyword">class</span> <span class="token class-name">ChongCi</span> <span class="token keyword">extends</span> <span class="token class-name">XuYuan</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">void</span> <span class="token function">study<span class="token punctuation">(</span></span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println<span class="token punctuation">(</span></span><span class="token string">"chongci "</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    抽象类的特点：
+   <span class="token number"> 1</span>，抽象类中是否有构造函数呢？
+        抽象类和一般没有太大的区别，也是一样在不断的描述事物，只不过该类可以定义抽象方法而已。
+        所以该类中是有构造函数的。该构造函数的出现为了给子类继续实例化的。
+
+   <span class="token number"> 2</span>，抽象类中可不可以不定义抽象方法呢？
+        可以，那么该类的出现只有一个作用，就是不让该类建立对象。
+        这种情况相对少见，awt，适配器类是这样设计的。如WindowAdapter。
+
+    抽象关键字不可以和哪些关键字共存呢？
+    <span class="token keyword">private</span>  <span class="token keyword">static</span>  <span class="token keyword">final</span> 
+
+
+
+
+    需求：
+    公司内有普通员工，和经理，所有的员工都具有姓名，工号，工资。
+    对于经理多了一个奖金。
+    请设计一下该程序的基本数据模型。
+
+    <span class="token keyword">abstract</span>  <span class="token keyword">class</span> <span class="token class-name">Employee</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">private</span> String name<span class="token punctuation">;</span>
+        <span class="token keyword">private</span> String id<span class="token punctuation">;</span>
+        <span class="token keyword">private</span> <span class="token keyword">double</span> pay<span class="token punctuation">;</span>
+        <span class="token function">Employee<span class="token punctuation">(</span></span>String name<span class="token punctuation">,</span>String id<span class="token punctuation">,</span><span class="token keyword">double</span> pay<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">this</span><span class="token punctuation">.</span>name <span class="token operator">=</span> name<span class="token punctuation">;</span>
+            <span class="token keyword">this</span><span class="token punctuation">.</span>id <span class="token operator">=</span> id<span class="token punctuation">;</span>
+            ths<span class="token punctuation">.</span>pay <span class="token operator">=</span> pay<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">abstract</span> <span class="token keyword">void</span> <span class="token function">work<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">class</span> <span class="token class-name">Pro</span> <span class="token keyword">extends</span> <span class="token class-name">Employee</span>
+    <span class="token punctuation">{</span>
+        <span class="token function">Pro<span class="token punctuation">(</span></span>String name<span class="token punctuation">,</span>String id<span class="token punctuation">,</span><span class="token keyword">double</span> pay<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">super</span><span class="token punctuation">(</span>name<span class="token punctuation">,</span>id<span class="token punctuation">,</span>pay<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">void</span> <span class="token function">work<span class="token punctuation">(</span></span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println<span class="token punctuation">(</span></span><span class="token string">"pro work"</span><span class="token punctuation">)</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">class</span> <span class="token class-name">Manager</span> <span class="token keyword">extends</span> <span class="token class-name">Employee</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">private</span> <span class="token keyword">double</span> bonus<span class="token punctuation">;</span>
+        <span class="token function">Manager<span class="token punctuation">(</span></span>String name<span class="token punctuation">,</span>String id<span class="token punctuation">,</span><span class="token keyword">double</span> pay<span class="token punctuation">,</span><span class="token keyword">double</span> bonus<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">super</span><span class="token punctuation">(</span>name<span class="token punctuation">,</span>id<span class="token punctuation">,</span>pay<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">this</span><span class="token punctuation">.</span>bonus <span class="token operator">=</span> bonus<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">void</span> <span class="token function">work<span class="token punctuation">(</span></span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println<span class="token punctuation">(</span></span><span class="token string">"manager work"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span><span class="token operator">-</span>
+
+
+
+
+
+
+
+
+
+</code></pre>
+<!-- content end -->
+</div>
+<br>
+<br>
+    <div id="disqus_thread"></div>
+	<div class="footer">
+		<p>© Copyright 2014 by Hellc, Designed by Hellc</p>
+	</div>
+</div>
+<script src="main.js"></script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ["\\(", "\\)"]], processEscapes: true}});
+</script>
+<script id="content" type="text/mustache">
+    <h1>{{title}}</h1>
+    <div class="tag">
+    {{date}}
+    {{#tags}}
+    <a href="/#/tag/{{name}}">#{{name}}</a>
+    {{/tags}}
+    </div>
+</script>
+<script id="pagesTemplate" type="text/mustache">
+    {{#pages}}
+    <li>
+        <a href="{{path}}">{{title}}</a>
+    </li>
+    {{/pages}}
+</script>
+<script>
+$(document).ready(function() {
+    $.ajax({
+        url: "main.json",
+        type: "GET",
+        dataType: "json",
+        success: function(data) {
+            $("#title").html(data.name);
+            var pagesTemplate = Hogan.compile($("#pagesTemplate").html());
+            var pagesHtml = pagesTemplate.render({"pages": data.pages});
+            $("#pages").append(pagesHtml);
+            //path
+            var path = "java_extend.html";
+            //path end
+            var now = 0;
+            for (var i = 0; i < data.posts.length; ++i)
+                if (path == data.posts[i].path)
+                    now = i;
+            var post = data.posts[now];
+            var tmp = post.tags.split(" ");
+            var tags = [];
+            for (var i = 0; i < tmp.length; ++i)
+                if (tmp[i].length > 0)
+                    tags.push({"name": tmp[i]});
+            var contentTemplate = Hogan.compile($("#content").html());
+            var contentHtml = contentTemplate.render({"title": post.title, "tags": tags, "date": post.date});
+            $("#main").prepend(contentHtml);
+            if (data.disqus_shortname.length > 0) {
+                var disqus_shortname = data.disqus_shortname;
+                (function() {
+                    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                })();
+            }
+        }
+    });
+});
+</script>
+</body>
+</html>

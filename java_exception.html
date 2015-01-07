@@ -1,0 +1,308 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="Keywords" content="blog"/>
+    <meta name="Description" content="blog"/>
+    <title>Hellc</title>
+    <link rel="shortcut icon" href="/static/favicon.png"/>
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+</head>
+<body>
+<div class="main">
+    <div class="header">
+    	<ul id="pages">
+            <li><a href="/">home</a></li>
+            <li><a href="/#/tags">tags</a></li>
+            <li><a href="/#/archive">archive</a></li>
+    	</ul>
+    </div>
+	<div class="wrap-header">
+	<h1>
+    <a href="/" id="title"></a>
+	</h1>
+	</div>
+<div id="md" style="display: none;">
+<!-- markdown -->
+[Java总结-异常总结 ](http://caiwb1990.iteye.com/blog/1401630)
+
+~~~~{java}
+异常：
+	自定义异常：
+	在java对一些常见的情况进行描述。形成了异常体系，
+	但是在自定义的项目发生的特定问题，java并没有针对的描述
+	所以按照java的面向对象思想，也可以对问题进行描述。
+	1，定义一个类继承Exception。
+		1.1为了让自定义的类具备可抛性。
+		1.2为了让自定义的类可以获取Throwable中的方法。
+	2，如果要给自定义异常定义信息描述。
+		可以通过构造函数将信息通过super语句向上传递。
+	
+	class NoException extends Exception 
+	{
+		NoException()
+		{
+			super();
+		}
+		NoException(String message)
+		{
+			super(message);
+		}
+	}
+
+	class Demo
+	{
+		void show(int x)throws NoException
+		{
+			if(x<0)
+				throw new NoException("错错");//throw new RuntimeException("异常信息");
+		}
+	}
+	如果函数内有throw进行异常抛出。那么函数上一定义要有对应的throws标识。
+
+	特例情况：
+	如果函数内容throw抛出的是RuntimeException或其子类。
+	那么函数上可以不用throws标识。
+	因为RuntimeException是运行时才会检查的异常。
+	编译时期不会被检查。
+	而其他的异常，都是编译时期的被检查的异常。所以必须要标识，否则编译失败。
+
+	在自定义异常时，同样也可以继承RuntimeException。
+
+	异常处理的规则：
+	1，调用被throws标识的函数时，需要对该函数进行处理.
+		a,继续抛出。
+		b,通过try catch finally处理。
+	2，当调用的功能抛出多个异常时，处理中的如果通过try catch，需要定义多个与之对应的catch进行处理。
+		多catch出现时，一定要注意，父类的catch向下放。
+
+	3，当子类覆盖父类时，只能抛出父类异常的子类，或者异常的子集。
+		class Fu
+		{
+			void show()throws A,B,C{}
+		}
+		class Zi extends Fu
+		{
+			void show(){}
+		}
+		特殊：如果被覆盖的方法没有抛出异常。那么子类覆盖时，也不可以抛，但子类中还出现了异常。那么只能trycatch。
+	4，函数内只要发生了异常，没有被catch，就必须要标识。当然，运行时异常除外。
+
+	格式特点：
+	try+catch(多个).  try+finally{}
+
+	try+catch+finally{}
+	只有catch是对异常的处理。没有catch就是没有处理异常。
+
+	finally:该代码块中定义的语句一定会被执行。
+		什么时候用呢？
+		当关闭资源时，需要将关闭动作定义在finally当中。
+		关闭数据库资源，关闭系统资源。
+		只有一种情况读不到，System.exit(0);
+	
+	
+	void checkUser(String name)
+	{
+		
+		if(name.equals("abc"))//if("abc".equals(name))//if(name!=null && name.equals("abc"))
+			System.out.println("ok");
+		else
+			System.out.pirntln("no");
+	}
+
+	异常的分层封装：
+	show()throws NoException
+	{
+		try 
+		{
+			throw new SQLException();	
+		}
+		catch(Exception e)
+		{
+			throw new NoException("数据操作未成功");
+		}
+		
+	}
+		
+
+
+~~~~
+
+<!-- markdown end -->
+</div>
+<div class="entry" id="main">
+<!-- content -->
+<p><a href="http://caiwb1990.iteye.com/blog/1401630">Java总结-异常总结 </a></p>
+
+<pre class=" language-java"><code class=" language-java">异常：
+    自定义异常：
+    在java对一些常见的情况进行描述。形成了异常体系，
+    但是在自定义的项目发生的特定问题，java并没有针对的描述
+    所以按照java的面向对象思想，也可以对问题进行描述。
+   <span class="token number"> 1</span>，定义一个类继承Exception。
+       <span class="token number"> 1.1</span>为了让自定义的类具备可抛性。
+       <span class="token number"> 1.2</span>为了让自定义的类可以获取Throwable中的方法。
+   <span class="token number"> 2</span>，如果要给自定义异常定义信息描述。
+        可以通过构造函数将信息通过<span class="token keyword">super</span>语句向上传递。
+
+    <span class="token keyword">class</span> <span class="token class-name">NoException</span> <span class="token keyword">extends</span> <span class="token class-name">Exception</span> 
+    <span class="token punctuation">{</span>
+        <span class="token function">NoException<span class="token punctuation">(</span></span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">super</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token function">NoException<span class="token punctuation">(</span></span>String message<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">super</span><span class="token punctuation">(</span>message<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">class</span> <span class="token class-name">Demo</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">void</span> <span class="token function">show<span class="token punctuation">(</span></span><span class="token keyword">int</span> x<span class="token punctuation">)</span><span class="token keyword">throws</span> NoException
+        <span class="token punctuation">{</span>
+            <span class="token keyword">if</span><span class="token punctuation">(</span>x&lt;<span class="token number">;0</span><span class="token punctuation">)</span>
+                <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">NoException</span><span class="token punctuation">(</span><span class="token string">"错错"</span><span class="token punctuation">)</span><span class="token comment" spellcheck="true">;//throw new RuntimeException("异常信息");
+</span>        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+    如果函数内有<span class="token keyword">throw</span>进行异常抛出。那么函数上一定义要有对应的<span class="token keyword">throws</span>标识。
+
+    特例情况：
+    如果函数内容<span class="token keyword">throw</span>抛出的是RuntimeException或其子类。
+    那么函数上可以不用<span class="token keyword">throws</span>标识。
+    因为RuntimeException是运行时才会检查的异常。
+    编译时期不会被检查。
+    而其他的异常，都是编译时期的被检查的异常。所以必须要标识，否则编译失败。
+
+    在自定义异常时，同样也可以继承RuntimeException。
+
+    异常处理的规则：
+   <span class="token number"> 1</span>，调用被<span class="token keyword">throws</span>标识的函数时，需要对该函数进行处理<span class="token punctuation">.</span>
+        a<span class="token punctuation">,</span>继续抛出。
+        b<span class="token punctuation">,</span>通过<span class="token keyword">try</span> <span class="token keyword">catch</span> <span class="token keyword">finally</span>处理。
+   <span class="token number"> 2</span>，当调用的功能抛出多个异常时，处理中的如果通过<span class="token keyword">try</span> <span class="token keyword">catch</span>，需要定义多个与之对应的<span class="token keyword">catch</span>进行处理。
+        多<span class="token keyword">catch</span>出现时，一定要注意，父类的<span class="token keyword">catch</span>向下放。
+
+   <span class="token number"> 3</span>，当子类覆盖父类时，只能抛出父类异常的子类，或者异常的子集。
+        <span class="token keyword">class</span> <span class="token class-name">Fu</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">void</span> <span class="token function">show<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token keyword">throws</span> A<span class="token punctuation">,</span>B<span class="token punctuation">,</span>C<span class="token punctuation">{</span><span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">class</span> <span class="token class-name">Zi</span> <span class="token keyword">extends</span> <span class="token class-name">Fu</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">void</span> <span class="token function">show<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">{</span><span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+        特殊：如果被覆盖的方法没有抛出异常。那么子类覆盖时，也不可以抛，但子类中还出现了异常。那么只能trycatch。
+   <span class="token number"> 4</span>，函数内只要发生了异常，没有被<span class="token keyword">catch</span>，就必须要标识。当然，运行时异常除外。
+
+    格式特点：
+    <span class="token keyword">try</span><span class="token operator">+</span><span class="token keyword">catch</span><span class="token punctuation">(</span>多个<span class="token punctuation">)</span><span class="token punctuation">.</span>  <span class="token keyword">try</span><span class="token operator">+</span><span class="token keyword">finally</span><span class="token punctuation">{</span><span class="token punctuation">}</span>
+
+    <span class="token keyword">try</span><span class="token operator">+</span><span class="token keyword">catch</span><span class="token operator">+</span><span class="token keyword">finally</span><span class="token punctuation">{</span><span class="token punctuation">}</span>
+    只有<span class="token keyword">catch</span>是对异常的处理。没有<span class="token keyword">catch</span>就是没有处理异常。
+
+    <span class="token keyword">finally</span><span class="token operator">:</span>该代码块中定义的语句一定会被执行。
+        什么时候用呢？
+        当关闭资源时，需要将关闭动作定义在<span class="token keyword">finally</span>当中。
+        关闭数据库资源，关闭系统资源。
+        只有一种情况读不到，System<span class="token punctuation">.</span><span class="token function">exit<span class="token punctuation">(</span></span>0<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+
+    <span class="token keyword">void</span> <span class="token function">checkUser<span class="token punctuation">(</span></span>String name<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+
+        <span class="token keyword">if</span><span class="token punctuation">(</span>name<span class="token punctuation">.</span><span class="token function">equals<span class="token punctuation">(</span></span><span class="token string">"abc"</span><span class="token punctuation">)</span><span class="token comment" spellcheck="true">)//if("abc".equals(name))//if(name!=null &amp;&amp; name.equals("abc"))
+</span>            System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println<span class="token punctuation">(</span></span><span class="token string">"ok"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">else</span>
+            System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">pirntln<span class="token punctuation">(</span></span><span class="token string">"no"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    异常的分层封装：
+    <span class="token function">show<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token keyword">throws</span> NoException
+    <span class="token punctuation">{</span>
+        <span class="token keyword">try</span> 
+        <span class="token punctuation">{</span>
+            <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">SQLException</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>   
+        <span class="token punctuation">}</span>
+        <span class="token keyword">catch</span><span class="token punctuation">(</span>Exception e<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">NoException</span><span class="token punctuation">(</span><span class="token string">"数据操作未成功"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+    <span class="token punctuation">}</span>
+
+
+
+</code></pre>
+<!-- content end -->
+</div>
+<br>
+<br>
+    <div id="disqus_thread"></div>
+	<div class="footer">
+		<p>© Copyright 2014 by Hellc, Designed by Hellc</p>
+	</div>
+</div>
+<script src="main.js"></script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ["\\(", "\\)"]], processEscapes: true}});
+</script>
+<script id="content" type="text/mustache">
+    <h1>{{title}}</h1>
+    <div class="tag">
+    {{date}}
+    {{#tags}}
+    <a href="/#/tag/{{name}}">#{{name}}</a>
+    {{/tags}}
+    </div>
+</script>
+<script id="pagesTemplate" type="text/mustache">
+    {{#pages}}
+    <li>
+        <a href="{{path}}">{{title}}</a>
+    </li>
+    {{/pages}}
+</script>
+<script>
+$(document).ready(function() {
+    $.ajax({
+        url: "main.json",
+        type: "GET",
+        dataType: "json",
+        success: function(data) {
+            $("#title").html(data.name);
+            var pagesTemplate = Hogan.compile($("#pagesTemplate").html());
+            var pagesHtml = pagesTemplate.render({"pages": data.pages});
+            $("#pages").append(pagesHtml);
+            //path
+            var path = "java_exception.html";
+            //path end
+            var now = 0;
+            for (var i = 0; i < data.posts.length; ++i)
+                if (path == data.posts[i].path)
+                    now = i;
+            var post = data.posts[now];
+            var tmp = post.tags.split(" ");
+            var tags = [];
+            for (var i = 0; i < tmp.length; ++i)
+                if (tmp[i].length > 0)
+                    tags.push({"name": tmp[i]});
+            var contentTemplate = Hogan.compile($("#content").html());
+            var contentHtml = contentTemplate.render({"title": post.title, "tags": tags, "date": post.date});
+            $("#main").prepend(contentHtml);
+            if (data.disqus_shortname.length > 0) {
+                var disqus_shortname = data.disqus_shortname;
+                (function() {
+                    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                })();
+            }
+        }
+    });
+});
+</script>
+</body>
+</html>

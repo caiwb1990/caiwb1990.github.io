@@ -1,0 +1,307 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="Keywords" content="blog"/>
+    <meta name="Description" content="blog"/>
+    <title>Hellc</title>
+    <link rel="shortcut icon" href="/static/favicon.png"/>
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+</head>
+<body>
+<div class="main">
+    <div class="header">
+    	<ul id="pages">
+            <li><a href="/">home</a></li>
+            <li><a href="/#/tags">tags</a></li>
+            <li><a href="/#/archive">archive</a></li>
+    	</ul>
+    </div>
+	<div class="wrap-header">
+	<h1>
+    <a href="/" id="title"></a>
+	</h1>
+	</div>
+<div id="md" style="display: none;">
+<!-- markdown -->
+[Java常用对象 ](http://caiwb1990.iteye.com/blog/1402733)
+
+
+~~~~{java}
+
+java.lang.System:
+	该类中的方法都是静态的。
+	1，currentTimeMillis():获取当前时间返回的long的毫秒数。
+		可以通过通过两次获取该方法的值来得到程序运行的时间。
+	2，exit():退出jvm。
+	3，gc():调用垃圾回收器。
+	4，getProperties():获取jvm启动时的配置信息。返回的是Properties集合
+		该集合是Hashtable的子类。所以可以使用Map的方法获取其中的键值对。
+		该集合的特点键值都是字符串。
+		也可以在启动jvm时，临时定义系统的属性信息。
+		通过java命令的参数-Dkey=value来完成。
+	5，setIn(),setOut():改变系统默认的输入和输出设备。
+		in：默认的是键盘。out:默认是显示器(控制台)。
+
+	属性：
+	in：可以通过System.in.read():读取键盘录入。一次读键盘录入的一个字节。
+	Out：可以将指定的数据打印。System.out.println();
+---------------
+java.lang.Runtime:
+	该类没有对外提供构造函数。但是还具有非静态的方法。
+	说明该类一定会提供静态的并获取本类对象的方法。
+	那么该类是使用了单例设计模式定义的出来的。
+	保证了java运行程序在内存中的对象唯一性。
+
+	1，static Runtime getRuntime():获取运行时对象。
+	2，Process exec(String commond):执行一个本地命令。该方法会抛出IOException。
+		Runtime r = Runtime.getRuntime();
+		r.exec("notepad.exe  Demo.java");
+
+java.lang.Process类：是抽象的。描述进程。
+	1，destory():杀掉子进程。
+
+
+-------------------
+java.util.Date:日期对象。
+	该对象中很多方法都已过时，被Calendar取代。
+	Date d = new Date();
+	System.out.println(d.toString());//结果不便于阅读。
+	可以将日期进行格式化。
+	DateFormat下的一个子类对象。SimpleDateFormat。
+	记得导包。java.text.*;
+	1，将日期格式进行对象的封装。
+	String partten = "yyyy年MM月dd日 HH:mm:ss";
+	SimpleDateFormat sdf = new SimpleDateFormat(partten);
+	2，如何让模式对象和日期对象关联呢？
+	String time = sdf.format(d);
+	System.out.println(time);
+
+java.util.Calendar:日历,抽象类。
+	子类：GregorianCalendar 
+	1，getInstance():获取示例，其实返回就是GregorianCalendar 的对象。
+	2，get(字段名)：通过指定字段获取对应的时间值。
+		Calendar c = Calendar.getInstance();
+		c.get(Calendar.YEAR);2010.
+	3，set(int year, int month, int date):可以定义指定的时间。
+	4，add(字段名，偏移量);
+		偏移量是正数，在字段上做加法运算。
+		偏移量是负数，在字段上做减法运算。
+		c.set(2010,2,18);2010年3月18日.//计算机中月份是从0开始到11结束。
+		c.add(Calendar.MONTH,3)//2010年6月18日
+		c.add(Calendar.MONTH,-3)//2009年12月18日。
+	练习一：获取任意一年中二月的天数。
+		c.set(year,2,1);//某年3月1日。
+		c.add(Calendar.DAY_OF_MONTH,-1)//将天数向前偏移一天，就是二月的最后一天。
+
+	练习二：获取昨天的当前时间。
+
+-------------------------
+java.lang.Math：数学类，里面包含了很多数学运算的方法。
+	该类的方法都是静态的。
+	1，abs():获取绝对值。
+	2，floor():
+	3，round():带四舍五入的。
+	4，pow(a,b):a为底数，b幂数。a的b次方。
+	5，double random();是一个随机数很伪。0-1之间的数，不包括 1。
+		1~100。(int)(Math.random()*100+1)
+	
+	练习：定义功能保留小数的后两位。
+
+	public static void show(double d,int scale,boolean isRound)
+	{
+		double base = Math.pow(10,scale);
+
+		d = isRound?d * base+0.5:d*base;//	1234.56
+
+		double num = (int)d/base;
+		System.out.println(num);
+	}
+
+java.util.Random:
+	描述随机数的工具类。可以定义对象。
+	1，nextDouble():相当于Math.random();
+	2，nextInt(int);  nextInt(6)+1 骰子。
+
+
+
+
+~~~~
+
+<!-- markdown end -->
+</div>
+<div class="entry" id="main">
+<!-- content -->
+<p><a href="http://caiwb1990.iteye.com/blog/1402733">Java常用对象 </a></p>
+
+<pre class=" language-java"><code class=" language-java">
+java<span class="token punctuation">.</span>lang<span class="token punctuation">.</span>System<span class="token operator">:</span>
+    该类中的方法都是静态的。
+   <span class="token number"> 1</span>，<span class="token function">currentTimeMillis<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token operator">:</span>获取当前时间返回的<span class="token keyword">long</span>的毫秒数。
+        可以通过通过两次获取该方法的值来得到程序运行的时间。
+   <span class="token number"> 2</span>，<span class="token function">exit<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token operator">:</span>退出jvm。
+   <span class="token number"> 3</span>，<span class="token function">gc<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token operator">:</span>调用垃圾回收器。
+   <span class="token number"> 4</span>，<span class="token function">getProperties<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token operator">:</span>获取jvm启动时的配置信息。返回的是Properties集合
+        该集合是Hashtable的子类。所以可以使用Map的方法获取其中的键值对。
+        该集合的特点键值都是字符串。
+        也可以在启动jvm时，临时定义系统的属性信息。
+        通过java命令的参数<span class="token operator">-</span>Dkey<span class="token operator">=</span>value来完成。
+   <span class="token number"> 5</span>，<span class="token function">setIn<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token function">setOut<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token operator">:</span>改变系统默认的输入和输出设备。
+        in：默认的是键盘。out<span class="token operator">:</span>默认是显示器<span class="token punctuation">(</span>控制台<span class="token punctuation">)</span>。
+
+    属性：
+    in：可以通过System<span class="token punctuation">.</span>in<span class="token punctuation">.</span><span class="token function">read<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token operator">:</span>读取键盘录入。一次读键盘录入的一个字节。
+    Out：可以将指定的数据打印。System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span><span class="token operator">-</span>
+java<span class="token punctuation">.</span>lang<span class="token punctuation">.</span>Runtime<span class="token operator">:</span>
+    该类没有对外提供构造函数。但是还具有非静态的方法。
+    说明该类一定会提供静态的并获取本类对象的方法。
+    那么该类是使用了单例设计模式定义的出来的。
+    保证了java运行程序在内存中的对象唯一性。
+
+   <span class="token number"> 1</span>，<span class="token keyword">static</span> Runtime <span class="token function">getRuntime<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token operator">:</span>获取运行时对象。
+   <span class="token number"> 2</span>，Process <span class="token function">exec<span class="token punctuation">(</span></span>String commond<span class="token punctuation">)</span><span class="token operator">:</span>执行一个本地命令。该方法会抛出IOException。
+        Runtime r <span class="token operator">=</span> Runtime<span class="token punctuation">.</span><span class="token function">getRuntime<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        r<span class="token punctuation">.</span><span class="token function">exec<span class="token punctuation">(</span></span><span class="token string">"notepad.exe  Demo.java"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+java<span class="token punctuation">.</span>lang<span class="token punctuation">.</span>Process类：是抽象的。描述进程。
+   <span class="token number"> 1</span>，<span class="token function">destory<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token operator">:</span>杀掉子进程。
+
+
+<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">-</span>
+java<span class="token punctuation">.</span>util<span class="token punctuation">.</span>Date<span class="token operator">:</span>日期对象。
+    该对象中很多方法都已过时，被Calendar取代。
+    Date d <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Date</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println<span class="token punctuation">(</span></span>d<span class="token punctuation">.</span><span class="token function">toString<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token comment" spellcheck="true">;//结果不便于阅读。
+</span>    可以将日期进行格式化。
+    DateFormat下的一个子类对象。SimpleDateFormat。
+    记得导包。java<span class="token punctuation">.</span>text<span class="token punctuation">.</span>*<span class="token punctuation">;</span>
+   <span class="token number"> 1</span>，将日期格式进行对象的封装。
+    String partten <span class="token operator">=</span> <span class="token string">"yyyy年MM月dd日 HH:mm:ss"</span><span class="token punctuation">;</span>
+    SimpleDateFormat sdf <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">SimpleDateFormat</span><span class="token punctuation">(</span>partten<span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token number"> 2</span>，如何让模式对象和日期对象关联呢？
+    String time <span class="token operator">=</span> sdf<span class="token punctuation">.</span><span class="token function">format<span class="token punctuation">(</span></span>d<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println<span class="token punctuation">(</span></span>time<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+java<span class="token punctuation">.</span>util<span class="token punctuation">.</span>Calendar<span class="token operator">:</span>日历<span class="token punctuation">,</span>抽象类。
+    子类：GregorianCalendar 
+   <span class="token number"> 1</span>，<span class="token function">getInstance<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token operator">:</span>获取示例，其实返回就是GregorianCalendar 的对象。
+   <span class="token number"> 2</span>，<span class="token function">get<span class="token punctuation">(</span></span>字段名<span class="token punctuation">)</span>：通过指定字段获取对应的时间值。
+        Calendar c <span class="token operator">=</span> Calendar<span class="token punctuation">.</span><span class="token function">getInstance<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        c<span class="token punctuation">.</span><span class="token function">get<span class="token punctuation">(</span></span>Calendar<span class="token punctuation">.</span>YEAR<span class="token punctuation">)</span><span class="token number">;2010</span><span class="token punctuation">.</span>
+   <span class="token number"> 3</span>，<span class="token function">set<span class="token punctuation">(</span></span><span class="token keyword">int</span> year<span class="token punctuation">,</span> <span class="token keyword">int</span> month<span class="token punctuation">,</span> <span class="token keyword">int</span> date<span class="token punctuation">)</span><span class="token operator">:</span>可以定义指定的时间。
+   <span class="token number"> 4</span>，<span class="token function">add<span class="token punctuation">(</span></span>字段名，偏移量<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        偏移量是正数，在字段上做加法运算。
+        偏移量是负数，在字段上做减法运算。
+        c<span class="token punctuation">.</span><span class="token function">set<span class="token punctuation">(</span></span>2010<span class="token number">,2</span><span class="token number">,18</span><span class="token punctuation">)</span><span class="token number">;2010</span><span class="token number">年3</span><span class="token number">月18</span>日<span class="token comment" spellcheck="true">.//计算机中月份是从0开始到11结束。
+</span>        c<span class="token punctuation">.</span><span class="token function">add<span class="token punctuation">(</span></span>Calendar<span class="token punctuation">.</span>MONTH<span class="token number">,3</span><span class="token comment" spellcheck="true">)//2010年6月18日
+</span>        c<span class="token punctuation">.</span><span class="token function">add<span class="token punctuation">(</span></span>Calendar<span class="token punctuation">.</span>MONTH<span class="token punctuation">,</span><span class="token number">-3</span><span class="token comment" spellcheck="true">)//2009年12月18日。
+</span>    练习一：获取任意一年中二月的天数。
+        c<span class="token punctuation">.</span><span class="token function">set<span class="token punctuation">(</span></span>year<span class="token number">,2</span><span class="token number">,1</span><span class="token punctuation">)</span><span class="token comment" spellcheck="true">;//某年3月1日。
+</span>        c<span class="token punctuation">.</span><span class="token function">add<span class="token punctuation">(</span></span>Calendar<span class="token punctuation">.</span>DAY_OF_MONTH<span class="token punctuation">,</span><span class="token number">-1</span><span class="token comment" spellcheck="true">)//将天数向前偏移一天，就是二月的最后一天。
+</span>
+    练习二：获取昨天的当前时间。
+
+<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">-</span>
+java<span class="token punctuation">.</span>lang<span class="token punctuation">.</span>Math：数学类，里面包含了很多数学运算的方法。
+    该类的方法都是静态的。
+   <span class="token number"> 1</span>，<span class="token function">abs<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token operator">:</span>获取绝对值。
+   <span class="token number"> 2</span>，<span class="token function">floor<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token operator">:</span>
+   <span class="token number"> 3</span>，<span class="token function">round<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token operator">:</span>带四舍五入的。
+   <span class="token number"> 4</span>，<span class="token function">pow<span class="token punctuation">(</span></span>a<span class="token punctuation">,</span>b<span class="token punctuation">)</span><span class="token operator">:</span>a为底数，b幂数。a的b次方。
+   <span class="token number"> 5</span>，<span class="token keyword">double</span> <span class="token function">random<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>是一个随机数很伪<span class="token number">。0</span><span class="token number">-1</span>之间的数，不包括<span class="token number"> 1</span>。
+       <span class="token number"> 1</span><span class="token number">~100</span>。<span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">)</span><span class="token punctuation">(</span>Math<span class="token punctuation">.</span><span class="token function">random<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token number">*100</span><span class="token number">+1</span><span class="token punctuation">)</span>
+
+    练习：定义功能保留小数的后两位。
+
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">show<span class="token punctuation">(</span></span><span class="token keyword">double</span> d<span class="token punctuation">,</span><span class="token keyword">int</span> scale<span class="token punctuation">,</span><span class="token keyword">boolean</span> isRound<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">double</span> base <span class="token operator">=</span> Math<span class="token punctuation">.</span><span class="token function">pow<span class="token punctuation">(</span></span>10<span class="token punctuation">,</span>scale<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        d <span class="token operator">=</span> isRound<span class="token operator">?</span>d <span class="token operator">*</span> base<span class="token number">+0.5</span><span class="token operator">:</span>d<span class="token operator">*</span>base<span class="token comment" spellcheck="true">;//  1234.56
+</span>
+        <span class="token keyword">double</span> num <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">)</span>d<span class="token operator">/</span>base<span class="token punctuation">;</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println<span class="token punctuation">(</span></span>num<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+java<span class="token punctuation">.</span>util<span class="token punctuation">.</span>Random<span class="token operator">:</span>
+    描述随机数的工具类。可以定义对象。
+   <span class="token number"> 1</span>，<span class="token function">nextDouble<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token operator">:</span>相当于Math<span class="token punctuation">.</span><span class="token function">random<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token number"> 2</span>，<span class="token function">nextInt<span class="token punctuation">(</span></span><span class="token keyword">int</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  <span class="token function">nextInt<span class="token punctuation">(</span></span>6<span class="token punctuation">)</span><span class="token number">+1</span> 骰子。
+
+
+
+
+</code></pre>
+<!-- content end -->
+</div>
+<br>
+<br>
+    <div id="disqus_thread"></div>
+	<div class="footer">
+		<p>© Copyright 2014 by Hellc, Designed by Hellc</p>
+	</div>
+</div>
+<script src="main.js"></script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ["\\(", "\\)"]], processEscapes: true}});
+</script>
+<script id="content" type="text/mustache">
+    <h1>{{title}}</h1>
+    <div class="tag">
+    {{date}}
+    {{#tags}}
+    <a href="/#/tag/{{name}}">#{{name}}</a>
+    {{/tags}}
+    </div>
+</script>
+<script id="pagesTemplate" type="text/mustache">
+    {{#pages}}
+    <li>
+        <a href="{{path}}">{{title}}</a>
+    </li>
+    {{/pages}}
+</script>
+<script>
+$(document).ready(function() {
+    $.ajax({
+        url: "main.json",
+        type: "GET",
+        dataType: "json",
+        success: function(data) {
+            $("#title").html(data.name);
+            var pagesTemplate = Hogan.compile($("#pagesTemplate").html());
+            var pagesHtml = pagesTemplate.render({"pages": data.pages});
+            $("#pages").append(pagesHtml);
+            //path
+            var path = "java_common_obj.html";
+            //path end
+            var now = 0;
+            for (var i = 0; i < data.posts.length; ++i)
+                if (path == data.posts[i].path)
+                    now = i;
+            var post = data.posts[now];
+            var tmp = post.tags.split(" ");
+            var tags = [];
+            for (var i = 0; i < tmp.length; ++i)
+                if (tmp[i].length > 0)
+                    tags.push({"name": tmp[i]});
+            var contentTemplate = Hogan.compile($("#content").html());
+            var contentHtml = contentTemplate.render({"title": post.title, "tags": tags, "date": post.date});
+            $("#main").prepend(contentHtml);
+            if (data.disqus_shortname.length > 0) {
+                var disqus_shortname = data.disqus_shortname;
+                (function() {
+                    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                })();
+            }
+        }
+    });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,508 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="Keywords" content="blog"/>
+    <meta name="Description" content="blog"/>
+    <title>Hellc</title>
+    <link rel="shortcut icon" href="/static/favicon.png"/>
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+</head>
+<body>
+<div class="main">
+    <div class="header">
+    	<ul id="pages">
+            <li><a href="/">home</a></li>
+            <li><a href="/#/tags">tags</a></li>
+            <li><a href="/#/archive">archive</a></li>
+    	</ul>
+    </div>
+	<div class="wrap-header">
+	<h1>
+    <a href="/" id="title"></a>
+	</h1>
+	</div>
+<div id="md" style="display: none;">
+<!-- markdown -->
+[ JFreeChart使用心得与例子](http://caiwb1990.iteye.com/blog/1396211)
+
+##一、JFreeChart的介绍与获取 
+JFreeChart开发包是一个开源的Java图形开发包,它从柱形图，饼形图，到雷达图，蜡烛图等等无所不包,可以在c/s,b/s,甚至是实时环境都能一显身手。 
+
+当前的JFreeChart的最新版本为jfreechart-1.0.0-rc1.zip。可以到[http://www.jfree.org/jfreechart/index.html](http://www.jfree.org/jfreechart/index.html)下载。如果是进行web开发，把解压缩文件中的lib目录下jcommon-1.0.0-rc1.jar和jfreechart-1.0.0-rc1.jar放置到web应用程序的WEB-INF/lib目录下；如果是Java开发，则加入到classpath环境变量中。 
+
+##二、JFreeChart的基本使用 
+不论创建的是什么图，JFreeChart都遵循以下的这个使用步骤： 
+
+1、建立Dataset。所有的数据都存放在Dataset中的。(创建一个数据源（dataset）来包含将要在图形中显示的数据) 
+
+2、建立JFreeChart。将dataset中的数据导入到JFreeChart中。(创建一个 JFreeChart 对象来代表要显示的图形 ) 
+
+3、设置JFreeChart的显示属性。这一步可以省略，使用默认的JFreeChart显示属性。 
+
+4、渲染图表。即生成图片。 
+
+5、页面图片显示。 
+
+重要的类和接口： 
+
+org.jfree.data.general.Dataset 所有数据源类都要实现的接口 
+org.jfree.chart.ChartFactory 由它来产生 JFreeChart 对象 
+org.jfree.chart.JFreeChart 所有对图形的调整都是通过它噢！！ 
+org.jfree.chart.plot.Plot 通过JFreeChart 对象获得它，然后再通过它对图形外部部分（例：坐标轴）调整 
+注意：它有很多子类，一般都下涉及到它的子类！ 
+org.jfree.chart.renderer.AbstractRenderer 通过JFreeChart 对象获得它，然后再通过它对图形内部部分(例：折线的类型）调整。同样，针对不同类型的报表图，它有着不同的子类实现！在下面我们简称它为 Renderer 
+
+##三、JFreeChart使用的具体例子
+
+~~~~{java}
+package com.hong.bean;
+
+import java.awt.Color;
+import java.awt.Font;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
+import javax.servlet.http.HttpSession;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartRenderingInfo;
+import org.jfree.chart.ChartUtilities;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.DateAxis;
+import org.jfree.chart.axis.NumberAxis;
+import org.jfree.chart.entity.StandardEntityCollection;
+import org.jfree.chart.labels.StandardXYToolTipGenerator;
+import org.jfree.chart.plot.XYPlot;
+import org.jfree.chart.renderer.xy.XYItemRenderer;
+import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
+import org.jfree.chart.servlet.ServletUtilities;
+import org.jfree.chart.title.TextTitle;
+import org.jfree.data.time.Day;
+import org.jfree.data.time.TimeSeries;
+import org.jfree.data.time.TimeSeriesCollection;
+import org.jfree.data.xy.XYDataset;
+import org.jfree.ui.RectangleInsets;
+
+/**
+* @author caiwb 曲线图的绘制
+*/
+public class LineXYChart
+{
+    /**
+     * 返回生成图片的文件名
+     * @param session
+     * @param pw
+     * @return 生成图片的文件名
+     */
+    public String getLineXYChart(HttpSession session, PrintWriter pw)
+    {
+        XYDataset dataset = this.createDateSet();//建立数据集
+        String fileName = null;
+        //建立JFreeChart
+        JFreeChart chart = ChartFactory.createTimeSeriesChart(
+                "JFreeChart时间曲线序列图", // title
+                "Date", // x-axis label
+                "Price", // y-axis label
+                dataset, // data
+                true, // create legend?
+                true, // generate tooltips?
+                false // generate URLs?
+                );
+        //设置JFreeChart的显示属性,对图形外部部分进行调整
+        chart.setBackgroundPaint(Color.red);//设置曲线图背景色
+        //设置字体大小，形状
+        Font font = new Font("宋体", Font.BOLD, 16);
+        TextTitle title = new TextTitle("JFreeChart时间曲线序列图", font);
+        chart.setTitle(title);
+
+        XYPlot plot = (XYPlot) chart.getPlot();//获取图形的画布
+        plot.setBackgroundPaint(Color.lightGray);//设置网格背景色
+        plot.setDomainGridlinePaint(Color.green);//设置网格竖线(Domain轴)颜色
+        plot.setRangeGridlinePaint(Color.white);//设置网格横线颜色
+        plot.setAxisOffset(new RectangleInsets(5.0, 5.0, 5.0, 5.0));//设置曲线图与xy轴的距离
+        plot.setDomainCrosshairVisible(true);
+        plot.setRangeCrosshairVisible(true);
+        XYItemRenderer r = plot.getRenderer();
+        if (r instanceof XYLineAndShapeRenderer)
+        {
+            XYLineAndShapeRenderer renderer = (XYLineAndShapeRenderer) r;
+            renderer.setDefaultShapesVisible(true);
+            renderer.setDefaultShapesFilled(true);
+            renderer.setShapesVisible(true);//设置曲线是否显示数据点
+        }
+
+        //设置Y轴
+        NumberAxis numAxis = (NumberAxis) plot.getRangeAxis();
+        NumberFormat numFormater = NumberFormat.getNumberInstance();
+        numFormater.setMinimumFractionDigits(2);
+        numAxis.setNumberFormatOverride(numFormater);
+
+        //设置提示信息
+        StandardXYToolTipGenerator tipGenerator = new StandardXYToolTipGenerator(
+                "历史信息:({1} 16:00,{2})", new SimpleDateFormat("MM-dd"),
+                numFormater);
+        r.setToolTipGenerator(tipGenerator);
+
+        //设置X轴（日期轴）
+        DateAxis axis = (DateAxis) plot.getDomainAxis();
+        axis.setDateFormatOverride(new SimpleDateFormat("MM-dd"));
+
+        ChartRenderingInfo info = new ChartRenderingInfo(
+                new StandardEntityCollection());
+        try
+        {
+            fileName = ServletUtilities.saveChartAsPNG(chart, 500, 300, info,
+                    session);//生成图片
+//          Write the image map to the PrintWriter
+            ChartUtilities.writeImageMap(pw, fileName, info, false);
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+        pw.flush();
+        return fileName;//返回生成图片的文件名
+    }
+
+    /**
+     * 建立生成图形所需的数据集
+     * @return 返回数据集
+     */
+    private XYDataset createDateSet()
+    {
+        TimeSeriesCollection dataset = new TimeSeriesCollection();//时间曲线数据集合
+        TimeSeries s1 = new TimeSeries("历史曲线", Day.class);//创建时间数据源，每一个//TimeSeries在图上是一条曲线
+
+        //s1.add(new Day(day,month,year),value),添加数据点信息
+        s1.add(new Day(1, 2, 2006), 123.51);
+        s1.add(new Day(2, 2, 2006), 122.1);
+        s1.add(new Day(3, 2, 2006), 120.86);
+        s1.add(new Day(4, 2, 2006), 122.50);
+        s1.add(new Day(5, 2, 2006), 123.12);
+        s1.add(new Day(6, 2, 2006), 123.9);
+        s1.add(new Day(7, 2, 2006), 124.47);
+        s1.add(new Day(8, 2, 2006), 124.08);
+        s1.add(new Day(9, 2, 2006), 123.55);
+        s1.add(new Day(10, 2, 2006), 122.53);
+
+        dataset.addSeries(s1);
+        dataset.setDomainIsPointsInTime(true);
+        return dataset;
+    }
+}
+
+在jsp文件中显示图片
+首先在Web应用程序部署文件web.xml中添加以下代码:
+
+<!-- 图片显示，使用专用的servlet来进行显示，它会完成路径的搜索及映射 -->
+<servlet>
+     <servlet-name>DisplayChart</servlet-name>
+     <servlet-class>org.jfree.chart.servlet.DisplayChart</servlet-class>
+</servlet>
+<servlet-mapping>
+    <servlet-name>DisplayChart</servlet-name>
+<url-pattern>/servlet/DisplayChart</url-pattern>
+</servlet-mapping>
+然后在jsp中显示图片
+完整的jsp文件：
+<!--文件名称：timeLine.jsp-->
+<%@ page contentType="text/html;charset=gb2312" pageEncoding="GB2312"%>
+<%@ page import="com.caiwb.bean.LineXYChart"%>
+<%@ page import = "java.io.PrintWriter" %>
+<%
+LineXYChart xyChart=new LineXYChart();
+String fileName=xyChart.getLineXYChart(session,new PrintWriter(out));
+  String graphURL = request.getContextPath() + "/servlet/DisplayChart?filename=" + fileName; 
+%>
+<html>
+</head>
+<title> JFreeChart使用例子</title>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+</head>
+<body>
+<img src="<%= graphURL %>" width=500 height=300 border=0 usemap="#<%= fileName %>">
+</body>
+</html>
+
+~~~~
+
+<!-- markdown end -->
+</div>
+<div class="entry" id="main">
+<!-- content -->
+<p><a href="http://caiwb1990.iteye.com/blog/1396211"> JFreeChart使用心得与例子</a></p>
+
+<h2 id="jfreechart">一、JFreeChart的介绍与获取</h2>
+
+<p>JFreeChart开发包是一个开源的Java图形开发包,它从柱形图，饼形图，到雷达图，蜡烛图等等无所不包,可以在c/s,b/s,甚至是实时环境都能一显身手。 </p>
+
+<p>当前的JFreeChart的最新版本为jfreechart-1.0.0-rc1.zip。可以到<a href="http://www.jfree.org/jfreechart/index.html">http://www.jfree.org/jfreechart/index.html</a>下载。如果是进行web开发，把解压缩文件中的lib目录下jcommon-1.0.0-rc1.jar和jfreechart-1.0.0-rc1.jar放置到web应用程序的WEB-INF/lib目录下；如果是Java开发，则加入到classpath环境变量中。 </p>
+
+<h2 id="jfreechart">二、JFreeChart的基本使用</h2>
+
+<p>不论创建的是什么图，JFreeChart都遵循以下的这个使用步骤： </p>
+
+<p>1、建立Dataset。所有的数据都存放在Dataset中的。(创建一个数据源（dataset）来包含将要在图形中显示的数据) </p>
+
+<p>2、建立JFreeChart。将dataset中的数据导入到JFreeChart中。(创建一个 JFreeChart 对象来代表要显示的图形 ) </p>
+
+<p>3、设置JFreeChart的显示属性。这一步可以省略，使用默认的JFreeChart显示属性。 </p>
+
+<p>4、渲染图表。即生成图片。 </p>
+
+<p>5、页面图片显示。 </p>
+
+<p>重要的类和接口： </p>
+
+<p>org.jfree.data.general.Dataset 所有数据源类都要实现的接口 
+org.jfree.chart.ChartFactory 由它来产生 JFreeChart 对象 
+org.jfree.chart.JFreeChart 所有对图形的调整都是通过它噢！！ 
+org.jfree.chart.plot.Plot 通过JFreeChart 对象获得它，然后再通过它对图形外部部分（例：坐标轴）调整 
+注意：它有很多子类，一般都下涉及到它的子类！ 
+org.jfree.chart.renderer.AbstractRenderer 通过JFreeChart 对象获得它，然后再通过它对图形内部部分(例：折线的类型）调整。同样，针对不同类型的报表图，它有着不同的子类实现！在下面我们简称它为 Renderer </p>
+
+<h2 id="jfreechart">三、JFreeChart使用的具体例子</h2>
+
+<pre class=" language-java"><code class=" language-java"><span class="token keyword">package</span> com<span class="token punctuation">.</span>hong<span class="token punctuation">.</span>bean<span class="token punctuation">;</span>
+
+<span class="token keyword">import</span> java<span class="token punctuation">.</span>awt<span class="token punctuation">.</span>Color<span class="token punctuation">;</span>
+<span class="token keyword">import</span> java<span class="token punctuation">.</span>awt<span class="token punctuation">.</span>Font<span class="token punctuation">;</span>
+<span class="token keyword">import</span> java<span class="token punctuation">.</span>io<span class="token punctuation">.</span>IOException<span class="token punctuation">;</span>
+<span class="token keyword">import</span> java<span class="token punctuation">.</span>io<span class="token punctuation">.</span>PrintWriter<span class="token punctuation">;</span>
+<span class="token keyword">import</span> java<span class="token punctuation">.</span>text<span class="token punctuation">.</span>NumberFormat<span class="token punctuation">;</span>
+<span class="token keyword">import</span> java<span class="token punctuation">.</span>text<span class="token punctuation">.</span>SimpleDateFormat<span class="token punctuation">;</span>
+<span class="token keyword">import</span> javax<span class="token punctuation">.</span>servlet<span class="token punctuation">.</span>http<span class="token punctuation">.</span>HttpSession<span class="token punctuation">;</span>
+<span class="token keyword">import</span> org<span class="token punctuation">.</span>jfree<span class="token punctuation">.</span>chart<span class="token punctuation">.</span>ChartFactory<span class="token punctuation">;</span>
+<span class="token keyword">import</span> org<span class="token punctuation">.</span>jfree<span class="token punctuation">.</span>chart<span class="token punctuation">.</span>ChartRenderingInfo<span class="token punctuation">;</span>
+<span class="token keyword">import</span> org<span class="token punctuation">.</span>jfree<span class="token punctuation">.</span>chart<span class="token punctuation">.</span>ChartUtilities<span class="token punctuation">;</span>
+<span class="token keyword">import</span> org<span class="token punctuation">.</span>jfree<span class="token punctuation">.</span>chart<span class="token punctuation">.</span>JFreeChart<span class="token punctuation">;</span>
+<span class="token keyword">import</span> org<span class="token punctuation">.</span>jfree<span class="token punctuation">.</span>chart<span class="token punctuation">.</span>axis<span class="token punctuation">.</span>DateAxis<span class="token punctuation">;</span>
+<span class="token keyword">import</span> org<span class="token punctuation">.</span>jfree<span class="token punctuation">.</span>chart<span class="token punctuation">.</span>axis<span class="token punctuation">.</span>NumberAxis<span class="token punctuation">;</span>
+<span class="token keyword">import</span> org<span class="token punctuation">.</span>jfree<span class="token punctuation">.</span>chart<span class="token punctuation">.</span>entity<span class="token punctuation">.</span>StandardEntityCollection<span class="token punctuation">;</span>
+<span class="token keyword">import</span> org<span class="token punctuation">.</span>jfree<span class="token punctuation">.</span>chart<span class="token punctuation">.</span>labels<span class="token punctuation">.</span>StandardXYToolTipGenerator<span class="token punctuation">;</span>
+<span class="token keyword">import</span> org<span class="token punctuation">.</span>jfree<span class="token punctuation">.</span>chart<span class="token punctuation">.</span>plot<span class="token punctuation">.</span>XYPlot<span class="token punctuation">;</span>
+<span class="token keyword">import</span> org<span class="token punctuation">.</span>jfree<span class="token punctuation">.</span>chart<span class="token punctuation">.</span>renderer<span class="token punctuation">.</span>xy<span class="token punctuation">.</span>XYItemRenderer<span class="token punctuation">;</span>
+<span class="token keyword">import</span> org<span class="token punctuation">.</span>jfree<span class="token punctuation">.</span>chart<span class="token punctuation">.</span>renderer<span class="token punctuation">.</span>xy<span class="token punctuation">.</span>XYLineAndShapeRenderer<span class="token punctuation">;</span>
+<span class="token keyword">import</span> org<span class="token punctuation">.</span>jfree<span class="token punctuation">.</span>chart<span class="token punctuation">.</span>servlet<span class="token punctuation">.</span>ServletUtilities<span class="token punctuation">;</span>
+<span class="token keyword">import</span> org<span class="token punctuation">.</span>jfree<span class="token punctuation">.</span>chart<span class="token punctuation">.</span>title<span class="token punctuation">.</span>TextTitle<span class="token punctuation">;</span>
+<span class="token keyword">import</span> org<span class="token punctuation">.</span>jfree<span class="token punctuation">.</span>data<span class="token punctuation">.</span>time<span class="token punctuation">.</span>Day<span class="token punctuation">;</span>
+<span class="token keyword">import</span> org<span class="token punctuation">.</span>jfree<span class="token punctuation">.</span>data<span class="token punctuation">.</span>time<span class="token punctuation">.</span>TimeSeries<span class="token punctuation">;</span>
+<span class="token keyword">import</span> org<span class="token punctuation">.</span>jfree<span class="token punctuation">.</span>data<span class="token punctuation">.</span>time<span class="token punctuation">.</span>TimeSeriesCollection<span class="token punctuation">;</span>
+<span class="token keyword">import</span> org<span class="token punctuation">.</span>jfree<span class="token punctuation">.</span>data<span class="token punctuation">.</span>xy<span class="token punctuation">.</span>XYDataset<span class="token punctuation">;</span>
+<span class="token keyword">import</span> org<span class="token punctuation">.</span>jfree<span class="token punctuation">.</span>ui<span class="token punctuation">.</span>RectangleInsets<span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">/**
+* @author caiwb 曲线图的绘制
+*/</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">LineXYChart</span>
+<span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">/**
+     * 返回生成图片的文件名
+     * @param session
+     * @param pw
+     * @return 生成图片的文件名
+     */</span>
+    <span class="token keyword">public</span> String <span class="token function">getLineXYChart<span class="token punctuation">(</span></span>HttpSession session<span class="token punctuation">,</span> PrintWriter pw<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        XYDataset dataset <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">createDateSet<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token comment" spellcheck="true">;//建立数据集
+</span>        String fileName <span class="token operator">=</span> null<span class="token punctuation">;</span>
+       <span class="token comment" spellcheck="true"> //建立JFreeChart
+</span>        JFreeChart chart <span class="token operator">=</span> ChartFactory<span class="token punctuation">.</span><span class="token function">createTimeSeriesChart<span class="token punctuation">(</span></span>
+                <span class="token string">"JFreeChart时间曲线序列图"</span><span class="token punctuation">,</span><span class="token comment" spellcheck="true"> // title
+</span>                <span class="token string">"Date"</span><span class="token punctuation">,</span><span class="token comment" spellcheck="true"> // x-axis label
+</span>                <span class="token string">"Price"</span><span class="token punctuation">,</span><span class="token comment" spellcheck="true"> // y-axis label
+</span>                dataset<span class="token punctuation">,</span><span class="token comment" spellcheck="true"> // data
+</span>                <span class="token boolean">true</span><span class="token punctuation">,</span><span class="token comment" spellcheck="true"> // create legend?
+</span>                <span class="token boolean">true</span><span class="token punctuation">,</span><span class="token comment" spellcheck="true"> // generate tooltips?
+</span>                <span class="token boolean">false</span><span class="token comment" spellcheck="true"> // generate URLs?
+</span>                <span class="token punctuation">)</span><span class="token punctuation">;</span>
+       <span class="token comment" spellcheck="true"> //设置JFreeChart的显示属性,对图形外部部分进行调整
+</span>        chart<span class="token punctuation">.</span><span class="token function">setBackgroundPaint<span class="token punctuation">(</span></span>Color<span class="token punctuation">.</span>red<span class="token punctuation">)</span><span class="token comment" spellcheck="true">;//设置曲线图背景色
+</span>       <span class="token comment" spellcheck="true"> //设置字体大小，形状
+</span>        Font font <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Font</span><span class="token punctuation">(</span><span class="token string">"宋体"</span><span class="token punctuation">,</span> Font<span class="token punctuation">.</span>BOLD<span class="token punctuation">,</span><span class="token number"> 16</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        TextTitle title <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">TextTitle</span><span class="token punctuation">(</span><span class="token string">"JFreeChart时间曲线序列图"</span><span class="token punctuation">,</span> font<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        chart<span class="token punctuation">.</span><span class="token function">setTitle<span class="token punctuation">(</span></span>title<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        XYPlot plot <span class="token operator">=</span> <span class="token punctuation">(</span>XYPlot<span class="token punctuation">)</span> chart<span class="token punctuation">.</span><span class="token function">getPlot<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token comment" spellcheck="true">;//获取图形的画布
+</span>        plot<span class="token punctuation">.</span><span class="token function">setBackgroundPaint<span class="token punctuation">(</span></span>Color<span class="token punctuation">.</span>lightGray<span class="token punctuation">)</span><span class="token comment" spellcheck="true">;//设置网格背景色
+</span>        plot<span class="token punctuation">.</span><span class="token function">setDomainGridlinePaint<span class="token punctuation">(</span></span>Color<span class="token punctuation">.</span>green<span class="token punctuation">)</span><span class="token comment" spellcheck="true">;//设置网格竖线(Domain轴)颜色
+</span>        plot<span class="token punctuation">.</span><span class="token function">setRangeGridlinePaint<span class="token punctuation">(</span></span>Color<span class="token punctuation">.</span>white<span class="token punctuation">)</span><span class="token comment" spellcheck="true">;//设置网格横线颜色
+</span>        plot<span class="token punctuation">.</span><span class="token function">setAxisOffset<span class="token punctuation">(</span></span><span class="token keyword">new</span> <span class="token class-name">RectangleInsets</span><span class="token number">(5.0</span><span class="token punctuation">,</span><span class="token number"> 5.0</span><span class="token punctuation">,</span><span class="token number"> 5.0</span><span class="token punctuation">,</span><span class="token number"> 5.0</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token comment" spellcheck="true">;//设置曲线图与xy轴的距离
+</span>        plot<span class="token punctuation">.</span><span class="token function">setDomainCrosshairVisible<span class="token punctuation">(</span></span><span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        plot<span class="token punctuation">.</span><span class="token function">setRangeCrosshairVisible<span class="token punctuation">(</span></span><span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        XYItemRenderer r <span class="token operator">=</span> plot<span class="token punctuation">.</span><span class="token function">getRenderer<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>r <span class="token keyword">instanceof</span> <span class="token class-name">XYLineAndShapeRenderer</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            XYLineAndShapeRenderer renderer <span class="token operator">=</span> <span class="token punctuation">(</span>XYLineAndShapeRenderer<span class="token punctuation">)</span> r<span class="token punctuation">;</span>
+            renderer<span class="token punctuation">.</span><span class="token function">setDefaultShapesVisible<span class="token punctuation">(</span></span><span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            renderer<span class="token punctuation">.</span><span class="token function">setDefaultShapesFilled<span class="token punctuation">(</span></span><span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            renderer<span class="token punctuation">.</span><span class="token function">setShapesVisible<span class="token punctuation">(</span></span><span class="token boolean">true</span><span class="token punctuation">)</span><span class="token comment" spellcheck="true">;//设置曲线是否显示数据点
+</span>        <span class="token punctuation">}</span>
+
+       <span class="token comment" spellcheck="true"> //设置Y轴
+</span>        NumberAxis numAxis <span class="token operator">=</span> <span class="token punctuation">(</span>NumberAxis<span class="token punctuation">)</span> plot<span class="token punctuation">.</span><span class="token function">getRangeAxis<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        NumberFormat numFormater <span class="token operator">=</span> NumberFormat<span class="token punctuation">.</span><span class="token function">getNumberInstance<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        numFormater<span class="token punctuation">.</span><span class="token function">setMinimumFractionDigits<span class="token punctuation">(</span></span>2<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        numAxis<span class="token punctuation">.</span><span class="token function">setNumberFormatOverride<span class="token punctuation">(</span></span>numFormater<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+       <span class="token comment" spellcheck="true"> //设置提示信息
+</span>        StandardXYToolTipGenerator tipGenerator <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">StandardXYToolTipGenerator</span><span class="token punctuation">(</span>
+                <span class="token string">"历史信息:({1} 16:00,{2})"</span><span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">SimpleDateFormat</span><span class="token punctuation">(</span><span class="token string">"MM-dd"</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+                numFormater<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        r<span class="token punctuation">.</span><span class="token function">setToolTipGenerator<span class="token punctuation">(</span></span>tipGenerator<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+       <span class="token comment" spellcheck="true"> //设置X轴（日期轴）
+</span>        DateAxis axis <span class="token operator">=</span> <span class="token punctuation">(</span>DateAxis<span class="token punctuation">)</span> plot<span class="token punctuation">.</span><span class="token function">getDomainAxis<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        axis<span class="token punctuation">.</span><span class="token function">setDateFormatOverride<span class="token punctuation">(</span></span><span class="token keyword">new</span> <span class="token class-name">SimpleDateFormat</span><span class="token punctuation">(</span><span class="token string">"MM-dd"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        ChartRenderingInfo info <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ChartRenderingInfo</span><span class="token punctuation">(</span>
+                <span class="token keyword">new</span> <span class="token class-name">StandardEntityCollection</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">try</span>
+        <span class="token punctuation">{</span>
+            fileName <span class="token operator">=</span> ServletUtilities<span class="token punctuation">.</span><span class="token function">saveChartAsPNG<span class="token punctuation">(</span></span>chart<span class="token punctuation">,</span><span class="token number"> 500</span><span class="token punctuation">,</span><span class="token number"> 300</span><span class="token punctuation">,</span> info<span class="token punctuation">,</span>
+                    session<span class="token punctuation">)</span><span class="token comment" spellcheck="true">;//生成图片
+</span><span class="token comment" spellcheck="true">//          Write the image map to the PrintWriter
+</span>            ChartUtilities<span class="token punctuation">.</span><span class="token function">writeImageMap<span class="token punctuation">(</span></span>pw<span class="token punctuation">,</span> fileName<span class="token punctuation">,</span> info<span class="token punctuation">,</span> <span class="token boolean">false</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">IOException</span> e<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            e<span class="token punctuation">.</span><span class="token function">printStackTrace<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        pw<span class="token punctuation">.</span><span class="token function">flush<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> fileName<span class="token comment" spellcheck="true">;//返回生成图片的文件名
+</span>    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">/**
+     * 建立生成图形所需的数据集
+     * @return 返回数据集
+     */</span>
+    <span class="token keyword">private</span> XYDataset <span class="token function">createDateSet<span class="token punctuation">(</span></span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        TimeSeriesCollection dataset <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">TimeSeriesCollection</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token comment" spellcheck="true">;//时间曲线数据集合
+</span>        TimeSeries s1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">TimeSeries</span><span class="token punctuation">(</span><span class="token string">"历史曲线"</span><span class="token punctuation">,</span> Day<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token comment" spellcheck="true">;//创建时间数据源，每一个//TimeSeries在图上是一条曲线
+</span>
+       <span class="token comment" spellcheck="true"> //s1.add(new Day(day,month,year),value),添加数据点信息
+</span>        s1<span class="token punctuation">.</span><span class="token function">add<span class="token punctuation">(</span></span><span class="token keyword">new</span> <span class="token class-name">Day</span><span class="token number">(1</span><span class="token punctuation">,</span><span class="token number"> 2</span><span class="token punctuation">,</span><span class="token number"> 2006</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token number"> 123.51</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        s1<span class="token punctuation">.</span><span class="token function">add<span class="token punctuation">(</span></span><span class="token keyword">new</span> <span class="token class-name">Day</span><span class="token number">(2</span><span class="token punctuation">,</span><span class="token number"> 2</span><span class="token punctuation">,</span><span class="token number"> 2006</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token number"> 122.1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        s1<span class="token punctuation">.</span><span class="token function">add<span class="token punctuation">(</span></span><span class="token keyword">new</span> <span class="token class-name">Day</span><span class="token number">(3</span><span class="token punctuation">,</span><span class="token number"> 2</span><span class="token punctuation">,</span><span class="token number"> 2006</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token number"> 120.86</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        s1<span class="token punctuation">.</span><span class="token function">add<span class="token punctuation">(</span></span><span class="token keyword">new</span> <span class="token class-name">Day</span><span class="token number">(4</span><span class="token punctuation">,</span><span class="token number"> 2</span><span class="token punctuation">,</span><span class="token number"> 2006</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token number"> 122.50</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        s1<span class="token punctuation">.</span><span class="token function">add<span class="token punctuation">(</span></span><span class="token keyword">new</span> <span class="token class-name">Day</span><span class="token number">(5</span><span class="token punctuation">,</span><span class="token number"> 2</span><span class="token punctuation">,</span><span class="token number"> 2006</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token number"> 123.12</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        s1<span class="token punctuation">.</span><span class="token function">add<span class="token punctuation">(</span></span><span class="token keyword">new</span> <span class="token class-name">Day</span><span class="token number">(6</span><span class="token punctuation">,</span><span class="token number"> 2</span><span class="token punctuation">,</span><span class="token number"> 2006</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token number"> 123.9</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        s1<span class="token punctuation">.</span><span class="token function">add<span class="token punctuation">(</span></span><span class="token keyword">new</span> <span class="token class-name">Day</span><span class="token number">(7</span><span class="token punctuation">,</span><span class="token number"> 2</span><span class="token punctuation">,</span><span class="token number"> 2006</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token number"> 124.47</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        s1<span class="token punctuation">.</span><span class="token function">add<span class="token punctuation">(</span></span><span class="token keyword">new</span> <span class="token class-name">Day</span><span class="token number">(8</span><span class="token punctuation">,</span><span class="token number"> 2</span><span class="token punctuation">,</span><span class="token number"> 2006</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token number"> 124.08</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        s1<span class="token punctuation">.</span><span class="token function">add<span class="token punctuation">(</span></span><span class="token keyword">new</span> <span class="token class-name">Day</span><span class="token number">(9</span><span class="token punctuation">,</span><span class="token number"> 2</span><span class="token punctuation">,</span><span class="token number"> 2006</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token number"> 123.55</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        s1<span class="token punctuation">.</span><span class="token function">add<span class="token punctuation">(</span></span><span class="token keyword">new</span> <span class="token class-name">Day</span><span class="token number">(10</span><span class="token punctuation">,</span><span class="token number"> 2</span><span class="token punctuation">,</span><span class="token number"> 2006</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token number"> 122.53</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        dataset<span class="token punctuation">.</span><span class="token function">addSeries<span class="token punctuation">(</span></span>s1<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        dataset<span class="token punctuation">.</span><span class="token function">setDomainIsPointsInTime<span class="token punctuation">(</span></span><span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> dataset<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+在jsp文件中显示图片
+首先在Web应用程序部署文件web<span class="token punctuation">.</span>xml中添加以下代码<span class="token operator">:</span>
+
+<span class="token operator">&lt;</span>!<span class="token operator">--</span> 图片显示，使用专用的servlet来进行显示，它会完成路径的搜索及映射 <span class="token operator">--</span>&gt;
+<span class="token operator">&lt;</span>servlet&gt;
+     <span class="token operator">&lt;</span>servlet<span class="token operator">-</span>name&gt;DisplayChart<span class="token operator">&lt;</span><span class="token operator">/</span>servlet<span class="token operator">-</span>name&gt;
+     <span class="token operator">&lt;</span>servlet<span class="token operator">-</span><span class="token keyword">class</span>&gt;org<span class="token punctuation">.</span>jfree<span class="token punctuation">.</span>chart<span class="token punctuation">.</span>servlet<span class="token punctuation">.</span>DisplayChart<span class="token operator">&lt;</span><span class="token operator">/</span>servlet<span class="token operator">-</span><span class="token keyword">class</span>&gt;
+<span class="token operator">&lt;</span><span class="token operator">/</span>servlet&gt;
+<span class="token operator">&lt;</span>servlet<span class="token operator">-</span>mapping&gt;
+    <span class="token operator">&lt;</span>servlet<span class="token operator">-</span>name&gt;DisplayChart<span class="token operator">&lt;</span><span class="token operator">/</span>servlet<span class="token operator">-</span>name&gt;
+<span class="token operator">&lt;</span>url<span class="token operator">-</span>pattern&gt;<span class="token operator">/</span>servlet<span class="token operator">/</span>DisplayChart<span class="token operator">&lt;</span><span class="token operator">/</span>url<span class="token operator">-</span>pattern&gt;
+<span class="token operator">&lt;</span><span class="token operator">/</span>servlet<span class="token operator">-</span>mapping&gt;
+然后在jsp中显示图片
+完整的jsp文件：
+<span class="token operator">&lt;</span>!<span class="token operator">--</span>文件名称：timeLine<span class="token punctuation">.</span>jsp<span class="token operator">--</span>&gt;
+<span class="token operator">&lt;</span><span class="token operator">%</span>@ page contentType<span class="token operator">=</span><span class="token string">"text/html;charset=gb2312"</span> pageEncoding<span class="token operator">=</span><span class="token string">"GB2312"</span><span class="token operator">%</span>&gt;
+<span class="token operator">&lt;</span><span class="token operator">%</span>@ page <span class="token keyword">import</span><span class="token operator">=</span><span class="token string">"com.caiwb.bean.LineXYChart"</span><span class="token operator">%</span>&gt;
+<span class="token operator">&lt;</span><span class="token operator">%</span>@ page <span class="token keyword">import</span> <span class="token operator">=</span> <span class="token string">"java.io.PrintWriter"</span> <span class="token operator">%</span>&gt;
+<span class="token operator">&lt;</span><span class="token operator">%</span>
+LineXYChart xyChart<span class="token operator">=</span><span class="token keyword">new</span> <span class="token class-name">LineXYChart</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+String fileName<span class="token operator">=</span>xyChart<span class="token punctuation">.</span><span class="token function">getLineXYChart<span class="token punctuation">(</span></span>session<span class="token punctuation">,</span><span class="token keyword">new</span> <span class="token class-name">PrintWriter</span><span class="token punctuation">(</span>out<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  String graphURL <span class="token operator">=</span> request<span class="token punctuation">.</span><span class="token function">getContextPath<span class="token punctuation">(</span></span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">"/servlet/DisplayChart?filename="</span> <span class="token operator">+</span> fileName<span class="token punctuation">;</span> 
+<span class="token operator">%</span>&gt;
+<span class="token operator">&lt;</span>html&gt;
+<span class="token operator">&lt;</span><span class="token operator">/</span>head&gt;
+<span class="token operator">&lt;</span>title&gt; JFreeChart使用例子<span class="token operator">&lt;</span><span class="token operator">/</span>title&gt;
+<span class="token operator">&lt;</span>meta http<span class="token operator">-</span>equiv<span class="token operator">=</span><span class="token string">"Content-Type"</span> content<span class="token operator">=</span><span class="token string">"text/html; charset=gb2312"</span>&gt;
+<span class="token operator">&lt;</span><span class="token operator">/</span>head&gt;
+<span class="token operator">&lt;</span>body&gt;
+<span class="token operator">&lt;</span>img src<span class="token operator">=</span><span class="token string">"&lt;%= graphURL %&gt;"</span> width<span class="token number">=500</span> height<span class="token number">=300</span> border<span class="token number">=0</span> usemap<span class="token operator">=</span><span class="token string">"#&lt;%= fileName %&gt;"</span>&gt;
+<span class="token operator">&lt;</span><span class="token operator">/</span>body&gt;
+<span class="token operator">&lt;</span><span class="token operator">/</span>html&gt;
+
+</code></pre>
+<!-- content end -->
+</div>
+<br>
+<br>
+    <div id="disqus_thread"></div>
+	<div class="footer">
+		<p>© Copyright 2014 by Hellc, Designed by Hellc</p>
+	</div>
+</div>
+<script src="main.js"></script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ["\\(", "\\)"]], processEscapes: true}});
+</script>
+<script id="content" type="text/mustache">
+    <h1>{{title}}</h1>
+    <div class="tag">
+    {{date}}
+    {{#tags}}
+    <a href="/#/tag/{{name}}">#{{name}}</a>
+    {{/tags}}
+    </div>
+</script>
+<script id="pagesTemplate" type="text/mustache">
+    {{#pages}}
+    <li>
+        <a href="{{path}}">{{title}}</a>
+    </li>
+    {{/pages}}
+</script>
+<script>
+$(document).ready(function() {
+    $.ajax({
+        url: "main.json",
+        type: "GET",
+        dataType: "json",
+        success: function(data) {
+            $("#title").html(data.name);
+            var pagesTemplate = Hogan.compile($("#pagesTemplate").html());
+            var pagesHtml = pagesTemplate.render({"pages": data.pages});
+            $("#pages").append(pagesHtml);
+            //path
+            var path = "java_jfreeCHart.html";
+            //path end
+            var now = 0;
+            for (var i = 0; i < data.posts.length; ++i)
+                if (path == data.posts[i].path)
+                    now = i;
+            var post = data.posts[now];
+            var tmp = post.tags.split(" ");
+            var tags = [];
+            for (var i = 0; i < tmp.length; ++i)
+                if (tmp[i].length > 0)
+                    tags.push({"name": tmp[i]});
+            var contentTemplate = Hogan.compile($("#content").html());
+            var contentHtml = contentTemplate.render({"title": post.title, "tags": tags, "date": post.date});
+            $("#main").prepend(contentHtml);
+            if (data.disqus_shortname.length > 0) {
+                var disqus_shortname = data.disqus_shortname;
+                (function() {
+                    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                })();
+            }
+        }
+    });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,542 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="Keywords" content="blog"/>
+    <meta name="Description" content="blog"/>
+    <title>Hellc</title>
+    <link rel="shortcut icon" href="/static/favicon.png"/>
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+</head>
+<body>
+<div class="main">
+    <div class="header">
+    	<ul id="pages">
+            <li><a href="/">home</a></li>
+            <li><a href="/#/tags">tags</a></li>
+            <li><a href="/#/archive">archive</a></li>
+    	</ul>
+    </div>
+	<div class="wrap-header">
+	<h1>
+    <a href="/" id="title"></a>
+	</h1>
+	</div>
+<div id="md" style="display: none;">
+<!-- markdown -->
+[ java_IO操作流总结](http://caiwb1990.iteye.com/blog/1399153)
+
+~~~~{java}
+import java.io.*;
+
+
+/*
+
+IO流的操作规律。
+三个明确：
+
+1，明确源(读)和目的(写)。
+		其实就是在明确输入流还是输出流。
+		源：输入流 InputStream  Reader
+		目的：输出流 OutputStream  Writer
+
+
+2，明确操作的数据内容。
+		其实就是在明确字符流还是字节流。
+		如果数据都是纯文本数据使用字符流。
+		如果数据是非文本数据使用字节流。
+
+前两步已经明确了使用哪一个体系。
+
+
+3，明确具体的设备。
+	明确使用的具体对象。
+
+	源设备：内存，键盘(System.in)，硬盘(文本)(File)。
+	目的设备：内存，控制台(System.out)，硬盘(文件)(File).
+
+扩展部分：需要进行高效操作吗？
+	是：加入缓冲区技术(Buffered)。
+
+
+--------------------------------------------------
+需求1：
+读取键盘，并键盘录入的数据变成大写打印在控制台上。
+
+
+需求2：
+读取键盘录入数据，将数据变成大写，保存到一个文件中。
+
+分析：
+源：键盘，InputStream。Reader
+是纯文本数据:Reader.
+设备：System.in.
+
+已经明确了使用读取字符流体系，可是设备是键盘System.in是读取字节流对象。
+这时就需要将字节流转成字符流。用到了InputStreamReader.
+
+需要高效吗？需要。Buffered
+
+BufferedReader bufr = 
+		new BufferedReader(new InputStreamReader(System.in));
+Note: 键盘录入，就写这句代码！
+
+
+目的：硬盘，OutputStream Writer
+纯文本？yes Writer
+设备：硬盘文件 FileWriter。
+缓冲，yes
+
+BufferedWriter bufw = new BufferedWriter(new FileWriter("a.txt"));
+BufferedWriter bufw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("a.txt")));
+BufferedWriter bufw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("a.txt"),"GBK"));
+这三句都是等效的。使用都是默认的编码表GBK.
+
+另加一个需求？
+想要将录入的数据按照UTF-8另一个编码表的形式进行数据的存储。
+那么目的就要变化了，因为FileWriter，虽然可以作为文件目的对象，但是该对象中的编码表是默认的GBK。
+当想要指定编码表时，必须要使用转换流。
+BufferedWriter bufw = 
+	BufferedWriter(new OutputStreamWriter(new FileOutputStream("a.txt"),"UTF-8"));
+
+
+##############################################
+#记住：凡是涉及到编码转换的操作，            #
+#一定要想到转换流，如果只用默认码表，		 #
+#可是使用转换流的子类FileWriter或FileReader. #
+##############################################
+
+
+
+-----------------------------------------------------
+
+
+需求3：
+读取一个文本文件，将文本文件的数据展现在控制台上。
+分析：
+源：硬盘文件。InputStream Reader。
+纯文本？yes  Reader。
+设备：硬盘 FileReader.
+缓冲？yes  BufferedReader 
+
+BufferedReader bufr = new BufferedReader(new FileReader("a.txt"));
+
+目的：OutputStream  Writer
+纯文本?yes  Writer.
+设备：控制台 System.out.
+
+发现控制台的对象是System.out.是字节输出流。
+因为是纯文本数据，使用Writer所以可以将字符流转成成字节串流。
+使用了转换流 OutputStreamWriter
+
+需要高效吗？需要。
+
+BufferedWriter bufw = 
+	new BufferedWriter(new OutputStreamWriter(System.out));
+
+
+
+---------------------------------------------------
+
+
+需求4：
+读取一个文本文件，将数据变成大写，存到一个文件中。
+
+分析：
+源？目的？
+源：一个硬盘文件。就明确了要使用InputStream  Reader
+是纯文本的吗？是，就进一步明确了使用Reader.
+什么设备：硬盘文件。在进一步明确了使用Reader体系中FileReader
+
+FileReader fr = new FileReader("a.txt");
+
+需要提高效率吗？需要！
+BufferedReader bufr = new BufferedReader(fr);
+
+
+
+目的：一个硬盘文件。使用体系 OutputStream Writer
+是纯文本吗？是，使用Writer。
+目的设备：硬盘文件.使用FileWriter.
+
+FileWriter fw = new FileWriter("b.txt");
+
+需要高效吗？需要!
+BufferedWriter bufw = new BufferedWriter(fw);
+
+
+
+
+
+
+*/
+
+class  TransStreamDemo2
+{
+	public static void main(String[] args)throws IOException 
+	{
+
+		/*
+		InputStream in = System.in;
+
+		//需要将字节流转成字符流。
+		InputStreamReader isr = new InputStreamReader(in);
+
+		//使用缓冲区的readLine
+		BufferedReader bufr = new BufferedReader(isr);
+
+
+		OutputStream out = System.out;
+		
+		OutputStreamWriter osw = new OutputStreamWriter(out);
+
+
+		BufferedWriter bufw = new BufferedWriter(osw);
+		*/
+
+
+		BufferedReader bufr = 
+			new BufferedReader(new InputStreamReader(new FileInputStream("LineNumberReaderDemo.java")));
+
+		BufferedWriter bufw = 
+			new BufferedWriter(new OutputStreamWriter(new FileOutputStream("copyLine.txt")));
+
+		String line  = null;
+
+		while((line=bufr.readLine())!=null)
+		{
+
+			if("over".equals(line))
+				break;
+			bufw.write(line.toUpperCase());
+			bufw.newLine();
+			bufw.flush();
+
+		}
+		bufw.close();
+		bufr.close();
+
+	}
+}
+/*
+
+c:\abc
+c:\abc\haah
+c:\abc\0.mp3    "c:\abc\0.mp3"--replace("c:\abc","d:\qq\abc")->"d:\qq\abc\0.mp3"
+
+new FileInputStream("c:\abc\0.mp3");
+
+new FileOutputStream("d:\qq\abc\0.mp3");
+
+
+d:\qq\
+d:\qq\abc\haah
+d:\qq\abc\0.mp3
+
+
+d:\qq\
+d:\qq\abc
+d:\qq\abc\0.mp3
+
+*/
+
+
+
+
+~~~~
+
+<!-- markdown end -->
+</div>
+<div class="entry" id="main">
+<!-- content -->
+<p><a href="http://caiwb1990.iteye.com/blog/1399153"> java_IO操作流总结</a></p>
+
+<pre class=" language-java"><code class=" language-java"><span class="token keyword">import</span> java<span class="token punctuation">.</span>io<span class="token punctuation">.</span>*<span class="token punctuation">;</span>
+
+
+<span class="token comment" spellcheck="true">/*
+
+IO流的操作规律。
+三个明确：
+
+1，明确源(读)和目的(写)。
+        其实就是在明确输入流还是输出流。
+        源：输入流 InputStream  Reader
+        目的：输出流 OutputStream  Writer
+
+
+2，明确操作的数据内容。
+        其实就是在明确字符流还是字节流。
+        如果数据都是纯文本数据使用字符流。
+        如果数据是非文本数据使用字节流。
+
+前两步已经明确了使用哪一个体系。
+
+
+3，明确具体的设备。
+    明确使用的具体对象。
+
+    源设备：内存，键盘(System.in)，硬盘(文本)(File)。
+    目的设备：内存，控制台(System.out)，硬盘(文件)(File).
+
+扩展部分：需要进行高效操作吗？
+    是：加入缓冲区技术(Buffered)。
+
+
+--------------------------------------------------
+需求1：
+读取键盘，并键盘录入的数据变成大写打印在控制台上。
+
+
+需求2：
+读取键盘录入数据，将数据变成大写，保存到一个文件中。
+
+分析：
+源：键盘，InputStream。Reader
+是纯文本数据:Reader.
+设备：System.in.
+
+已经明确了使用读取字符流体系，可是设备是键盘System.in是读取字节流对象。
+这时就需要将字节流转成字符流。用到了InputStreamReader.
+
+需要高效吗？需要。Buffered
+
+BufferedReader bufr = 
+        new BufferedReader(new InputStreamReader(System.in));
+Note: 键盘录入，就写这句代码！
+
+
+目的：硬盘，OutputStream Writer
+纯文本？yes Writer
+设备：硬盘文件 FileWriter。
+缓冲，yes
+
+BufferedWriter bufw = new BufferedWriter(new FileWriter("a.txt"));
+BufferedWriter bufw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("a.txt")));
+BufferedWriter bufw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("a.txt"),"GBK"));
+这三句都是等效的。使用都是默认的编码表GBK.
+
+另加一个需求？
+想要将录入的数据按照UTF-8另一个编码表的形式进行数据的存储。
+那么目的就要变化了，因为FileWriter，虽然可以作为文件目的对象，但是该对象中的编码表是默认的GBK。
+当想要指定编码表时，必须要使用转换流。
+BufferedWriter bufw = 
+    BufferedWriter(new OutputStreamWriter(new FileOutputStream("a.txt"),"UTF-8"));
+
+
+##############################################
+#记住：凡是涉及到编码转换的操作，            #
+#一定要想到转换流，如果只用默认码表，         #
+#可是使用转换流的子类FileWriter或FileReader. #
+##############################################
+
+
+
+-----------------------------------------------------
+
+
+需求3：
+读取一个文本文件，将文本文件的数据展现在控制台上。
+分析：
+源：硬盘文件。InputStream Reader。
+纯文本？yes  Reader。
+设备：硬盘 FileReader.
+缓冲？yes  BufferedReader 
+
+BufferedReader bufr = new BufferedReader(new FileReader("a.txt"));
+
+目的：OutputStream  Writer
+纯文本?yes  Writer.
+设备：控制台 System.out.
+
+发现控制台的对象是System.out.是字节输出流。
+因为是纯文本数据，使用Writer所以可以将字符流转成成字节串流。
+使用了转换流 OutputStreamWriter
+
+需要高效吗？需要。
+
+BufferedWriter bufw = 
+    new BufferedWriter(new OutputStreamWriter(System.out));
+
+
+
+---------------------------------------------------
+
+
+需求4：
+读取一个文本文件，将数据变成大写，存到一个文件中。
+
+分析：
+源？目的？
+源：一个硬盘文件。就明确了要使用InputStream  Reader
+是纯文本的吗？是，就进一步明确了使用Reader.
+什么设备：硬盘文件。在进一步明确了使用Reader体系中FileReader
+
+FileReader fr = new FileReader("a.txt");
+
+需要提高效率吗？需要！
+BufferedReader bufr = new BufferedReader(fr);
+
+
+
+目的：一个硬盘文件。使用体系 OutputStream Writer
+是纯文本吗？是，使用Writer。
+目的设备：硬盘文件.使用FileWriter.
+
+FileWriter fw = new FileWriter("b.txt");
+
+需要高效吗？需要!
+BufferedWriter bufw = new BufferedWriter(fw);
+
+
+
+
+
+
+*/</span>
+
+<span class="token keyword">class</span>  <span class="token class-name">TransStreamDemo2</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main<span class="token punctuation">(</span></span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span><span class="token keyword">throws</span> IOException 
+    <span class="token punctuation">{</span>
+
+        <span class="token comment" spellcheck="true">/*
+        InputStream in = System.in;
+
+        //需要将字节流转成字符流。
+        InputStreamReader isr = new InputStreamReader(in);
+
+        //使用缓冲区的readLine
+        BufferedReader bufr = new BufferedReader(isr);
+
+
+        OutputStream out = System.out;
+
+        OutputStreamWriter osw = new OutputStreamWriter(out);
+
+
+        BufferedWriter bufw = new BufferedWriter(osw);
+        */</span>
+
+
+        BufferedReader bufr <span class="token operator">=</span> 
+            <span class="token keyword">new</span> <span class="token class-name">BufferedReader</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">InputStreamReader</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">FileInputStream</span><span class="token punctuation">(</span><span class="token string">"LineNumberReaderDemo.java"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        BufferedWriter bufw <span class="token operator">=</span> 
+            <span class="token keyword">new</span> <span class="token class-name">BufferedWriter</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">OutputStreamWriter</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">FileOutputStream</span><span class="token punctuation">(</span><span class="token string">"copyLine.txt"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        String line  <span class="token operator">=</span> null<span class="token punctuation">;</span>
+
+        <span class="token keyword">while</span><span class="token punctuation">(</span><span class="token punctuation">(</span>line<span class="token operator">=</span>bufr<span class="token punctuation">.</span><span class="token function">readLine<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token operator">!</span><span class="token operator">=</span>null<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+
+            <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token string">"over"</span><span class="token punctuation">.</span><span class="token function">equals<span class="token punctuation">(</span></span>line<span class="token punctuation">)</span><span class="token punctuation">)</span>
+                <span class="token keyword">break</span><span class="token punctuation">;</span>
+            bufw<span class="token punctuation">.</span><span class="token function">write<span class="token punctuation">(</span></span>line<span class="token punctuation">.</span><span class="token function">toUpperCase<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            bufw<span class="token punctuation">.</span><span class="token function">newLine<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            bufw<span class="token punctuation">.</span><span class="token function">flush<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token punctuation">}</span>
+        bufw<span class="token punctuation">.</span><span class="token function">close<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        bufr<span class="token punctuation">.</span><span class="token function">close<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span class="token comment" spellcheck="true">/*
+
+c:\abc
+c:\abc\haah
+c:\abc\0.mp3    "c:\abc\0.mp3"--replace("c:\abc","d:\qq\abc")-&gt;"d:\qq\abc\0.mp3"
+
+new FileInputStream("c:\abc\0.mp3");
+
+new FileOutputStream("d:\qq\abc\0.mp3");
+
+
+d:\qq\
+d:\qq\abc\haah
+d:\qq\abc\0.mp3
+
+
+d:\qq\
+d:\qq\abc
+d:\qq\abc\0.mp3
+
+*/</span>
+
+
+
+
+</code></pre>
+<!-- content end -->
+</div>
+<br>
+<br>
+    <div id="disqus_thread"></div>
+	<div class="footer">
+		<p>© Copyright 2014 by Hellc, Designed by Hellc</p>
+	</div>
+</div>
+<script src="main.js"></script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ["\\(", "\\)"]], processEscapes: true}});
+</script>
+<script id="content" type="text/mustache">
+    <h1>{{title}}</h1>
+    <div class="tag">
+    {{date}}
+    {{#tags}}
+    <a href="/#/tag/{{name}}">#{{name}}</a>
+    {{/tags}}
+    </div>
+</script>
+<script id="pagesTemplate" type="text/mustache">
+    {{#pages}}
+    <li>
+        <a href="{{path}}">{{title}}</a>
+    </li>
+    {{/pages}}
+</script>
+<script>
+$(document).ready(function() {
+    $.ajax({
+        url: "main.json",
+        type: "GET",
+        dataType: "json",
+        success: function(data) {
+            $("#title").html(data.name);
+            var pagesTemplate = Hogan.compile($("#pagesTemplate").html());
+            var pagesHtml = pagesTemplate.render({"pages": data.pages});
+            $("#pages").append(pagesHtml);
+            //path
+            var path = "java_io.html";
+            //path end
+            var now = 0;
+            for (var i = 0; i < data.posts.length; ++i)
+                if (path == data.posts[i].path)
+                    now = i;
+            var post = data.posts[now];
+            var tmp = post.tags.split(" ");
+            var tags = [];
+            for (var i = 0; i < tmp.length; ++i)
+                if (tmp[i].length > 0)
+                    tags.push({"name": tmp[i]});
+            var contentTemplate = Hogan.compile($("#content").html());
+            var contentHtml = contentTemplate.render({"title": post.title, "tags": tags, "date": post.date});
+            $("#main").prepend(contentHtml);
+            if (data.disqus_shortname.length > 0) {
+                var disqus_shortname = data.disqus_shortname;
+                (function() {
+                    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                })();
+            }
+        }
+    });
+});
+</script>
+</body>
+</html>

@@ -61,11 +61,13 @@ vi ~/.android/adb_usb.ini
 命令，在打开的 adb_usb.ini文件中添加ID， 然后保存退出 
 
 
-3.把ID写入到adb_usb.ini，然后命令： 
+3.把ID写入到adb_usb.ini，然后重启adb  ： 
 ~~~~{bash}
-adb kill-server  
-adb devices  
+adb kill-server
+adb start-server
+adb devices
 ~~~~
+就可以看到列表了！
 
 4.进入android开发环境发现，已经可以找到手机了
 <!-- markdown end -->
@@ -97,16 +99,15 @@ adb devices
 
 <p>Hardware –&gt; USB，点击你此时连在电脑上的Android设备的一项，出现设备详细信息。Vender ID/供应商ID就在这。</p>
 
-<p>2.输入： </p>
+<p>2.输入： 
+</p><pre class=" language-bash"><code class=" language-bash">vi <span class="token operator">~</span><span class="token operator">/</span><span class="token punctuation">.</span>android<span class="token operator">/</span>adbusb<span class="token punctuation">.</span>ini 
+</code></pre><em>命令，在打开的 adb</em>usb.ini文件中添加ID， 然后保存退出 <p></p>
 
-<pre class=" language-bash"><code class=" language-bash">vi <span class="token operator">~</span><span class="token operator">/</span><span class="token punctuation">.</span>android<span class="token operator">/</span>adb_usb<span class="token punctuation">.</span>ini   
-</code></pre>命令，在打开的 adb_usb.ini文件中添加ID， 然后保存退出 
-
-
-3.把ID写入到adb_usb.ini，然后命令： 
-<pre class=" language-bash"><code class=" language-bash">adb kill<span class="token operator">-</span>server  
-adb devices  
-</code></pre>
+<p>3.把ID写入到adb_usb.ini，然后重启adb  ： 
+</p><pre class=" language-bash"><code class=" language-bash">adb kill<span class="token operator">-</span>server
+adb start<span class="token operator">-</span>server
+adb devices
+</code></pre>就可以看到列表了！<p></p>
 
 <p>4.进入android开发环境发现，已经可以找到手机了</p>
 <!-- content end -->

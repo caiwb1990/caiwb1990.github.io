@@ -1,0 +1,282 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="Keywords" content="blog"/>
+    <meta name="Description" content="blog"/>
+    <title>Hellc</title>
+    <link rel="shortcut icon" href="/static/favicon.png"/>
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+</head>
+<body>
+<div class="main">
+    <div class="header">
+    	<ul id="pages">
+            <li><a href="/">home</a></li>
+            <li><a href="/#/tags">tags</a></li>
+            <li><a href="/#/archive">archive</a></li>
+    	</ul>
+    </div>
+	<div class="wrap-header">
+	<h1>
+    <a href="/" id="title"></a>
+	</h1>
+	</div>
+<div id="md" style="display: none;">
+<!-- markdown -->
+[  Java总结-正则表达式 ](http://caiwb1990.iteye.com/blog/1405857)
+
+~~~~{java}
+
+正则表达式：
+	专门用于操作字符串的规则。
+	将一些操作代码通过一些符号体现。
+	好处：
+		1，方便了程序的编写。
+		2，可以用于对字符串的复杂操作。
+	弊端：
+		阅读性较差。
+
+
+常用规则：
+[]:限定某一位字符内容范围。
+比如：	[abc]：该位字符只能出现a或者b或者c。
+	[a-z]：改为字符只要是小写字母中的一个即可。
+{}：限定前一个字符或者正则规则内容出现的次数。
+比如：	{3}:出现3次。
+	{3,}:至少出现3次。
+	{3,7}:出现3到7次。
+
+数量规则：
+	？：出现一次或者0次。
+	* ：出现了0次或者多次。
+	+ ：出现1次或者多次。
+
+字符规则：
+	\d: [0-9],数字。
+	\D: [^0-9],非数字。
+	\w: [a-zA-Z0-9_]
+	\b: 单词边界。
+	\s: 空格，tab，\r  \n.
+
+组规则：
+	可以将正则表达式的结果通过()进行封装，以便于该规则内容被重用
+	技巧：当出现了嵌套组的时候，通过左括号来进行编号的判断。该编号从1开始。
+
+	如果使用已定好的组呢？
+	通过\n形式，反向引用组。()\\1+。
+
+特殊：
+	$ : 代表是行结束。
+	^ : 行开始。
+	. : 代表任意字符。
+
+
+--------
+对字符串操作的常见功能。
+1，匹配。String matches(regex);其实最终使用的是Matcher匹配器对象。
+	需求：判断QQ号码。5~15 0不可以开头。
+	qq.matches("[1-9]\\d{4,14}");
+
+2，切割：String split(regex);
+	需求：如果想通过  .  的形式起个字符串。
+	split("\\.");
+
+3，替换：String replaceAll(regex,str);
+	在regex表达式中使用了组。那么可以在str中的通过  $编号 的形式获取regex中的组。
+	需求：如果想将符合规则的内容替换成一个$符号。
+	replaceAll(regex,"\\$");
+	需求：替换叠词，用叠词中的一个替换全部。
+	s.replaceAll("(.)\\1+","$1");
+
+4，查找：涉及到java.util.regex包中两个对象。Pattern ，Matcher。
+	1，将正则规则封装成Pattern对象。Pattern p = Pattern.compile(regex);
+	2，将规则对象和要作用的字符串相关联,获取匹配器对象。Matcher m  = p.matcher(str);
+	3，通过匹配器对象find()将规则去操作字符串，如果找到返回true。
+	   在通过group()方法获取找到符合规则的内容。
+
+
+练习：
+	1，获取一段英文有三个字母组成的单词。
+	2，操作一组ip地址，按ip地址顺序排序。
+	3，Email规则。/*[a-zA-Z0-9_]*/  "\\w{6,12}@[a-zA-Z0-9]+(\\.[a-zA-Z]+)+"
+	4，网页爬虫。			
+		遍历网页中的文本，将符合规则的信息获取。
+
+应用场景：
+注册表单的校验。
+
+
+
+
+
+
+
+
+~~~~
+
+<!-- markdown end -->
+</div>
+<div class="entry" id="main">
+<!-- content -->
+<p><a href="http://caiwb1990.iteye.com/blog/1405857">  Java总结-正则表达式 </a></p>
+
+<pre class=" language-java"><code class=" language-java">
+正则表达式：
+    专门用于操作字符串的规则。
+    将一些操作代码通过一些符号体现。
+    好处：
+       <span class="token number"> 1</span>，方便了程序的编写。
+       <span class="token number"> 2</span>，可以用于对字符串的复杂操作。
+    弊端：
+        阅读性较差。
+
+
+常用规则：
+<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token operator">:</span>限定某一位字符内容范围。
+比如：    <span class="token punctuation">[</span>abc<span class="token punctuation">]</span>：该位字符只能出现a或者b或者c。
+    <span class="token punctuation">[</span>a<span class="token operator">-</span>z<span class="token punctuation">]</span>：改为字符只要是小写字母中的一个即可。
+<span class="token punctuation">{</span><span class="token punctuation">}</span>：限定前一个字符或者正则规则内容出现的次数。
+比如：    <span class="token number">{3</span><span class="token punctuation">}</span><span class="token operator">:</span>出<span class="token number">现3</span>次。
+    <span class="token number">{3</span><span class="token punctuation">,</span><span class="token punctuation">}</span><span class="token operator">:</span>至少出<span class="token number">现3</span>次。
+    <span class="token number">{3</span><span class="token number">,7</span><span class="token punctuation">}</span><span class="token operator">:</span>出<span class="token number">现3</span><span class="token number">到7</span>次。
+
+数量规则：
+    ？：出现一次或<span class="token number">者0</span>次。
+    <span class="token operator">*</span> ：出现<span class="token number">了0</span>次或者多次。
+    <span class="token operator">+</span> ：出<span class="token number">现1</span>次或者多次。
+
+字符规则：
+    \d<span class="token operator">:</span> <span class="token number">[0</span><span class="token number">-9</span><span class="token punctuation">]</span><span class="token punctuation">,</span>数字。
+    \D<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token number">^0</span><span class="token number">-9</span><span class="token punctuation">]</span><span class="token punctuation">,</span>非数字。
+    \w<span class="token operator">:</span> <span class="token punctuation">[</span>a<span class="token operator">-</span>zA<span class="token operator">-</span>Z0<span class="token operator">-</span>9_<span class="token punctuation">]</span>
+    \b<span class="token operator">:</span> 单词边界。
+    \s<span class="token operator">:</span> 空格，tab，\r  \n<span class="token punctuation">.</span>
+
+组规则：
+    可以将正则表达式的结果通过<span class="token punctuation">(</span><span class="token punctuation">)</span>进行封装，以便于该规则内容被重用
+    技巧：当出现了嵌套组的时候，通过左括号来进行编号的判断。该编号<span class="token number">从1</span>开始。
+
+    如果使用已定好的组呢？
+    通过\n形式，反向引用组。<span class="token punctuation">(</span><span class="token punctuation">)</span>\<span class="token number">\1</span><span class="token operator">+</span>。
+
+特殊：
+    $ <span class="token operator">:</span> 代表是行结束。
+    <span class="token operator">^</span> <span class="token operator">:</span> 行开始。
+    <span class="token punctuation">.</span> <span class="token operator">:</span> 代表任意字符。
+
+
+<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>
+对字符串操作的常见功能。<span class="token number">
+1</span>，匹配。String <span class="token function">matches<span class="token punctuation">(</span></span>regex<span class="token punctuation">)</span><span class="token punctuation">;</span>其实最终使用的是Matcher匹配器对象。
+    需求：判断QQ号码<span class="token number">。5</span><span class="token number">~15</span><span class="token number"> 0</span>不可以开头。
+    qq<span class="token punctuation">.</span><span class="token function">matches<span class="token punctuation">(</span></span><span class="token string">"[1-9]\\d{4,14}"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token number">
+2</span>，切割：String <span class="token function">split<span class="token punctuation">(</span></span>regex<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    需求：如果想通过  <span class="token punctuation">.</span>  的形式起个字符串。
+    <span class="token function">split<span class="token punctuation">(</span></span><span class="token string">"\\."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token number">
+3</span>，替换：String <span class="token function">replaceAll<span class="token punctuation">(</span></span>regex<span class="token punctuation">,</span>str<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    在regex表达式中使用了组。那么可以在str中的通过  $编号 的形式获取regex中的组。
+    需求：如果想将符合规则的内容替换成一个$符号。
+    <span class="token function">replaceAll<span class="token punctuation">(</span></span>regex<span class="token punctuation">,</span><span class="token string">"\\$"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    需求：替换叠词，用叠词中的一个替换全部。
+    s<span class="token punctuation">.</span><span class="token function">replaceAll<span class="token punctuation">(</span></span><span class="token string">"(.)\\1+"</span><span class="token punctuation">,</span><span class="token string">"$1"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token number">
+4</span>，查找：涉及到java<span class="token punctuation">.</span>util<span class="token punctuation">.</span>regex包中两个对象。Pattern ，Matcher。
+   <span class="token number"> 1</span>，将正则规则封装成Pattern对象。Pattern p <span class="token operator">=</span> Pattern<span class="token punctuation">.</span><span class="token function">compile<span class="token punctuation">(</span></span>regex<span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token number"> 2</span>，将规则对象和要作用的字符串相关联<span class="token punctuation">,</span>获取匹配器对象。Matcher m  <span class="token operator">=</span> p<span class="token punctuation">.</span><span class="token function">matcher<span class="token punctuation">(</span></span>str<span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token number"> 3</span>，通过匹配器对象<span class="token function">find<span class="token punctuation">(</span></span><span class="token punctuation">)</span>将规则去操作字符串，如果找到返回<span class="token boolean">true</span>。
+       在通过<span class="token function">group<span class="token punctuation">(</span></span><span class="token punctuation">)</span>方法获取找到符合规则的内容。
+
+
+练习：
+   <span class="token number"> 1</span>，获取一段英文有三个字母组成的单词。
+   <span class="token number"> 2</span>，操作一组ip地址，按ip地址顺序排序。
+   <span class="token number"> 3</span>，Email规则。<span class="token comment" spellcheck="true">/*[a-zA-Z0-9_]*/</span>  <span class="token string">"\\w{6,12}@[a-zA-Z0-9]+(\\.[a-zA-Z]+)+"</span>
+   <span class="token number"> 4</span>，网页爬虫。         
+        遍历网页中的文本，将符合规则的信息获取。
+
+应用场景：
+注册表单的校验。
+
+
+
+
+
+
+
+
+</code></pre>
+<!-- content end -->
+</div>
+<br>
+<br>
+    <div id="disqus_thread"></div>
+	<div class="footer">
+		<p>© Copyright 2014 by Hellc, Designed by Hellc</p>
+	</div>
+</div>
+<script src="main.js"></script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ["\\(", "\\)"]], processEscapes: true}});
+</script>
+<script id="content" type="text/mustache">
+    <h1>{{title}}</h1>
+    <div class="tag">
+    {{date}}
+    {{#tags}}
+    <a href="/#/tag/{{name}}">#{{name}}</a>
+    {{/tags}}
+    </div>
+</script>
+<script id="pagesTemplate" type="text/mustache">
+    {{#pages}}
+    <li>
+        <a href="{{path}}">{{title}}</a>
+    </li>
+    {{/pages}}
+</script>
+<script>
+$(document).ready(function() {
+    $.ajax({
+        url: "main.json",
+        type: "GET",
+        dataType: "json",
+        success: function(data) {
+            $("#title").html(data.name);
+            var pagesTemplate = Hogan.compile($("#pagesTemplate").html());
+            var pagesHtml = pagesTemplate.render({"pages": data.pages});
+            $("#pages").append(pagesHtml);
+            //path
+            var path = "java_zhengze.html";
+            //path end
+            var now = 0;
+            for (var i = 0; i < data.posts.length; ++i)
+                if (path == data.posts[i].path)
+                    now = i;
+            var post = data.posts[now];
+            var tmp = post.tags.split(" ");
+            var tags = [];
+            for (var i = 0; i < tmp.length; ++i)
+                if (tmp[i].length > 0)
+                    tags.push({"name": tmp[i]});
+            var contentTemplate = Hogan.compile($("#content").html());
+            var contentHtml = contentTemplate.render({"title": post.title, "tags": tags, "date": post.date});
+            $("#main").prepend(contentHtml);
+            if (data.disqus_shortname.length > 0) {
+                var disqus_shortname = data.disqus_shortname;
+                (function() {
+                    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                })();
+            }
+        }
+    });
+});
+</script>
+</body>
+</html>

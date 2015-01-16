@@ -1,0 +1,408 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="Keywords" content="blog"/>
+    <meta name="Description" content="blog"/>
+    <title>Hellc</title>
+    <link rel="shortcut icon" href="/static/favicon.png"/>
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+</head>
+<body>
+<div class="main">
+    <div class="header">
+    	<ul id="pages">
+            <li><a href="/">home</a></li>
+            <li><a href="/#/tags">tags</a></li>
+            <li><a href="/#/archive">archive</a></li>
+    	</ul>
+    </div>
+	<div class="wrap-header">
+	<h1>
+    <a href="/" id="title"></a>
+	</h1>
+	</div>
+<div id="md" style="display: none;">
+<!-- markdown -->
+[  Java总结-图形界面编程 ](http://caiwb1990.iteye.com/blog/1405858)
+
+~~~~{java}
+图形界面编程：
+	java将图形界面所需要的组件都存在了java.awt包中以及后期基于awt出现javax.swing包中。
+	awt:不跨平台，依赖平台的显示样式及效果。
+	swing:跨平台。
+
+	Component:
+		|--Button		
+		|--Label：想要往组件中添加文本信息，需要先将文本封装成组件。使用的就是label对象。
+		|--Container:是构件的一个特殊子类，特点可以存储组件。
+			|--Panel:面板，不单独存在。需要存入window中。
+			|--Window
+				|--Frame：用于创建窗体。
+				|--Dialog
+					|--FileDialog：有两个模式，LOAD(默认) SAVE用于对文件进行选取和指定。
+		|--TextComponent
+			|--TextField
+			|--TextArea
+	
+	定义图形界面的简单操作。
+	import java.awt.*;
+	import java.awt.event.*;
+	class MyFrame
+	{
+		private Frame f;
+		private Button b;
+		MyFrame()
+		{
+			init();
+		}
+
+		public void init()
+		{
+			f = new Frame("my Frame");
+			f.setBounds(300,200,600,500);
+			f.setLayout(new FlowLayout());
+
+			b = new Button("my button");
+
+			f.add(b);
+
+			myEvent();
+
+			f.setVisible(true);
+		}
+		private void myEvent()
+		{
+			f.addWindowListener(new WindowAdapter()
+			{
+				public void windowClosing(WindowEvent e)
+				{
+					System.exit(0);
+				}
+			});
+
+			/*
+			点击按钮也可以实现关闭程序。
+			1，确定事件源。button。
+			2，确定事件，ActionEvent  MouseEvent 
+			3，将活动事件注册到事件源上。注册时就需要先知道监听器。ActionListener。
+			4，使用事件源的addXXXListener方法将XXXListener的子类对象作为参数传递给add方法即可完成监听动作。
+			5，覆盖监听接口或者监听接口的子类监听适配器中的方法。定义事件对应的动作处理方式。
+			*/
+
+			b.addActionListener(new ActionListener()
+			{
+				public void  actionPerformed(ActionEvent e)
+				{
+					System.exit(0);
+				}
+			});
+		}
+	}
+
+	另一种方式： 自定义Frame的子类对象也可以创建窗体。
+
+	----------------
+	事件监听机制。
+	组成部分：
+	1，事件源：其实就是awt中的组件。
+	2，事件：就是event包中的所有Event对象。
+	3，监听器：就是event包中的所有Listener接口。
+	4，事件处理方式：其实就是在定义可以触发事件的动作内容。
+
+	鼠标事件：MouseEvent。
+		可通过该事件对象的 getClickCount()==2判断鼠标双击动作。
+
+	键盘事件：KeyEvent。
+		getKeyCode():获取按钮对应的code。
+		getKeyChar():返回的是键上的字母或数字符号，注意返回的是一个字符。查看不了shift。
+		getKeyText(code):返回的多字母按键。
+
+		如何实现ctrl+Enter组合键。
+		if(e.isControlDown() && e.getKeyCode()==KeyEvent.VK_ENTER)
+
+	
+	--------------
+	菜单：
+	MenuComponent
+		|--MenuBar:菜单栏。菜单栏中存放菜单Menu。
+		|--MenuItem
+			|--Menu:菜单,其中存放菜单项MenuItem
+
+	MenuBar mb = new MenuBar();
+
+	Menu m = new Menu("文件");
+
+	MenuItem mi = new MenuItem("打开");
+
+	m.add(mi);
+	mb.add(m);
+
+	frame.setMenuBar(mb);
+
+	//创建子菜单。
+
+	MenuBar mb = new MenuBar();
+
+	Menu m = Menu("文件");
+	Menu demo = Menu("demo");
+
+	MenuItem mi = new MenuItem("打开");
+
+	MenuItem sub = new MenuItem("sub");
+
+	demo.add(sub);
+
+	m.add(demo);
+	m.add(mi);
+	mb.add(m);
+
+	frame.setMenuBar(mb);
+
+	菜单对应的事件也是ActionEvent，对应的监听器ActionListener。
+
+
+	双击jar执行。
+	注意，自定义配置文件时，需要Main-Class:空格包名.主函数类名回车
+
+
+
+
+
+
+
+
+
+
+
+
+~~~~
+
+<!-- markdown end -->
+</div>
+<div class="entry" id="main">
+<!-- content -->
+<p><a href="http://caiwb1990.iteye.com/blog/1405858">  Java总结-图形界面编程 </a></p>
+
+<pre class=" language-java"><code class=" language-java">图形界面编程：
+    java将图形界面所需要的组件都存在了java<span class="token punctuation">.</span>awt包中以及后期基于awt出现javax<span class="token punctuation">.</span>swing包中。
+    awt<span class="token operator">:</span>不跨平台，依赖平台的显示样式及效果。
+    swing<span class="token operator">:</span>跨平台。
+
+    Component<span class="token operator">:</span>
+        <span class="token operator">|</span>-<span class="token operator">-</span>Button       
+        <span class="token operator">|</span>-<span class="token operator">-</span>Label：想要往组件中添加文本信息，需要先将文本封装成组件。使用的就是label对象。
+        <span class="token operator">|</span>-<span class="token operator">-</span>Container<span class="token operator">:</span>是构件的一个特殊子类，特点可以存储组件。
+            <span class="token operator">|</span>-<span class="token operator">-</span>Panel<span class="token operator">:</span>面板，不单独存在。需要存入window中。
+            <span class="token operator">|</span>-<span class="token operator">-</span>Window
+                <span class="token operator">|</span>-<span class="token operator">-</span>Frame：用于创建窗体。
+                <span class="token operator">|</span>-<span class="token operator">-</span>Dialog
+                    <span class="token operator">|</span>-<span class="token operator">-</span>FileDialog：有两个模式，<span class="token function">LOAD<span class="token punctuation">(</span></span>默认<span class="token punctuation">)</span> SAVE用于对文件进行选取和指定。
+        <span class="token operator">|</span>-<span class="token operator">-</span>TextComponent
+            <span class="token operator">|</span>-<span class="token operator">-</span>TextField
+            <span class="token operator">|</span>-<span class="token operator">-</span>TextArea
+
+    定义图形界面的简单操作。
+    <span class="token keyword">import</span> java<span class="token punctuation">.</span>awt<span class="token punctuation">.</span>*<span class="token punctuation">;</span>
+    <span class="token keyword">import</span> java<span class="token punctuation">.</span>awt<span class="token punctuation">.</span>event<span class="token punctuation">.</span>*<span class="token punctuation">;</span>
+    <span class="token keyword">class</span> <span class="token class-name">MyFrame</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">private</span> Frame f<span class="token punctuation">;</span>
+        <span class="token keyword">private</span> Button b<span class="token punctuation">;</span>
+        <span class="token function">MyFrame<span class="token punctuation">(</span></span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token function">init<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">init<span class="token punctuation">(</span></span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            f <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Frame</span><span class="token punctuation">(</span><span class="token string">"my Frame"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            f<span class="token punctuation">.</span><span class="token function">setBounds<span class="token punctuation">(</span></span>300<span class="token number">,200</span><span class="token number">,600</span><span class="token number">,500</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            f<span class="token punctuation">.</span><span class="token function">setLayout<span class="token punctuation">(</span></span><span class="token keyword">new</span> <span class="token class-name">FlowLayout</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+            b <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Button</span><span class="token punctuation">(</span><span class="token string">"my button"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+            f<span class="token punctuation">.</span><span class="token function">add<span class="token punctuation">(</span></span>b<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+            <span class="token function">myEvent<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+            f<span class="token punctuation">.</span><span class="token function">setVisible<span class="token punctuation">(</span></span><span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">private</span> <span class="token keyword">void</span> <span class="token function">myEvent<span class="token punctuation">(</span></span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            f<span class="token punctuation">.</span><span class="token function">addWindowListener<span class="token punctuation">(</span></span><span class="token keyword">new</span> <span class="token class-name">WindowAdapter</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+            <span class="token punctuation">{</span>
+                <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">windowClosing<span class="token punctuation">(</span></span>WindowEvent e<span class="token punctuation">)</span>
+                <span class="token punctuation">{</span>
+                    System<span class="token punctuation">.</span><span class="token function">exit<span class="token punctuation">(</span></span>0<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token punctuation">}</span>
+            <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+            <span class="token comment" spellcheck="true">/*
+            点击按钮也可以实现关闭程序。
+            1，确定事件源。button。
+            2，确定事件，ActionEvent  MouseEvent 
+            3，将活动事件注册到事件源上。注册时就需要先知道监听器。ActionListener。
+            4，使用事件源的addXXXListener方法将XXXListener的子类对象作为参数传递给add方法即可完成监听动作。
+            5，覆盖监听接口或者监听接口的子类监听适配器中的方法。定义事件对应的动作处理方式。
+            */</span>
+
+            b<span class="token punctuation">.</span><span class="token function">addActionListener<span class="token punctuation">(</span></span><span class="token keyword">new</span> <span class="token class-name">ActionListener</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+            <span class="token punctuation">{</span>
+                <span class="token keyword">public</span> <span class="token keyword">void</span>  <span class="token function">actionPerformed<span class="token punctuation">(</span></span>ActionEvent e<span class="token punctuation">)</span>
+                <span class="token punctuation">{</span>
+                    System<span class="token punctuation">.</span><span class="token function">exit<span class="token punctuation">(</span></span>0<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token punctuation">}</span>
+            <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    另一种方式： 自定义Frame的子类对象也可以创建窗体。
+
+    <span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">-</span>
+    事件监听机制。
+    组成部分：
+   <span class="token number"> 1</span>，事件源：其实就是awt中的组件。
+   <span class="token number"> 2</span>，事件：就是event包中的所有Event对象。
+   <span class="token number"> 3</span>，监听器：就是event包中的所有Listener接口。
+   <span class="token number"> 4</span>，事件处理方式：其实就是在定义可以触发事件的动作内容。
+
+    鼠标事件：MouseEvent。
+        可通过该事件对象的 <span class="token function">getClickCount<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token operator">=</span><span class="token number">=2</span>判断鼠标双击动作。
+
+    键盘事件：KeyEvent。
+        <span class="token function">getKeyCode<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token operator">:</span>获取按钮对应的code。
+        <span class="token function">getKeyChar<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token operator">:</span>返回的是键上的字母或数字符号，注意返回的是一个字符。查看不了shift。
+        <span class="token function">getKeyText<span class="token punctuation">(</span></span>code<span class="token punctuation">)</span><span class="token operator">:</span>返回的多字母按键。
+
+        如何实现ctrl<span class="token operator">+</span>Enter组合键。
+        <span class="token keyword">if</span><span class="token punctuation">(</span>e<span class="token punctuation">.</span><span class="token function">isControlDown<span class="token punctuation">(</span></span><span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span> e<span class="token punctuation">.</span><span class="token function">getKeyCode<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token operator">==</span>KeyEvent<span class="token punctuation">.</span>VK_ENTER<span class="token punctuation">)</span>
+
+
+    <span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>-<span class="token operator">--</span>
+    菜单：
+    MenuComponent
+        <span class="token operator">|</span>-<span class="token operator">-</span>MenuBar<span class="token operator">:</span>菜单栏。菜单栏中存放菜单Menu。
+        <span class="token operator">|</span>-<span class="token operator">-</span>MenuItem
+            <span class="token operator">|</span>-<span class="token operator">-</span>Menu<span class="token operator">:</span>菜单<span class="token punctuation">,</span>其中存放菜单项MenuItem
+
+    MenuBar mb <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">MenuBar</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    Menu m <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Menu</span><span class="token punctuation">(</span><span class="token string">"文件"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    MenuItem mi <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">MenuItem</span><span class="token punctuation">(</span><span class="token string">"打开"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    m<span class="token punctuation">.</span><span class="token function">add<span class="token punctuation">(</span></span>mi<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    mb<span class="token punctuation">.</span><span class="token function">add<span class="token punctuation">(</span></span>m<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    frame<span class="token punctuation">.</span><span class="token function">setMenuBar<span class="token punctuation">(</span></span>mb<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+   <span class="token comment" spellcheck="true"> //创建子菜单。
+</span>
+    MenuBar mb <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">MenuBar</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    Menu m <span class="token operator">=</span> <span class="token function">Menu<span class="token punctuation">(</span></span><span class="token string">"文件"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    Menu demo <span class="token operator">=</span> <span class="token function">Menu<span class="token punctuation">(</span></span><span class="token string">"demo"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    MenuItem mi <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">MenuItem</span><span class="token punctuation">(</span><span class="token string">"打开"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    MenuItem sub <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">MenuItem</span><span class="token punctuation">(</span><span class="token string">"sub"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    demo<span class="token punctuation">.</span><span class="token function">add<span class="token punctuation">(</span></span>sub<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    m<span class="token punctuation">.</span><span class="token function">add<span class="token punctuation">(</span></span>demo<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    m<span class="token punctuation">.</span><span class="token function">add<span class="token punctuation">(</span></span>mi<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    mb<span class="token punctuation">.</span><span class="token function">add<span class="token punctuation">(</span></span>m<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    frame<span class="token punctuation">.</span><span class="token function">setMenuBar<span class="token punctuation">(</span></span>mb<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    菜单对应的事件也是ActionEvent，对应的监听器ActionListener。
+
+
+    双击jar执行。
+    注意，自定义配置文件时，需要Main<span class="token operator">-</span>Class<span class="token operator">:</span>空格包名<span class="token punctuation">.</span>主函数类名回车
+
+
+
+
+
+
+
+
+
+
+
+
+</code></pre>
+<!-- content end -->
+</div>
+<br>
+<br>
+    <div id="disqus_thread"></div>
+	<div class="footer">
+		<p>© Copyright 2014 by Hellc, Designed by Hellc</p>
+	</div>
+</div>
+<script src="main.js"></script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ["\\(", "\\)"]], processEscapes: true}});
+</script>
+<script id="content" type="text/mustache">
+    <h1>{{title}}</h1>
+    <div class="tag">
+    {{date}}
+    {{#tags}}
+    <a href="/#/tag/{{name}}">#{{name}}</a>
+    {{/tags}}
+    </div>
+</script>
+<script id="pagesTemplate" type="text/mustache">
+    {{#pages}}
+    <li>
+        <a href="{{path}}">{{title}}</a>
+    </li>
+    {{/pages}}
+</script>
+<script>
+$(document).ready(function() {
+    $.ajax({
+        url: "main.json",
+        type: "GET",
+        dataType: "json",
+        success: function(data) {
+            $("#title").html(data.name);
+            var pagesTemplate = Hogan.compile($("#pagesTemplate").html());
+            var pagesHtml = pagesTemplate.render({"pages": data.pages});
+            $("#pages").append(pagesHtml);
+            //path
+            var path = "java_awt.html";
+            //path end
+            var now = 0;
+            for (var i = 0; i < data.posts.length; ++i)
+                if (path == data.posts[i].path)
+                    now = i;
+            var post = data.posts[now];
+            var tmp = post.tags.split(" ");
+            var tags = [];
+            for (var i = 0; i < tmp.length; ++i)
+                if (tmp[i].length > 0)
+                    tags.push({"name": tmp[i]});
+            var contentTemplate = Hogan.compile($("#content").html());
+            var contentHtml = contentTemplate.render({"title": post.title, "tags": tags, "date": post.date});
+            $("#main").prepend(contentHtml);
+            if (data.disqus_shortname.length > 0) {
+                var disqus_shortname = data.disqus_shortname;
+                (function() {
+                    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                })();
+            }
+        }
+    });
+});
+</script>
+</body>
+</html>

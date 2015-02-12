@@ -30,13 +30,12 @@
 1设置view size和content size有先后顺序，否则有计算错误！
 
 
-----(C++)
-{
+~~~~{C++}
 m_scrollView->setViewSize(getContentSize());
 m_scrollView->setContentSize(canvas->getContentSize());
 m_scrollView->setClippingToBounds(true);
+~~~~
 
-}
 <!-- markdown end -->
 </div>
 <div class="entry" id="main">
@@ -45,13 +44,10 @@ m_scrollView->setClippingToBounds(true);
 
 <p>1设置view size和content size有先后顺序，否则有计算错误！</p>
 
-<p>----(C++)
-{
-m<em>scrollView-&gt;setViewSize(getContentSize());
-m</em>scrollView-&gt;setContentSize(canvas-&gt;getContentSize());
-m_scrollView-&gt;setClippingToBounds(true);</p>
-
-<p>}</p>
+<pre><code class="language-C++">m_scrollView-&gt;setViewSize(getContentSize());
+m_scrollView-&gt;setContentSize(canvas-&gt;getContentSize());
+m_scrollView-&gt;setClippingToBounds(true);
+</code></pre>
 <!-- content end -->
 </div>
 <br>

@@ -1,0 +1,146 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="Keywords" content="blog"/>
+    <meta name="Description" content="blog"/>
+    <title>Hellc</title>
+    <link rel="shortcut icon" href="/static/favicon.png"/>
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+</head>
+<body>
+<div class="main">
+    <div class="header">
+    	<ul id="pages">
+            <li><a href="/">home</a></li>
+            <li><a href="/#/tags">tags</a></li>
+            <li><a href="/#/archive">archive</a></li>
+    	</ul>
+    </div>
+	<div class="wrap-header">
+	<h1>
+    <a href="/" id="title"></a>
+	</h1>
+	</div>
+<div id="md" style="display: none;">
+<!-- markdown -->
+[ cocos2dx 如何取一个sprite的颜色值](http://caiwb1990.iteye.com/blog/2096320)
+
+
+ 大家都知道颜色的Data数据是存放在CCimage下的，而CCimage在创建完CCsprite之后是不保存的。 
+
+当然我们可以改源码将CCimage直接获得出来，也可以通过以下方法通过CCRenderTexture来获得CCsprite的CCimage。 
+
+~~~~{C++}
+CCSprite* pNewSpr = CCSprite::createWithSpriteFrame(pSpr->displayFrame());  
+pNewSpr->setAnchorPoint(CCPointZero);  
+
+CCRenderTexture* pRender = CCRenderTexture::create(pNewSpr->getContentSize().width, pNewSpr->getContentSize().height, kCCTexture2DPixelFormat_RGBA8888);  
+pRender->begin();  
+pNewSpr->visit();  
+pRender->end();   
+
+CCImage* image = pRender->newCCImage();  
+~~~~
+
+获得到CCimage以后，我们就可以取出颜色的data数据，来进行颜色操作了。 
+
+比如判断某个点的颜色值是否透明，可以应用在像素碰撞上，也可以应用在不规则的相互嵌套按钮的点击判断上。
+
+
+<!-- markdown end -->
+</div>
+<div class="entry" id="main">
+<!-- content -->
+<p><a href="http://caiwb1990.iteye.com/blog/2096320"> cocos2dx 如何取一个sprite的颜色值</a></p>
+
+<p>大家都知道颜色的Data数据是存放在CCimage下的，而CCimage在创建完CCsprite之后是不保存的。 </p>
+
+<p>当然我们可以改源码将CCimage直接获得出来，也可以通过以下方法通过CCRenderTexture来获得CCsprite的CCimage。 </p>
+
+<pre><code class="language-C++">CCSprite* pNewSpr = CCSprite::createWithSpriteFrame(pSpr-&gt;displayFrame());  
+pNewSpr-&gt;setAnchorPoint(CCPointZero);  
+
+CCRenderTexture* pRender = CCRenderTexture::create(pNewSpr-&gt;getContentSize().width, pNewSpr-&gt;getContentSize().height, kCCTexture2DPixelFormat_RGBA8888);  
+pRender-&gt;begin();  
+pNewSpr-&gt;visit();  
+pRender-&gt;end();   
+
+CCImage* image = pRender-&gt;newCCImage();  
+</code></pre>
+
+<p>获得到CCimage以后，我们就可以取出颜色的data数据，来进行颜色操作了。 </p>
+
+<p>比如判断某个点的颜色值是否透明，可以应用在像素碰撞上，也可以应用在不规则的相互嵌套按钮的点击判断上。</p>
+<!-- content end -->
+</div>
+<br>
+<br>
+    <div id="disqus_thread"></div>
+	<div class="footer">
+		<p>© Copyright 2014 by Hellc, Designed by Hellc</p>
+	</div>
+</div>
+<script src="main.js"></script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ["\\(", "\\)"]], processEscapes: true}});
+</script>
+<script id="content" type="text/mustache">
+    <h1>{{title}}</h1>
+    <div class="tag">
+    {{date}}
+    {{#tags}}
+    <a href="/#/tag/{{name}}">#{{name}}</a>
+    {{/tags}}
+    </div>
+</script>
+<script id="pagesTemplate" type="text/mustache">
+    {{#pages}}
+    <li>
+        <a href="{{path}}">{{title}}</a>
+    </li>
+    {{/pages}}
+</script>
+<script>
+$(document).ready(function() {
+    $.ajax({
+        url: "main.json",
+        type: "GET",
+        dataType: "json",
+        success: function(data) {
+            $("#title").html(data.name);
+            var pagesTemplate = Hogan.compile($("#pagesTemplate").html());
+            var pagesHtml = pagesTemplate.render({"pages": data.pages});
+            $("#pages").append(pagesHtml);
+            //path
+            var path = "cocos2dx_sprite.html";
+            //path end
+            var now = 0;
+            for (var i = 0; i < data.posts.length; ++i)
+                if (path == data.posts[i].path)
+                    now = i;
+            var post = data.posts[now];
+            var tmp = post.tags.split(" ");
+            var tags = [];
+            for (var i = 0; i < tmp.length; ++i)
+                if (tmp[i].length > 0)
+                    tags.push({"name": tmp[i]});
+            var contentTemplate = Hogan.compile($("#content").html());
+            var contentHtml = contentTemplate.render({"title": post.title, "tags": tags, "date": post.date});
+            $("#main").prepend(contentHtml);
+            if (data.disqus_shortname.length > 0) {
+                var disqus_shortname = data.disqus_shortname;
+                (function() {
+                    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                })();
+            }
+        }
+    });
+});
+</script>
+</body>
+</html>

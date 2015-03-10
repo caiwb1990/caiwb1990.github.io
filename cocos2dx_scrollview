@@ -27,8 +27,7 @@
 <!-- markdown -->
 [ scrollView 注意](http://caiwb1990.iteye.com/blog/2108472)
 
-1设置view size和content size有先后顺序，否则有计算错误！
-
+1设置view size和content size有先后顺序，否则有计算错误
 
 ~~~~{C++}
 m_scrollView->setViewSize(getContentSize());
@@ -42,7 +41,7 @@ m_scrollView->setClippingToBounds(true);
 <!-- content -->
 <p><a href="http://caiwb1990.iteye.com/blog/2108472"> scrollView 注意</a></p>
 
-<p>1设置view size和content size有先后顺序，否则有计算错误！</p>
+<p>1设置view size和content size有先后顺序，否则有计算错误</p>
 
 <pre><code class="language-C++">m_scrollView-&gt;setViewSize(getContentSize());
 m_scrollView-&gt;setContentSize(canvas-&gt;getContentSize());

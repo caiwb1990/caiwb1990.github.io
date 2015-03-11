@@ -1,0 +1,382 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="Keywords" content="blog"/>
+    <meta name="Description" content="blog"/>
+    <title>Hellc</title>
+    <link rel="shortcut icon" href="/static/favicon.png"/>
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+</head>
+<body>
+<div class="main">
+    <div class="header">
+    	<ul id="pages">
+            <li><a href="/">home</a></li>
+            <li><a href="/#/tags">tags</a></li>
+            <li><a href="/#/archive">archive</a></li>
+    	</ul>
+    </div>
+	<div class="wrap-header">
+	<h1>
+    <a href="/" id="title"></a>
+	</h1>
+	</div>
+<div id="md" style="display: none;">
+<!-- markdown -->
+[Quick3.3中常用函数（二）](http://caiwb1990.iteye.com/blog/2191645)
+
+Quick-Cocos2d-x 3.3中的UI分为两部分，一部分位于framework的ui.lua中，一部分位于framework/cc/ui中。在framework/cc/ui中的代码已经重构了ui.lua中的接口，对于新用户我们只需要使用framework/cc/ui下的接口就可以了。 
+
+我们先看下ui文件夹下有哪些文件：
+
+下面我们来详细说下每个文件的用途和内容： 
+~~~~{lua}
+文件名称    控件  
+UIButton    按钮基类  
+UICheckBoxButton    CheckBox按钮控件  
+UICheckBoxButtonGroup   CheckBox按钮组控件  
+UIGroup 控件组基类  
+UIImage 图片控件  
+UIInput 输入控件  
+UILabel 文字控件  
+UILayout    布局基类  
+UIListView  列表控件  
+UIListViewItem  列表项控件  
+UILoadingBar    加载进度条控件  
+UIPageView  PageView控件  
+UIPageViewItem  PageView单个控件  
+UIPushButton    按钮控件  
+UIScrollView    滚动视图控件  
+UISlider    滑动控件  
+UIStretch   拉伸控件  
+~~~~
+
+
+接下来我们介绍常用的几个控件，至于基类有兴趣的同学可以自己去了解。 目前Quick-Cocos2d-x常用的控件有： 
+~~~~{lua}
+UIPushButton
+UIImage
+UIInput
+UILabel
+UIListView
+~~~~
+
+##UIPushButton 
+
+UIPushButton其实就是我们常见的按钮，在Cocos2d-x中相当于Menu和ImageMenuItem的组合。 
+
+UIPushButton包含三个方法： 
+
+~~~~{lua}
+function UIPushButton:ctor(images, options)  
+function UIPushButton:setButtonImage(state, image, ignoreEmpty)  
+function UIPushButton:onTouch_(event)  
+function UIPushButton:ctor(images, options)  
+~~~~
+ctor()创建一个UIPushButton对象，images传入的是不同状态下的图片，options是参数表 其中scale9为是否缩放。 
+
+ 
+~~~~{lua}
+function UIPushButton:setButtonImage(state, image, ignoreEmpty)  
+setButtonImage用来设置不同状态下的按钮状态。
+~~~~
+
+ 
+~~~~{lua}
+function UIPushButton:onTouch_(event)  
+该函数用来设置PushButton的触摸事件。
+~~~~
+
+##UIImage 
+
+~~~~{lua}
+function UIImage:ctor(filename, options)  
+~~~~
+创建一个UIImage对象，filename是图片文件名称，options是参数表，scale9表示是scale9图片.
+
+
+ 
+~~~~{lua}
+function UIImage:setLayoutSize(width, height)  
+设置图片大小。
+~~~~
+
+
+##UIInput 
+
+UIInput是输入控件，相当于原来的EditBox和TextFiled。 
+
+创建一个UIInput控件。options控件是参数表，UIInputType代表是EditBox或TextFiled。options的具体参数有点多，可以参看UIInput中newEditBox_和newTextFiled_的参数说明
+~~~~{lua}
+function UIInput:ctor(options)  
+~~~~
+
+
+##UILabel 
+
+UILabel是Cocos2d-x中的文本标签的集合。 
+
+~~~~{lua}
+function UILabel:ctor(options)  
+~~~~
+创建一个UILabel控件。其中options为参数表，options.UILabelType表示文本标签的类型，1表示BMFont，2表示TTF。 
+
+~~~~{lua}
+function UILabel:setLayoutSize(width, height)  
+设置控件大小
+~~~~
+
+
+##UIListView
+
+UIListView是Quick-Cocos2d-x中的列表控件。  
+~~~~{lua}
+function UIListView:ctor(params)  
+创建一个UIListView控件。params表示UIListView的参数表。  
+  
+function UIListView:onCleanup()  
+清除列表内容  
+  
+function UIListView:onTouch(listener)  
+注册列表控件触摸函数。  
+  
+function UIListView:setAlignment(align)  
+列表控件设置所有listItem中content的对齐方式  
+  
+function UIListView:newItem(item)  
+创建一个新的listViewItem项  
+  
+function UIListView:setViewRect(item)  
+设置显示区域  
+  
+function UIListView:addItem(listItem, pos)  
+在列表项中添加一项  
+  
+function UIListView:removeItem(listItem, bAni)  
+在列表项中移除一项  
+  
+function UIListView:removeAllItems()  
+移除所有的项  
+  
+function UIListView:getItemPos(listItem)  
+取某项在列表控件中的位置  
+  
+function UIListView:isItemInViewRect(pos)  
+判断某项是否在列表控件的显示区域中  
+  
+function UIListView:reload()  
+加载列表  
+  
+function UIListView:dequeueItem()  
+取一个空闲项出来,如果没有返回空。 
+~~~~
+
+<!-- markdown end -->
+</div>
+<div class="entry" id="main">
+<!-- content -->
+<p><a href="http://caiwb1990.iteye.com/blog/2191645">Quick3.3中常用函数（二）</a></p>
+
+<p>Quick-Cocos2d-x 3.3中的UI分为两部分，一部分位于framework的ui.lua中，一部分位于framework/cc/ui中。在framework/cc/ui中的代码已经重构了ui.lua中的接口，对于新用户我们只需要使用framework/cc/ui下的接口就可以了。 </p>
+
+<p>我们先看下ui文件夹下有哪些文件：</p>
+
+<p>下面我们来详细说下每个文件的用途和内容： </p>
+
+<pre><code class="language-lua">文件名称    控件  
+UIButton    按钮基类  
+UICheckBoxButton    CheckBox按钮控件  
+UICheckBoxButtonGroup   CheckBox按钮组控件  
+UIGroup 控件组基类  
+UIImage 图片控件  
+UIInput 输入控件  
+UILabel 文字控件  
+UILayout    布局基类  
+UIListView  列表控件  
+UIListViewItem  列表项控件  
+UILoadingBar    加载进度条控件  
+UIPageView  PageView控件  
+UIPageViewItem  PageView单个控件  
+UIPushButton    按钮控件  
+UIScrollView    滚动视图控件  
+UISlider    滑动控件  
+UIStretch   拉伸控件  
+</code></pre>
+
+<p>接下来我们介绍常用的几个控件，至于基类有兴趣的同学可以自己去了解。 目前Quick-Cocos2d-x常用的控件有： </p>
+
+<pre><code class="language-lua">UIPushButton
+UIImage
+UIInput
+UILabel
+UIListView
+</code></pre>
+
+<h2 id="uipushbutton">UIPushButton</h2>
+
+<p>UIPushButton其实就是我们常见的按钮，在Cocos2d-x中相当于Menu和ImageMenuItem的组合。 </p>
+
+<p>UIPushButton包含三个方法： </p>
+
+<pre><code class="language-lua">function UIPushButton:ctor(images, options)  
+function UIPushButton:setButtonImage(state, image, ignoreEmpty)  
+function UIPushButton:onTouch_(event)  
+function UIPushButton:ctor(images, options)  
+</code></pre>ctor()创建一个UIPushButton对象，images传入的是不同状态下的图片，options是参数表 其中scale9为是否缩放。 
+
+
+<pre><code class="language-lua">function UIPushButton:setButtonImage(state, image, ignoreEmpty)  
+setButtonImage用来设置不同状态下的按钮状态。
+</code></pre>
+
+<pre><code class="language-lua">function UIPushButton:onTouch_(event)  
+该函数用来设置PushButton的触摸事件。
+</code></pre>
+
+<h2 id="uiimage">UIImage</h2>
+
+<pre><code class="language-lua">function UIImage:ctor(filename, options)  
+</code></pre>创建一个UIImage对象，filename是图片文件名称，options是参数表，scale9表示是scale9图片.
+
+
+
+<pre><code class="language-lua">function UIImage:setLayoutSize(width, height)  
+设置图片大小。
+</code></pre>
+
+<h2 id="uiinput">UIInput</h2>
+
+<p>UIInput是输入控件，相当于原来的EditBox和TextFiled。 </p>
+
+<p>创建一个UIInput控件。options控件是参数表，UIInputType代表是EditBox或TextFiled。options的具体参数有点多，可以参看UIInput中newEditBox<em>和newTextFiled</em>的参数说明</p>
+
+<pre><code class="language-lua">function UIInput:ctor(options)  
+</code></pre>
+
+<h2 id="uilabel">UILabel</h2>
+
+<p>UILabel是Cocos2d-x中的文本标签的集合。 </p>
+
+<pre><code class="language-lua">function UILabel:ctor(options)  
+</code></pre>创建一个UILabel控件。其中options为参数表，options.UILabelType表示文本标签的类型，1表示BMFont，2表示TTF。 
+
+<pre><code class="language-lua">function UILabel:setLayoutSize(width, height)  
+设置控件大小
+</code></pre>
+
+<h2 id="uilistview">UIListView</h2>
+
+<p>UIListView是Quick-Cocos2d-x中的列表控件。  </p>
+
+<pre><code class="language-lua">function UIListView:ctor(params)  
+创建一个UIListView控件。params表示UIListView的参数表。  
+
+function UIListView:onCleanup()  
+清除列表内容  
+
+function UIListView:onTouch(listener)  
+注册列表控件触摸函数。  
+
+function UIListView:setAlignment(align)  
+列表控件设置所有listItem中content的对齐方式  
+
+function UIListView:newItem(item)  
+创建一个新的listViewItem项  
+
+function UIListView:setViewRect(item)  
+设置显示区域  
+
+function UIListView:addItem(listItem, pos)  
+在列表项中添加一项  
+
+function UIListView:removeItem(listItem, bAni)  
+在列表项中移除一项  
+
+function UIListView:removeAllItems()  
+移除所有的项  
+
+function UIListView:getItemPos(listItem)  
+取某项在列表控件中的位置  
+
+function UIListView:isItemInViewRect(pos)  
+判断某项是否在列表控件的显示区域中  
+
+function UIListView:reload()  
+加载列表  
+
+function UIListView:dequeueItem()  
+取一个空闲项出来,如果没有返回空。 
+</code></pre>
+<!-- content end -->
+</div>
+<br>
+<br>
+    <div id="disqus_thread"></div>
+	<div class="footer">
+		<p>© Copyright 2014 by Hellc, Designed by Hellc</p>
+	</div>
+</div>
+<script src="main.js"></script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ["\\(", "\\)"]], processEscapes: true}});
+</script>
+<script id="content" type="text/mustache">
+    <h1>{{title}}</h1>
+    <div class="tag">
+    {{date}}
+    {{#tags}}
+    <a href="/#/tag/{{name}}">#{{name}}</a>
+    {{/tags}}
+    </div>
+</script>
+<script id="pagesTemplate" type="text/mustache">
+    {{#pages}}
+    <li>
+        <a href="{{path}}">{{title}}</a>
+    </li>
+    {{/pages}}
+</script>
+<script>
+$(document).ready(function() {
+    $.ajax({
+        url: "main.json",
+        type: "GET",
+        dataType: "json",
+        success: function(data) {
+            $("#title").html(data.name);
+            var pagesTemplate = Hogan.compile($("#pagesTemplate").html());
+            var pagesHtml = pagesTemplate.render({"pages": data.pages});
+            $("#pages").append(pagesHtml);
+            //path
+            var path = "quick_common_2.html";
+            //path end
+            var now = 0;
+            for (var i = 0; i < data.posts.length; ++i)
+                if (path == data.posts[i].path)
+                    now = i;
+            var post = data.posts[now];
+            var tmp = post.tags.split(" ");
+            var tags = [];
+            for (var i = 0; i < tmp.length; ++i)
+                if (tmp[i].length > 0)
+                    tags.push({"name": tmp[i]});
+            var contentTemplate = Hogan.compile($("#content").html());
+            var contentHtml = contentTemplate.render({"title": post.title, "tags": tags, "date": post.date});
+            $("#main").prepend(contentHtml);
+            if (data.disqus_shortname.length > 0) {
+                var disqus_shortname = data.disqus_shortname;
+                (function() {
+                    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                })();
+            }
+        }
+    });
+});
+</script>
+</body>
+</html>

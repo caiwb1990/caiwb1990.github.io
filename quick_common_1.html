@@ -1,0 +1,285 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="Keywords" content="blog"/>
+    <meta name="Description" content="blog"/>
+    <title>Hellc</title>
+    <link rel="shortcut icon" href="/static/favicon.png"/>
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+</head>
+<body>
+<div class="main">
+    <div class="header">
+    	<ul id="pages">
+            <li><a href="/">home</a></li>
+            <li><a href="/#/tags">tags</a></li>
+            <li><a href="/#/archive">archive</a></li>
+    	</ul>
+    </div>
+	<div class="wrap-header">
+	<h1>
+    <a href="/" id="title"></a>
+	</h1>
+	</div>
+<div id="md" style="display: none;">
+<!-- markdown -->
+[ Quick3.3中常用函数(一)](http://caiwb1990.iteye.com/blog/2191645)
+
+Quick-Cocos2d-x 3.3中有一些文件和函数是我们经常要使用到的，使用其他的库或者函数时我们可以使用自动提示，但是Quick-Cocos2d-x的自动提示功能目前还处于呵呵的阶段。为了开发效率，我们还是要多多熟悉下常用的文件和函数。 
+
+#display 
+
+##位置：
+quick/framework/display.lua 
+
+display.lua是Quick-Cocos2d-x中的最常用的类，基本上所有的显示相关的函数都可以在这里找到。你如果是要查找类似于创建精灵，创建层之类的函数的话都可以在这里找到。下面我们列出一些常用的函数： 
+
+##变量 
+
+~~~~{lua}
+变量名称     变量含义  
+display.size     屏幕设计分辨率大小  
+display.width    屏幕设计分辨率宽度  
+display.height   屏幕设计分辨率高度  
+display.cx   屏幕设计分辨率x坐标中点  
+display.cy   屏幕设计分辨率y坐标中点  
+display.c_left   屏幕设计分辨率x坐标为0再往左偏移半个屏幕  
+display.c_right  屏幕设计分辨率x坐标最大值再往右偏移半个屏幕  
+display.c_top    屏幕设计分辨率高度中间  
+display.c_bottom     屏幕设计分辨率最底部减去半个屏幕高度(-winSize.height/2)  
+display.left     屏幕设计分辨率最左边(x值最小)  
+display.right    屏幕设计分辨率最右边(x值最小)  
+display.top  屏幕设计分辨率最顶部(y坐标最大)  
+display.bottom   屏幕设计分辨率最底部(y坐标最小)  
+display.widthInPixels    屏幕实际分辨率的宽度  
+display.heightInPixels   屏幕实际分辨率的高度  
+display.COLOR_xxx    不同的颜色  
+display.CENTER   中间点对齐  
+display.LEFT_TOP     x轴左边，y轴顶部对齐  
+display.CENTER_TOP   x轴中间，y轴顶部对齐  
+display.RIGHT_TOP    x轴最右边，y轴顶部对齐，其他的类似  
+~~~~
+
+##接口 
+
+我们这里只介绍常用的函数和它的含义，具体的详细说明可以参考这里Quick-Cocos2d-x API文档 
+
+~~~~{lua}
+函数名称     函数含义  
+display.newScene     新建一个场景  
+display.newPhysicsScene  新建一个带物理世界的场景  
+display.replaceScene     切换场景  
+display.getRunningScene  获取当前运行的场景  
+display.pause    游戏暂停  
+display.resume   游戏恢复  
+display.newLayer     新建一个层  
+display.newColorLayer    新建一个颜色层  
+display.newNode  新建一个节点  
+display.newSprite    新建一个精灵  
+display.newScale9Sprite  新建一个scale9的精灵  
+display.newBMFontLabel   新建一个BMFont的Label  
+display.newTTFLabel  新建一个TTF的Label  
+display.align    设置对齐方式  
+display.addSpriteFrames  增加纹理到缓存  
+display.removeSpriteFramesWithFile   从缓存中移除纹理  
+display.newBatchNode     创建批量渲染对象  
+display.newFrames    创建精灵帧数组  
+display.newAnimation     创建一个动画  
+display.setAnimationCache    添加一个动画到动画缓存  
+display.getAnimationCache    从动画缓存中获取一个动画  
+display.removeAnimationCache     从动画缓存中移除一个动画  
+display.newProgressTimer     创建一个进度条  
+display.captureScreen    截屏并保存  
+~~~~
+
+#transition.lua 
+
+##位置：
+quick/framework/transition.lua 
+
+transition是Quick-Cocos2d-x中的类，它内部主要是Quick-Cocos2d-x中对动作的封装。我们来看下里面经常使用的函数： 
+~~~~{lua}
+函数名称     函数含义  
+newEasing    创建一个缓动效果  
+execute  执行一个动作  
+rotateTo     将显示对象旋转到指定角度(立即执行)  
+moveTo   移动对象到指定位置  
+moveBy   移动对象指定的距离  
+fadeIn   执行淡入动作  
+fadeOut  执行淡出动作  
+scaleTo  缩放  
+sequence     通过一个table创建动作序列  
+playAnimationOnce    执行一次动画  
+playAnimationForever     循环执行动画  
+removeAction     移除动作  
+stopTarget   停止动作  
+~~~~
+在接下来的一篇中，我们再详细介绍Quick-Cocos2d-x中的UI库。
+
+<!-- markdown end -->
+</div>
+<div class="entry" id="main">
+<!-- content -->
+<p><a href="http://caiwb1990.iteye.com/blog/2191645"> Quick3.3中常用函数(一)</a></p>
+
+<p>Quick-Cocos2d-x 3.3中有一些文件和函数是我们经常要使用到的，使用其他的库或者函数时我们可以使用自动提示，但是Quick-Cocos2d-x的自动提示功能目前还处于呵呵的阶段。为了开发效率，我们还是要多多熟悉下常用的文件和函数。 </p>
+
+<h1 id="display">display</h1>
+
+<h2 id="">位置：</h2>
+
+<p>quick/framework/display.lua </p>
+
+<p>display.lua是Quick-Cocos2d-x中的最常用的类，基本上所有的显示相关的函数都可以在这里找到。你如果是要查找类似于创建精灵，创建层之类的函数的话都可以在这里找到。下面我们列出一些常用的函数： </p>
+
+<h2 id="">变量</h2>
+
+<pre><code class="language-lua">变量名称     变量含义  
+display.size     屏幕设计分辨率大小  
+display.width    屏幕设计分辨率宽度  
+display.height   屏幕设计分辨率高度  
+display.cx   屏幕设计分辨率x坐标中点  
+display.cy   屏幕设计分辨率y坐标中点  
+display.c_left   屏幕设计分辨率x坐标为0再往左偏移半个屏幕  
+display.c_right  屏幕设计分辨率x坐标最大值再往右偏移半个屏幕  
+display.c_top    屏幕设计分辨率高度中间  
+display.c_bottom     屏幕设计分辨率最底部减去半个屏幕高度(-winSize.height/2)  
+display.left     屏幕设计分辨率最左边(x值最小)  
+display.right    屏幕设计分辨率最右边(x值最小)  
+display.top  屏幕设计分辨率最顶部(y坐标最大)  
+display.bottom   屏幕设计分辨率最底部(y坐标最小)  
+display.widthInPixels    屏幕实际分辨率的宽度  
+display.heightInPixels   屏幕实际分辨率的高度  
+display.COLOR_xxx    不同的颜色  
+display.CENTER   中间点对齐  
+display.LEFT_TOP     x轴左边，y轴顶部对齐  
+display.CENTER_TOP   x轴中间，y轴顶部对齐  
+display.RIGHT_TOP    x轴最右边，y轴顶部对齐，其他的类似  
+</code></pre>
+
+<h2 id="">接口</h2>
+
+<p>我们这里只介绍常用的函数和它的含义，具体的详细说明可以参考这里Quick-Cocos2d-x API文档 </p>
+
+<pre><code class="language-lua">函数名称     函数含义  
+display.newScene     新建一个场景  
+display.newPhysicsScene  新建一个带物理世界的场景  
+display.replaceScene     切换场景  
+display.getRunningScene  获取当前运行的场景  
+display.pause    游戏暂停  
+display.resume   游戏恢复  
+display.newLayer     新建一个层  
+display.newColorLayer    新建一个颜色层  
+display.newNode  新建一个节点  
+display.newSprite    新建一个精灵  
+display.newScale9Sprite  新建一个scale9的精灵  
+display.newBMFontLabel   新建一个BMFont的Label  
+display.newTTFLabel  新建一个TTF的Label  
+display.align    设置对齐方式  
+display.addSpriteFrames  增加纹理到缓存  
+display.removeSpriteFramesWithFile   从缓存中移除纹理  
+display.newBatchNode     创建批量渲染对象  
+display.newFrames    创建精灵帧数组  
+display.newAnimation     创建一个动画  
+display.setAnimationCache    添加一个动画到动画缓存  
+display.getAnimationCache    从动画缓存中获取一个动画  
+display.removeAnimationCache     从动画缓存中移除一个动画  
+display.newProgressTimer     创建一个进度条  
+display.captureScreen    截屏并保存  
+</code></pre>
+
+<h1 id="transitionlua">transition.lua</h1>
+
+<h2 id="">位置：</h2>
+
+<p>quick/framework/transition.lua </p>
+
+<p>transition是Quick-Cocos2d-x中的类，它内部主要是Quick-Cocos2d-x中对动作的封装。我们来看下里面经常使用的函数： 
+</p><pre><code class="language-lua">函数名称     函数含义 <br>
+newEasing    创建一个缓动效果 <br>
+execute  执行一个动作 <br>
+rotateTo     将显示对象旋转到指定角度(立即执行) <br>
+moveTo   移动对象到指定位置 <br>
+moveBy   移动对象指定的距离 <br>
+fadeIn   执行淡入动作 <br>
+fadeOut  执行淡出动作 <br>
+scaleTo  缩放 <br>
+sequence     通过一个table创建动作序列 <br>
+playAnimationOnce    执行一次动画 <br>
+playAnimationForever     循环执行动画 <br>
+removeAction     移除动作 <br>
+stopTarget   停止动作 <br>
+</code></pre>在接下来的一篇中，我们再详细介绍Quick-Cocos2d-x中的UI库。<p></p>
+<!-- content end -->
+</div>
+<br>
+<br>
+    <div id="disqus_thread"></div>
+	<div class="footer">
+		<p>© Copyright 2014 by Hellc, Designed by Hellc</p>
+	</div>
+</div>
+<script src="main.js"></script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ["\\(", "\\)"]], processEscapes: true}});
+</script>
+<script id="content" type="text/mustache">
+    <h1>{{title}}</h1>
+    <div class="tag">
+    {{date}}
+    {{#tags}}
+    <a href="/#/tag/{{name}}">#{{name}}</a>
+    {{/tags}}
+    </div>
+</script>
+<script id="pagesTemplate" type="text/mustache">
+    {{#pages}}
+    <li>
+        <a href="{{path}}">{{title}}</a>
+    </li>
+    {{/pages}}
+</script>
+<script>
+$(document).ready(function() {
+    $.ajax({
+        url: "main.json",
+        type: "GET",
+        dataType: "json",
+        success: function(data) {
+            $("#title").html(data.name);
+            var pagesTemplate = Hogan.compile($("#pagesTemplate").html());
+            var pagesHtml = pagesTemplate.render({"pages": data.pages});
+            $("#pages").append(pagesHtml);
+            //path
+            var path = "quick_common_1.html";
+            //path end
+            var now = 0;
+            for (var i = 0; i < data.posts.length; ++i)
+                if (path == data.posts[i].path)
+                    now = i;
+            var post = data.posts[now];
+            var tmp = post.tags.split(" ");
+            var tags = [];
+            for (var i = 0; i < tmp.length; ++i)
+                if (tmp[i].length > 0)
+                    tags.push({"name": tmp[i]});
+            var contentTemplate = Hogan.compile($("#content").html());
+            var contentHtml = contentTemplate.render({"title": post.title, "tags": tags, "date": post.date});
+            $("#main").prepend(contentHtml);
+            if (data.disqus_shortname.length > 0) {
+                var disqus_shortname = data.disqus_shortname;
+                (function() {
+                    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                })();
+            }
+        }
+    });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,162 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="Keywords" content="blog"/>
+    <meta name="Description" content="blog"/>
+    <title>Hellc</title>
+    <link rel="shortcut icon" href="/static/favicon.png"/>
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+</head>
+<body>
+<div class="main">
+    <div class="header">
+    	<ul id="pages">
+            <li><a href="/">home</a></li>
+            <li><a href="/#/tags">tags</a></li>
+            <li><a href="/#/archive">archive</a></li>
+    	</ul>
+    </div>
+	<div class="wrap-header">
+	<h1>
+    <a href="/" id="title"></a>
+	</h1>
+	</div>
+<div id="md" style="display: none;">
+<!-- markdown -->
+[Lua基础 ]( http://caiwb1990.iteye.com/blog/2209750)
+
+
+除了Lua外，还有很多类似的脚本语言，例如：Perl、Tcl、Ruby、Forth、Python。 
+虽然其他语言在某些方面与Lua有着共同的特色，但下面这些特征是Lua特有的： 
+
+
+##1. 可扩展性。 
+Lua的扩展性非常卓越，以至于很多人把Lua用作搭建领域语言的 
+工具（注：比如游戏脚本）。Lua被设计为易于扩展的，可以通过Lua代码或者C 
+代码扩展，Lua的很多功能都是通过外部库来扩展的。Lua很容易与C/C++、java、 
+fortran、Smalltalk、Ada，以及其他语言接口。 
+
+##2. 简单。 
+Lua本身简单，小巧；内容少但功能强大，这使得Lua易于学习，很容 
+易实现一些小的应用。他的完全发布版（代码、手册以及某些平台的二进制文件） 
+仅用一张软盘就可以装得下。 
+
+##3.高效率。 
+Lua有很高的执行效率，统计表明Lua是目前平均效率最高的脚本语 
+言。 
+
+##4.与平台无关。 
+Lua几乎可以运行在所有我们听说过的系统上，如NextStep、 
+OS/2、PlayStation II (Sony)、Mac OS-9、OS X、BeOS、MS-DOS、IBM 
+mainframes、EPOC、PalmOS、MCF5206eLITE Evaluation Board、RISC 
+OS，及所有的Windows和Unix。Lua不是通过使用条件编译实现平台无关，而 
+是完全使用ANSI (ISO) C，这意味着只要你有ANSI C编译器你就可以编译并 
+使用Lua。 
+<!-- markdown end -->
+</div>
+<div class="entry" id="main">
+<!-- content -->
+<p><a href="http://caiwb1990.iteye.com/blog/2209750">Lua基础 </a></p>
+
+<p>除了Lua外，还有很多类似的脚本语言，例如：Perl、Tcl、Ruby、Forth、Python。 
+虽然其他语言在某些方面与Lua有着共同的特色，但下面这些特征是Lua特有的： </p>
+
+<h2 id="1">1. 可扩展性。</h2>
+
+<p>Lua的扩展性非常卓越，以至于很多人把Lua用作搭建领域语言的 
+工具（注：比如游戏脚本）。Lua被设计为易于扩展的，可以通过Lua代码或者C 
+代码扩展，Lua的很多功能都是通过外部库来扩展的。Lua很容易与C/C++、java、 
+fortran、Smalltalk、Ada，以及其他语言接口。 </p>
+
+<h2 id="2">2. 简单。</h2>
+
+<p>Lua本身简单，小巧；内容少但功能强大，这使得Lua易于学习，很容 
+易实现一些小的应用。他的完全发布版（代码、手册以及某些平台的二进制文件） 
+仅用一张软盘就可以装得下。 </p>
+
+<h2 id="3">3.高效率。</h2>
+
+<p>Lua有很高的执行效率，统计表明Lua是目前平均效率最高的脚本语 
+言。 </p>
+
+<h2 id="4">4.与平台无关。</h2>
+
+<p>Lua几乎可以运行在所有我们听说过的系统上，如NextStep、 
+OS/2、PlayStation II (Sony)、Mac OS-9、OS X、BeOS、MS-DOS、IBM 
+mainframes、EPOC、PalmOS、MCF5206eLITE Evaluation Board、RISC 
+OS，及所有的Windows和Unix。Lua不是通过使用条件编译实现平台无关，而 
+是完全使用ANSI (ISO) C，这意味着只要你有ANSI C编译器你就可以编译并 
+使用Lua。 </p>
+<!-- content end -->
+</div>
+<br>
+<br>
+    <div id="disqus_thread"></div>
+	<div class="footer">
+		<p>© Copyright 2014 by Hellc, Designed by Hellc</p>
+	</div>
+</div>
+<script src="main.js"></script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ["\\(", "\\)"]], processEscapes: true}});
+</script>
+<script id="content" type="text/mustache">
+    <h1>{{title}}</h1>
+    <div class="tag">
+    {{date}}
+    {{#tags}}
+    <a href="/#/tag/{{name}}">#{{name}}</a>
+    {{/tags}}
+    </div>
+</script>
+<script id="pagesTemplate" type="text/mustache">
+    {{#pages}}
+    <li>
+        <a href="{{path}}">{{title}}</a>
+    </li>
+    {{/pages}}
+</script>
+<script>
+$(document).ready(function() {
+    $.ajax({
+        url: "main.json",
+        type: "GET",
+        dataType: "json",
+        success: function(data) {
+            $("#title").html(data.name);
+            var pagesTemplate = Hogan.compile($("#pagesTemplate").html());
+            var pagesHtml = pagesTemplate.render({"pages": data.pages});
+            $("#pages").append(pagesHtml);
+            //path
+            var path = "lua_base_intro.html";
+            //path end
+            var now = 0;
+            for (var i = 0; i < data.posts.length; ++i)
+                if (path == data.posts[i].path)
+                    now = i;
+            var post = data.posts[now];
+            var tmp = post.tags.split(" ");
+            var tags = [];
+            for (var i = 0; i < tmp.length; ++i)
+                if (tmp[i].length > 0)
+                    tags.push({"name": tmp[i]});
+            var contentTemplate = Hogan.compile($("#content").html());
+            var contentHtml = contentTemplate.render({"title": post.title, "tags": tags, "date": post.date});
+            $("#main").prepend(contentHtml);
+            if (data.disqus_shortname.length > 0) {
+                var disqus_shortname = data.disqus_shortname;
+                (function() {
+                    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                })();
+            }
+        }
+    });
+});
+</script>
+</body>
+</html>

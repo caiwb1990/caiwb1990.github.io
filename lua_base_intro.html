@@ -54,6 +54,31 @@ mainframes、EPOC、PalmOS、MCF5206eLITE Evaluation Board、RISC
 OS，及所有的Windows和Unix。Lua不是通过使用条件编译实现平台无关，而 
 是完全使用ANSI (ISO) C，这意味着只要你有ANSI C编译器你就可以编译并 
 使用Lua。 
+
+
+
+写一个最最简单的程序——Hello World。 
+~~~~
+print("Hello World")  
+~~~~
+
+##全局变量 
+
+全局变量不需要声明,给一个变量赋值后即创建了这个全局变量,访问一个没有初 
+始化的全局变量也不会出错,只不过得到的结果是:nil. 
+~~~~
+print(b)  -->nil  
+b = 10  
+print(b)  -->10  
+~~~~
+
+如果你想删除一个全局变量,只需要将变量负值为 nil 
+~~~~
+b = 10  
+print(b)  
+~~~~
+这样变量 b 就好像从没被使用过一样.换句话说, 当且仅当一个变量不等于 nil 时, 这个变量存在。 
+
 <!-- markdown end -->
 </div>
 <div class="entry" id="main">
@@ -89,6 +114,26 @@ mainframes、EPOC、PalmOS、MCF5206eLITE Evaluation Board、RISC
 OS，及所有的Windows和Unix。Lua不是通过使用条件编译实现平台无关，而 
 是完全使用ANSI (ISO) C，这意味着只要你有ANSI C编译器你就可以编译并 
 使用Lua。 </p>
+
+<p>写一个最最简单的程序——Hello World。 </p>
+
+<pre><code>print("Hello World")  
+</code></pre>
+
+<h2 id="">全局变量</h2>
+
+<p>全局变量不需要声明,给一个变量赋值后即创建了这个全局变量,访问一个没有初 
+始化的全局变量也不会出错,只不过得到的结果是:nil. </p>
+
+<pre><code>print(b)  --&gt;nil  
+b = 10  
+print(b)  --&gt;10  
+</code></pre>
+
+<p>如果你想删除一个全局变量,只需要将变量负值为 nil 
+</p><pre><code>b = 10 <br>
+print(b) <br>
+</code></pre>这样变量 b 就好像从没被使用过一样.换句话说, 当且仅当一个变量不等于 nil 时, 这个变量存在。 <p></p>
 <!-- content end -->
 </div>
 <br>

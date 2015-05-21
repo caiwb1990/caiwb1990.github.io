@@ -1,0 +1,180 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="Keywords" content="blog"/>
+    <meta name="Description" content="blog"/>
+    <title>Hellc</title>
+    <link rel="shortcut icon" href="/static/favicon.png"/>
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+</head>
+<body>
+<div class="main">
+    <div class="header">
+    	<ul id="pages">
+            <li><a href="/">home</a></li>
+            <li><a href="/#/tags">tags</a></li>
+            <li><a href="/#/archive">archive</a></li>
+    	</ul>
+    </div>
+	<div class="wrap-header">
+	<h1>
+    <a href="/" id="title"></a>
+	</h1>
+	</div>
+<div id="md" style="display: none;">
+<!-- markdown -->
+[ Lua类型]( http://caiwb1990.iteye.com/blog/2213377)
+
+Lua 是动态类型语言,变量不要类型定义。 
+
+Lua 中有 8 个基本类型分别为:nil、boolean、 number、string、userdata、function、thread 和 table。函数 type 可以测试给定变量或者值 的类型。 
+
+~~~~
+print(type("Hello world))  --> string  
+print(type(10*3))    --> number  
+print(type(print))    --> function  
+print(type(true))     -->true  
+print(type(nil))       --> nil  
+print(type(type(X)))  -->string  
+~~~~
+
+##Nil 
+Lua 中特殊的类型,他只有一个值:nil; 
+一个全局变量没有被赋值以前默认值为 nil; 
+给全局变量负 nil 可以删除该变量。 
+
+##Booleans 
+两个取值 false 和 true。 
+但要注意 Lua 中所有的值都可以作为条件。在控制结构的条 件中除了 false 和 nil 为假,其他值都为真。所以 Lua 认为 0 和空串都是真。 
+
+##Numbers 
+表示实数,Lua 中没有整数.Lua 的 numbers 可以处理任何长整数不用担心误差。 
+
+
+##Strings 
+指字符的序列。lua 是 8 位字节,所以字符串可以包含任何数值字符,包括嵌入的 0。 这意味着你可以存储任意的二进制数据在一个字符串里。Lua 中字符串是不可以修改的, 你可以创建一个新的变量存放你要的字符串 
+
+
+##Functions 
+函数是第一类值(和其他变量相同),意味着函数可以存储在变量中,可以作为函数 的参数,也可以作为函数的返回值。这个特性给了语言很大的灵活性:一个程序可以重 新定义函数增加新的功能或者为了避免运行不可靠代码创建安全运行环境而隐藏函数, 此外这特性在 Lua 实现面向对象中也起了重要作用 
+
+##Userdata and Threads 
+userdata 可以将 C 数据存放在 Lua 变量中,userdata 在 Lua 中除了赋值和相等比较外 没有预定义的操作。userdata 用来描述应用程序或者使用 C 实现的库创建的新类型。
+
+<!-- markdown end -->
+</div>
+<div class="entry" id="main">
+<!-- content -->
+<p><a href="http://caiwb1990.iteye.com/blog/2213377"> Lua类型</a></p>
+
+<p>Lua 是动态类型语言,变量不要类型定义。 </p>
+
+<p>Lua 中有 8 个基本类型分别为:nil、boolean、 number、string、userdata、function、thread 和 table。函数 type 可以测试给定变量或者值 的类型。 </p>
+
+<pre><code>print(type("Hello world))  --&gt; string  
+print(type(10*3))    --&gt; number  
+print(type(print))    --&gt; function  
+print(type(true))     --&gt;true  
+print(type(nil))       --&gt; nil  
+print(type(type(X)))  --&gt;string  
+</code></pre>
+
+<h2 id="nil">Nil</h2>
+
+<p>Lua 中特殊的类型,他只有一个值:nil; 
+一个全局变量没有被赋值以前默认值为 nil; 
+给全局变量负 nil 可以删除该变量。 </p>
+
+<h2 id="booleans">Booleans</h2>
+
+<p>两个取值 false 和 true。 
+但要注意 Lua 中所有的值都可以作为条件。在控制结构的条 件中除了 false 和 nil 为假,其他值都为真。所以 Lua 认为 0 和空串都是真。 </p>
+
+<h2 id="numbers">Numbers</h2>
+
+<p>表示实数,Lua 中没有整数.Lua 的 numbers 可以处理任何长整数不用担心误差。 </p>
+
+<h2 id="strings">Strings</h2>
+
+<p>指字符的序列。lua 是 8 位字节,所以字符串可以包含任何数值字符,包括嵌入的 0。 这意味着你可以存储任意的二进制数据在一个字符串里。Lua 中字符串是不可以修改的, 你可以创建一个新的变量存放你要的字符串 </p>
+
+<h2 id="functions">Functions</h2>
+
+<p>函数是第一类值(和其他变量相同),意味着函数可以存储在变量中,可以作为函数 的参数,也可以作为函数的返回值。这个特性给了语言很大的灵活性:一个程序可以重 新定义函数增加新的功能或者为了避免运行不可靠代码创建安全运行环境而隐藏函数, 此外这特性在 Lua 实现面向对象中也起了重要作用 </p>
+
+<h2 id="userdataandthreads">Userdata and Threads</h2>
+
+<p>userdata 可以将 C 数据存放在 Lua 变量中,userdata 在 Lua 中除了赋值和相等比较外 没有预定义的操作。userdata 用来描述应用程序或者使用 C 实现的库创建的新类型。</p>
+<!-- content end -->
+</div>
+<br>
+<br>
+    <div id="disqus_thread"></div>
+	<div class="footer">
+		<p>© Copyright 2014 by Hellc, Designed by Hellc</p>
+	</div>
+</div>
+<script src="main.js"></script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ["\\(", "\\)"]], processEscapes: true}});
+</script>
+<script id="content" type="text/mustache">
+    <h1>{{title}}</h1>
+    <div class="tag">
+    {{date}}
+    {{#tags}}
+    <a href="/#/tag/{{name}}">#{{name}}</a>
+    {{/tags}}
+    </div>
+</script>
+<script id="pagesTemplate" type="text/mustache">
+    {{#pages}}
+    <li>
+        <a href="{{path}}">{{title}}</a>
+    </li>
+    {{/pages}}
+</script>
+<script>
+$(document).ready(function() {
+    $.ajax({
+        url: "main.json",
+        type: "GET",
+        dataType: "json",
+        success: function(data) {
+            $("#title").html(data.name);
+            var pagesTemplate = Hogan.compile($("#pagesTemplate").html());
+            var pagesHtml = pagesTemplate.render({"pages": data.pages});
+            $("#pages").append(pagesHtml);
+            //path
+            var path = "lua_type.html";
+            //path end
+            var now = 0;
+            for (var i = 0; i < data.posts.length; ++i)
+                if (path == data.posts[i].path)
+                    now = i;
+            var post = data.posts[now];
+            var tmp = post.tags.split(" ");
+            var tags = [];
+            for (var i = 0; i < tmp.length; ++i)
+                if (tmp[i].length > 0)
+                    tags.push({"name": tmp[i]});
+            var contentTemplate = Hogan.compile($("#content").html());
+            var contentHtml = contentTemplate.render({"title": post.title, "tags": tags, "date": post.date});
+            $("#main").prepend(contentHtml);
+            if (data.disqus_shortname.length > 0) {
+                var disqus_shortname = data.disqus_shortname;
+                (function() {
+                    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                })();
+            }
+        }
+    });
+});
+</script>
+</body>
+</html>

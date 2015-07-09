@@ -59,6 +59,7 @@
 				text = text..i..":"..tostring(v).."\n" 
 			end
 		end
+
 		local function dumpParam(tab)
 			for i=1, #tab do  
 				if tab[i] == nil then 
@@ -73,6 +74,7 @@
 				end
 			end
 		end
+
 		local x = ...
 		if type(x) == "table" then
 			table.foreach(x,printTable)
@@ -82,6 +84,9 @@
 		print(text)
 		end
 end
+
+
+
 
 
 <!-- markdown end -->
@@ -121,6 +126,7 @@ if config.debug==1 then
             text = text..i..":"..tostring(v).."\n" 
         end
     end
+
     local function dumpParam(tab)
         for i=1, #tab do  
             if tab[i] == nil then 
@@ -135,6 +141,7 @@ if config.debug==1 then
             end
         end
     end
+
     local x = ...
     if type(x) == "table" then
         table.foreach(x,printTable)

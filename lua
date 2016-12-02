@@ -27,8 +27,7 @@
 <!-- markdown -->
 [lua自定义log ]( http://caiwb1990.iteye.com/blog/2220408)
 
-分享个log,可以打印各种类型，包括嵌套table 
-
+分享个log,可以打印各种类型，当然也包括嵌套table的打印 
 
     cc.exports.cwblog = function(...)
     if config.debug==1 then
@@ -83,7 +82,7 @@
 		end
 		print(text)
 		end
-end
+
 
 
 
@@ -95,7 +94,7 @@ end
 <!-- content -->
 <p><a href="http://caiwb1990.iteye.com/blog/2220408">lua自定义log </a></p>
 
-<p>分享个log,可以打印各种类型，包括嵌套table </p>
+<p>分享个log,可以打印各种类型，当然也包括嵌套table的打印 </p>
 
 <pre><code>cc.exports.cwblog = function(...)
 if config.debug==1 then
@@ -151,8 +150,6 @@ if config.debug==1 then
     print(text)
     end
 </code></pre>
-
-<p>end</p>
 <!-- content end -->
 </div>
 <br>

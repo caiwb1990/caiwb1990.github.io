@@ -1,0 +1,180 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="Keywords" content="blog"/>
+    <meta name="Description" content="blog"/>
+    <title>Hellc</title>
+    <link rel="shortcut icon" href="/static/favicon.png"/>
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+</head>
+<body>
+<div class="main">
+    <div class="header">
+    	<ul id="pages">
+            <li><a href="/">home</a></li>
+            <li><a href="/#/tags">tags</a></li>
+            <li><a href="/#/archive">archive</a></li>
+    	</ul>
+    </div>
+	<div class="wrap-header">
+	<h1>
+    <a href="/" id="title"></a>
+	</h1>
+	</div>
+<div id="md" style="display: none;">
+<!-- markdown -->
+[Words Week1 - Black beauty](http://caiwb1990.iteye.com/blog/2378645 )
+
+
+
+17.6.6 
+
+    nail     n.钉子，爪，指甲  v.钉住 
+    stroke   v.轻抚，打，击 
+    briddle  n.马笼头 
+    saddle   n.马鞍 
+    strap    n.马带子 
+    stable   n.马厩 
+    stirrup  n.马磴子 
+    spur     n.马刺 
+    rein     n.缰绳 
+    bit      n.马嚼子 
+    harness  n.马具 
+    collar   n.项圈 
+
+17.6.7 
+
+    scary    Adj,胆小的 
+    creature    n,人，动物，生物 
+    alarm     n.警报，闹钟  vt.警告 
+    cruel     adj,残忍的，残酷的 
+    ruin      n.毁灭，崩溃 v.毁灭，破坏 
+    swing     n.摇摆，打击，旋律， v.转动，转向 
+    course    n.进程，过程 
+
+
+17.6.8 
+
+    splendid    Adj.壮观的,豪华的 
+    frighten    v.使恐慌，使害怕 
+    intelligent    adj.聪明的 
+    justice    n.正义，公平，合理，妥当 
+
+
+
+
+
+
+<!-- markdown end -->
+</div>
+<div class="entry" id="main">
+<!-- content -->
+<p><a href="http://caiwb1990.iteye.com/blog/2378645">Words Week1 - Black beauty</a></p>
+
+<p>17.6.6 </p>
+
+<pre><code>nail&nbsp;&nbsp;&nbsp;&nbsp; n.钉子，爪，指甲&nbsp; v.钉住 
+stroke&nbsp;&nbsp; v.轻抚，打，击 
+briddle&nbsp; n.马笼头 
+saddle&nbsp;&nbsp; n.马鞍 
+strap&nbsp;&nbsp;&nbsp; n.马带子 
+stable&nbsp;&nbsp; n.马厩 
+stirrup&nbsp; n.马磴子 
+spur&nbsp;&nbsp;&nbsp;&nbsp; n.马刺 
+rein&nbsp;&nbsp;&nbsp;&nbsp; n.缰绳 
+bit&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; n.马嚼子 
+harness&nbsp; n.马具 
+collar&nbsp;&nbsp; n.项圈 
+</code></pre>
+
+<p>17.6.7 </p>
+
+<pre><code>scary&nbsp;&nbsp;&nbsp; Adj,胆小的 
+creature&nbsp;&nbsp;&nbsp; n,人，动物，生物 
+alarm&nbsp;&nbsp;&nbsp;&nbsp; n.警报，闹钟&nbsp; vt.警告 
+cruel&nbsp;&nbsp;&nbsp;&nbsp; adj,残忍的，残酷的 
+ruin&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; n.毁灭，崩溃 v.毁灭，破坏 
+swing&nbsp;&nbsp;&nbsp;&nbsp; n.摇摆，打击，旋律， v.转动，转向 
+course&nbsp;&nbsp;&nbsp; n.进程，过程 
+</code></pre>
+
+<p>17.6.8 </p>
+
+<pre><code>splendid&nbsp;&nbsp;&nbsp; Adj.壮观的,豪华的 
+frighten&nbsp;&nbsp;&nbsp; v.使恐慌，使害怕 
+intelligent&nbsp;&nbsp;&nbsp; adj.聪明的 
+justice&nbsp;&nbsp;&nbsp; n.正义，公平，合理，妥当 
+</code></pre>
+<!-- content end -->
+</div>
+<br>
+<br>
+    <div id="disqus_thread"></div>
+	<div class="footer">
+		<p>© Copyright 2014 by Hellc, Designed by Hellc</p>
+	</div>
+</div>
+<script src="main.js"></script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ["\\(", "\\)"]], processEscapes: true}});
+</script>
+<script id="content" type="text/mustache">
+    <h1>{{title}}</h1>
+    <div class="tag">
+    {{date}}
+    {{#tags}}
+    <a href="/#/tag/{{name}}">#{{name}}</a>
+    {{/tags}}
+    </div>
+</script>
+<script id="pagesTemplate" type="text/mustache">
+    {{#pages}}
+    <li>
+        <a href="{{path}}">{{title}}</a>
+    </li>
+    {{/pages}}
+</script>
+<script>
+$(document).ready(function() {
+    $.ajax({
+        url: "main.json",
+        type: "GET",
+        dataType: "json",
+        success: function(data) {
+            $("#title").html(data.name);
+            var pagesTemplate = Hogan.compile($("#pagesTemplate").html());
+            var pagesHtml = pagesTemplate.render({"pages": data.pages});
+            $("#pages").append(pagesHtml);
+            //path
+            var path = "english_words_week1_blackbeaty.html";
+            //path end
+            var now = 0;
+            for (var i = 0; i < data.posts.length; ++i)
+                if (path == data.posts[i].path)
+                    now = i;
+            var post = data.posts[now];
+            var tmp = post.tags.split(" ");
+            var tags = [];
+            for (var i = 0; i < tmp.length; ++i)
+                if (tmp[i].length > 0)
+                    tags.push({"name": tmp[i]});
+            var contentTemplate = Hogan.compile($("#content").html());
+            var contentHtml = contentTemplate.render({"title": post.title, "tags": tags, "date": post.date});
+            $("#main").prepend(contentHtml);
+            if (data.disqus_shortname.length > 0) {
+                var disqus_shortname = data.disqus_shortname;
+                (function() {
+                    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                })();
+            }
+        }
+    });
+});
+</script>
+</body>
+</html>

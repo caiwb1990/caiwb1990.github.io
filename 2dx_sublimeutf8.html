@@ -1,0 +1,138 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="Keywords" content="blog"/>
+    <meta name="Description" content="blog"/>
+    <title>Hellc</title>
+    <link rel="shortcut icon" href="/static/favicon.png"/>
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+</head>
+<body>
+<div class="main">
+    <div class="header">
+    	<ul id="pages">
+            <li><a href="/">home</a></li>
+            <li><a href="/#/tags">tags</a></li>
+            <li><a href="/#/archive">archive</a></li>
+    	</ul>
+    </div>
+	<div class="wrap-header">
+	<h1>
+    <a href="/" id="title"></a>
+	</h1>
+	</div>
+<div id="md" style="display: none;">
+<!-- markdown -->
+[ Sublime Text2支持除UTF8外多种编码(主要解决乱码问题)](http://caiwb1990.iteye.com/blog/2399517)
+
+这个工具非常好用，但是默认只支持UTF-8，有时候别人传递给我的文本文件是GBK等其他编码方式的，打开乱码让人郁闷。 
+    解决该问题安装2个插件： 
+             第一个：为了方便以后安装其他插件的小插件叫：Package Control，大家都很常用的 
+                           打开Sublime Text2， 快捷键：Ctrl+`，在Windows和Mac平台下都一样，输入内容： 
+                          
+
+ 
+    import urllib2,os; pf='Package Control.sublime-package'; ipp=sublime.installed_packages_path(); os.makedirs(ipp) if not os.path.exists(ipp) else None; urllib2.install_opener(urllib2.build_opener(urllib2.ProxyHandler())); open(os.path.join(ipp,pf),'wb').write(urllib2.urlopen('http://sublime.wbond.net/'+pf.replace(' ','%20')).read());    
+
+
+回车，稍等片刻，安装完之后需要重启Sublime Text2。 
+
+   重启后就可以从菜单栏的Perferences下调出Package Control的命令框了。也可以使用快捷键调出。在Windows下有专用的命令框 Ctrl+Shift+p 。Mac下使用 Shift+Command+p 调出 Command Palette 命令框， 
+
+  第二个：  调出 Command Palette 命令框后  输入： ConvertToUTF8 ， 安静等待安装，完成后重启下Sublime Text2 
+
+ 然后直接打开编码方式为非utf--8的文件了，默认已经全部处理好了，第二个插件自动转到了utf8，查看无任何问题。 
+<!-- markdown end -->
+</div>
+<div class="entry" id="main">
+<!-- content -->
+<p><a href="http://caiwb1990.iteye.com/blog/2399517"> Sublime Text2支持除UTF8外多种编码(主要解决乱码问题)</a></p>
+
+<p>这个工具非常好用，但是默认只支持UTF-8，有时候别人传递给我的文本文件是GBK等其他编码方式的，打开乱码让人郁闷。 
+    解决该问题安装2个插件： 
+             第一个：为了方便以后安装其他插件的小插件叫：Package Control，大家都很常用的 
+                           打开Sublime Text2， 快捷键：Ctrl+`，在Windows和Mac平台下都一样，输入内容： </p>
+
+<pre><code>import urllib2,os; pf='Package Control.sublime-package'; ipp=sublime.installed_packages_path(); os.makedirs(ipp) if not os.path.exists(ipp) else None; urllib2.install_opener(urllib2.build_opener(urllib2.ProxyHandler())); open(os.path.join(ipp,pf),'wb').write(urllib2.urlopen('http://sublime.wbond.net/'+pf.replace(' ','%20')).read());    
+</code></pre>
+
+<p>回车，稍等片刻，安装完之后需要重启Sublime Text2。 </p>
+
+<p>重启后就可以从菜单栏的Perferences下调出Package Control的命令框了。也可以使用快捷键调出。在Windows下有专用的命令框 Ctrl+Shift+p 。Mac下使用 Shift+Command+p 调出 Command Palette 命令框， </p>
+
+<p>第二个：  调出 Command Palette 命令框后  输入： ConvertToUTF8 ， 安静等待安装，完成后重启下Sublime Text2 </p>
+
+<p>然后直接打开编码方式为非utf--8的文件了，默认已经全部处理好了，第二个插件自动转到了utf8，查看无任何问题。 </p>
+<!-- content end -->
+</div>
+<br>
+<br>
+    <div id="disqus_thread"></div>
+	<div class="footer">
+		<p>© Copyright 2014 by Hellc, Designed by Hellc</p>
+	</div>
+</div>
+<script src="main.js"></script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ["\\(", "\\)"]], processEscapes: true}});
+</script>
+<script id="content" type="text/mustache">
+    <h1>{{title}}</h1>
+    <div class="tag">
+    {{date}}
+    {{#tags}}
+    <a href="/#/tag/{{name}}">#{{name}}</a>
+    {{/tags}}
+    </div>
+</script>
+<script id="pagesTemplate" type="text/mustache">
+    {{#pages}}
+    <li>
+        <a href="{{path}}">{{title}}</a>
+    </li>
+    {{/pages}}
+</script>
+<script>
+$(document).ready(function() {
+    $.ajax({
+        url: "main.json",
+        type: "GET",
+        dataType: "json",
+        success: function(data) {
+            $("#title").html(data.name);
+            var pagesTemplate = Hogan.compile($("#pagesTemplate").html());
+            var pagesHtml = pagesTemplate.render({"pages": data.pages});
+            $("#pages").append(pagesHtml);
+            //path
+            var path = "2dx_sublimeutf8.html";
+            //path end
+            var now = 0;
+            for (var i = 0; i < data.posts.length; ++i)
+                if (path == data.posts[i].path)
+                    now = i;
+            var post = data.posts[now];
+            var tmp = post.tags.split(" ");
+            var tags = [];
+            for (var i = 0; i < tmp.length; ++i)
+                if (tmp[i].length > 0)
+                    tags.push({"name": tmp[i]});
+            var contentTemplate = Hogan.compile($("#content").html());
+            var contentHtml = contentTemplate.render({"title": post.title, "tags": tags, "date": post.date});
+            $("#main").prepend(contentHtml);
+            if (data.disqus_shortname.length > 0) {
+                var disqus_shortname = data.disqus_shortname;
+                (function() {
+                    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                })();
+            }
+        }
+    });
+});
+</script>
+</body>
+</html>

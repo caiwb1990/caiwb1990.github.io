@@ -1,0 +1,195 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="Keywords" content="blog"/>
+    <meta name="Description" content="blog"/>
+    <title>Hellc</title>
+    <link rel="shortcut icon" href="/static/favicon.png"/>
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+</head>
+<body>
+<div class="main">
+    <div class="header">
+    	<ul id="pages">
+            <li><a href="/">home</a></li>
+            <li><a href="/#/tags">tags</a></li>
+            <li><a href="/#/archive">archive</a></li>
+    	</ul>
+    </div>
+	<div class="wrap-header">
+	<h1>
+    <a href="/" id="title"></a>
+	</h1>
+	</div>
+<div id="md" style="display: none;">
+<!-- markdown -->
+[ Vim基操勿6 ](b1990.iteye.com/blog/2436250)
+
+vim基本操作 
+Vim 是 Linux 系统上的最著名的文本/代码编辑器，也是早年的 Vi 编辑器的加强版，而 gVim 则是其 Windows 版。它的最大特色是完全使用键盘命令进行编辑，脱离了鼠标操作虽然使得入门变得困难，但上手之后键盘流的各种巧妙组合操作却能带来极为大幅的效率提升。因此 Vim 和现代的编辑器（如 Sublime Text）有着非常巨大的差异，而且入门学习曲线陡峭，需要记住很多按键组合和命令，如今被看作是高手、Geek们专用的编辑器。尽管 Vim 已经是古董级的软件，但还是有无数新人迎着困难去学习使用，可见其经典与受欢迎程度。另外，由于 Vim 的可配置性非常强，各种插件、语法高亮配色方案等多不胜数，无论作为代码编辑器或是文稿撰写工具都非常给力…… 
+Vim 有以下几个模式： 
+
+正常（normal）模式，缺省的编辑模式；下面如果不加特殊说明，提到的命令都直接在正常模式下输入；任何其它模式中都可以通过键盘上的 Esc 键回到正常模式。 
+命令（command）模式，用于执行较长、较复杂的命令；在正常模式下输入“:”（一般命令）、“/”（正向搜索）或“?”（反向搜索）即可进入该模式；命令模式下的命令要输入回车键（Enter）才算完成。 
+插入（insert）模式，输入文本时使用；在正常模式下键入“i”（insert）或“a”（append）即可进入插入模式（也有另外一些命令，如“c”，也可以进入插入模式，但这些命令有其它的作用）。 
+可视（visual）模式，用于选定文本块；可以在正常模式下输入“v”（小写）来按字符选定，输入“V”（大写）来按行选定，或输入“Ctrl-V”来按方块选定。 
+选择（select）模式，与普通的 Windows 编辑器较为接近的选择文本块的方式；在以可视模式和选择模式之一选定文本块之后，可以使用“Ctrl-G”切换到另一模式——该模式很少在 Linux 上使用 
+
+辑-->输入： 
+
+    i: 在当前光标所在字符的前面，转为输入模式； 
+    a: 在当前光标所在字符的后面，转为输入模式； 
+    o: 在当前光标所在行的下方，新建一行，并转为输入模式； 
+    I：在当前光标所在行的行首，转换为输入模式 
+    A：在当前光标所在行的行尾，转换为输入模式 
+    O：在当前光标所在行的上方，新建一行，并转为输入模式； 
+输入-->编辑： 
+
+    ESC 
+编辑-->末行： 
+
+    : 
+末行-->编辑： 
+
+ESC, ESC 
+注：输入模式和末行模式之间不能直接切换，默认处于编辑模式 
+关闭文件 
+
+末行模式关闭文件 
+
+:q  退出 
+:wq 保存并退出 
+:q! 不保存并退出 
+:w 保存 
+:w! 强行保存 
+:wq --> :w
+
+[http://dl2.iteye.com/upload/attachment/0131/3463/bd419b1a-df2a-3f5e-a1c6-bb524204a5df.png]
+
+
+
+<!-- markdown end -->
+</div>
+<div class="entry" id="main">
+<!-- content -->
+<p><a href="b1990.iteye.com/blog/2436250"> Vim基操勿6 </a></p>
+
+<p>vim基本操作 
+Vim 是 Linux 系统上的最著名的文本/代码编辑器，也是早年的 Vi 编辑器的加强版，而 gVim 则是其 Windows 版。它的最大特色是完全使用键盘命令进行编辑，脱离了鼠标操作虽然使得入门变得困难，但上手之后键盘流的各种巧妙组合操作却能带来极为大幅的效率提升。因此 Vim 和现代的编辑器（如 Sublime Text）有着非常巨大的差异，而且入门学习曲线陡峭，需要记住很多按键组合和命令，如今被看作是高手、Geek们专用的编辑器。尽管 Vim 已经是古董级的软件，但还是有无数新人迎着困难去学习使用，可见其经典与受欢迎程度。另外，由于 Vim 的可配置性非常强，各种插件、语法高亮配色方案等多不胜数，无论作为代码编辑器或是文稿撰写工具都非常给力…… 
+Vim 有以下几个模式： </p>
+
+<p>正常（normal）模式，缺省的编辑模式；下面如果不加特殊说明，提到的命令都直接在正常模式下输入；任何其它模式中都可以通过键盘上的 Esc 键回到正常模式。 
+命令（command）模式，用于执行较长、较复杂的命令；在正常模式下输入“:”（一般命令）、“/”（正向搜索）或“?”（反向搜索）即可进入该模式；命令模式下的命令要输入回车键（Enter）才算完成。 
+插入（insert）模式，输入文本时使用；在正常模式下键入“i”（insert）或“a”（append）即可进入插入模式（也有另外一些命令，如“c”，也可以进入插入模式，但这些命令有其它的作用）。 
+可视（visual）模式，用于选定文本块；可以在正常模式下输入“v”（小写）来按字符选定，输入“V”（大写）来按行选定，或输入“Ctrl-V”来按方块选定。 
+选择（select）模式，与普通的 Windows 编辑器较为接近的选择文本块的方式；在以可视模式和选择模式之一选定文本块之后，可以使用“Ctrl-G”切换到另一模式——该模式很少在 Linux 上使用 </p>
+
+<p>辑--&gt;输入： </p>
+
+<pre><code>i: 在当前光标所在字符的前面，转为输入模式； 
+a: 在当前光标所在字符的后面，转为输入模式； 
+o: 在当前光标所在行的下方，新建一行，并转为输入模式； 
+I：在当前光标所在行的行首，转换为输入模式 
+A：在当前光标所在行的行尾，转换为输入模式 
+O：在当前光标所在行的上方，新建一行，并转为输入模式； 
+</code></pre>
+
+<p>输入--&gt;编辑： </p>
+
+<pre><code>ESC 
+</code></pre>
+
+<p>编辑--&gt;末行： </p>
+
+<pre><code>: 
+</code></pre>
+
+<p>末行--&gt;编辑： </p>
+
+<p>ESC, ESC 
+注：输入模式和末行模式之间不能直接切换，默认处于编辑模式 
+关闭文件 </p>
+
+<p>末行模式关闭文件 </p>
+
+<p>:q  退出 
+:wq 保存并退出 
+:q! 不保存并退出 
+:w 保存 
+:w! 强行保存 
+:wq --&gt; :w</p>
+
+<p>[http://dl2.iteye.com/upload/attachment/0131/3463/bd419b1a-df2a-3f5e-a1c6-bb524204a5df.png]</p>
+<!-- content end -->
+</div>
+<br>
+<br>
+    <div id="disqus_thread"></div>
+	<div class="footer">
+		<p>© Copyright 2014 by Hellc, Designed by Hellc</p>
+	</div>
+</div>
+<script src="main.js"></script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ["\\(", "\\)"]], processEscapes: true}});
+</script>
+<script id="content" type="text/mustache">
+    <h1>{{title}}</h1>
+    <div class="tag">
+    {{date}}
+    {{#tags}}
+    <a href="/#/tag/{{name}}">#{{name}}</a>
+    {{/tags}}
+    </div>
+</script>
+<script id="pagesTemplate" type="text/mustache">
+    {{#pages}}
+    <li>
+        <a href="{{path}}">{{title}}</a>
+    </li>
+    {{/pages}}
+</script>
+<script>
+$(document).ready(function() {
+    $.ajax({
+        url: "main.json",
+        type: "GET",
+        dataType: "json",
+        success: function(data) {
+            $("#title").html(data.name);
+            var pagesTemplate = Hogan.compile($("#pagesTemplate").html());
+            var pagesHtml = pagesTemplate.render({"pages": data.pages});
+            $("#pages").append(pagesHtml);
+            //path
+            var path = "linux_vim.html";
+            //path end
+            var now = 0;
+            for (var i = 0; i < data.posts.length; ++i)
+                if (path == data.posts[i].path)
+                    now = i;
+            var post = data.posts[now];
+            var tmp = post.tags.split(" ");
+            var tags = [];
+            for (var i = 0; i < tmp.length; ++i)
+                if (tmp[i].length > 0)
+                    tags.push({"name": tmp[i]});
+            var contentTemplate = Hogan.compile($("#content").html());
+            var contentHtml = contentTemplate.render({"title": post.title, "tags": tags, "date": post.date});
+            $("#main").prepend(contentHtml);
+            if (data.disqus_shortname.length > 0) {
+                var disqus_shortname = data.disqus_shortname;
+                (function() {
+                    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                })();
+            }
+        }
+    });
+});
+</script>
+</body>
+</html>

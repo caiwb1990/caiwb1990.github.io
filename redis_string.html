@@ -1,0 +1,292 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="Keywords" content="blog"/>
+    <meta name="Description" content="blog"/>
+    <title>Hellc</title>
+    <link rel="shortcut icon" href="/static/favicon.png"/>
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+</head>
+<body>
+<div class="main">
+    <div class="header">
+    	<ul id="pages">
+            <li><a href="/">home</a></li>
+            <li><a href="/#/tags">tags</a></li>
+            <li><a href="/#/archive">archive</a></li>
+    	</ul>
+    </div>
+	<div class="wrap-header">
+	<h1>
+    <a href="/" id="title"></a>
+	</h1>
+	</div>
+<div id="md" style="display: none;">
+<!-- markdown -->
+[Redis基础数据结构_string](ttps://caiwb1990.iteye.com/blog/2440020 )
+
+string 字符串  是 Redis 最简单的数据结构。Redis 所有的数据结构都是以唯一的 key 字符串作为名称，然后通过这个唯一 key 值来获取相应的 value 数据。不同类型的数据结构的差异就在于 value 的结构不一样。
+
+![](http://dl2.iteye.com/upload/attachment/0131/7375/1f75addd-d991-3047-b706-0792aa907d57.gif)
+
+字符串结构使用非常广泛，一个常见的用途就是缓存用户信息。我们将用户信息结构体使用 JSON 序列化成字符串，然后将序列化后的字符串塞进 Redis 来缓存。同样，取用户信息会经过一次反序列化的过程。
+
+![img](http://dl2.iteye.com/upload/attachment/0131/7377/d80b5bf6-afe6-3bac-bb1a-fbe59db180cc.png)
+
+
+Redis 的字符串是动态字符串，是可以修改的字符串，内部结构实现上类似于 Java 的 ArrayList，采用预分配冗余空间的方式来减少内存的频繁分配，如图中所示，内部为当前字符串实际分配的空间 capacity 一般要高于实际字符串长度 len。当字符串长度小于 1M 时，扩容都是加倍现有的空间，如果超过 1M，扩容时一次只会多扩 1M 的空间。需要注意的是字符串最大长度为 512M
+
+
+##键值对
+~~~~
+> set name hellc
+OK
+> get name
+"hellc"
+> exists name
+(integer) 1
+> del name
+(integer) 1
+> get name
+(nil)
+~~~~
+
+##批量键值对
+
+可以批量对多个字符串进行读写，节省网络耗时开销。
+
+~~~~
+> set name1 hellc
+OK
+> set name2 hellc1
+OK
+> mget name1 name2 name3 # 返回一个列表
+1) "hellc"
+2) "hellc1"
+3) (nil)
+> mset name1 boy name2 girl name3 unknown
+> mget name1 name2 name3
+1) "boy"
+2) "girl"
+3) "unknown"
+~~~~
+
+##过期和 set 命令扩展
+
+可以对 key 设置过期时间，到点自动删除，这个功能常用来控制缓存的失效时间。不过这个「自动删除」的机制是比较复杂的，如果你感兴趣，可以继续深入阅读第 26 节《朝生暮死——过期策略》
+
+~~~~
+> set name hellc
+> get name
+"hellc"
+> expire name 5  # 5s 后过期
+...  # wait for 5s
+> get name
+(nil)
+
+> setex name 5 hellc # 5s 后过期，等价于 set+expire
+> get name
+"hellc"
+... # wait for 5s
+> get name
+(nil)
+
+> setnx name hellc# 如果 name 不存在就执行 set 创建
+(integer) 1
+> get name
+"hellc"
+> setnx name hellc1
+(integer) 0  # 因为 name 已经存在，所以 set 创建不成功
+> get name
+"hellc"  # 没有改变
+~~~~
+
+
+##计数
+如果 value 值是一个整数，还可以对它进行自增操作。自增是有范围的，它的范围是 signed long 的最大最小值，超过了这个值，Redis 会报错。
+~~~~
+> set age 30
+OK
+> incr age
+(integer) 31
+> incrby age 5
+(integer) 36
+> incrby age -5
+(integer) 31
+> set hellc 9223372036854775807  
+OK
+> incr hellc
+(error) ERR increment or decrement would overflow
+~~~~
+
+字符串是由多个字节组成，每个字节又是由 8 个 bit 组成，如此便可以将一个字符串看成很多 bit 的组合，这便是 bitmap「位图」数据结构，位图的具体使用会放到后面
+<!-- markdown end -->
+</div>
+<div class="entry" id="main">
+<!-- content -->
+<p><a href="ttps://caiwb1990.iteye.com/blog/2440020">Redis基础数据结构_string</a></p>
+
+<p>string 字符串  是 Redis 最简单的数据结构。Redis 所有的数据结构都是以唯一的 key 字符串作为名称，然后通过这个唯一 key 值来获取相应的 value 数据。不同类型的数据结构的差异就在于 value 的结构不一样。</p>
+
+<p><img src="http://dl2.iteye.com/upload/attachment/0131/7375/1f75addd-d991-3047-b706-0792aa907d57.gif" alt="" title=""></p>
+
+<p>字符串结构使用非常广泛，一个常见的用途就是缓存用户信息。我们将用户信息结构体使用 JSON 序列化成字符串，然后将序列化后的字符串塞进 Redis 来缓存。同样，取用户信息会经过一次反序列化的过程。</p>
+
+<p><img src="http://dl2.iteye.com/upload/attachment/0131/7377/d80b5bf6-afe6-3bac-bb1a-fbe59db180cc.png" alt="img" title=""></p>
+
+<p>Redis 的字符串是动态字符串，是可以修改的字符串，内部结构实现上类似于 Java 的 ArrayList，采用预分配冗余空间的方式来减少内存的频繁分配，如图中所示，内部为当前字符串实际分配的空间 capacity 一般要高于实际字符串长度 len。当字符串长度小于 1M 时，扩容都是加倍现有的空间，如果超过 1M，扩容时一次只会多扩 1M 的空间。需要注意的是字符串最大长度为 512M</p>
+
+<h2 id="">键值对</h2>
+
+<pre><code>&gt; set name hellc
+OK
+&gt; get name
+"hellc"
+&gt; exists name
+(integer) 1
+&gt; del name
+(integer) 1
+&gt; get name
+(nil)
+</code></pre>
+
+<h2 id="">批量键值对</h2>
+
+<p>可以批量对多个字符串进行读写，节省网络耗时开销。</p>
+
+<pre><code>&gt; set name1 hellc
+OK
+&gt; set name2 hellc1
+OK
+&gt; mget name1 name2 name3 # 返回一个列表
+1) "hellc"
+2) "hellc1"
+3) (nil)
+&gt; mset name1 boy name2 girl name3 unknown
+&gt; mget name1 name2 name3
+1) "boy"
+2) "girl"
+3) "unknown"
+</code></pre>
+
+<h2 id="set">过期和 set 命令扩展</h2>
+
+<p>可以对 key 设置过期时间，到点自动删除，这个功能常用来控制缓存的失效时间。不过这个「自动删除」的机制是比较复杂的，如果你感兴趣，可以继续深入阅读第 26 节《朝生暮死——过期策略》</p>
+
+<pre><code>&gt; set name hellc
+&gt; get name
+"hellc"
+&gt; expire name 5  # 5s 后过期
+...  # wait for 5s
+&gt; get name
+(nil)
+
+&gt; setex name 5 hellc # 5s 后过期，等价于 set+expire
+&gt; get name
+"hellc"
+... # wait for 5s
+&gt; get name
+(nil)
+
+&gt; setnx name hellc# 如果 name 不存在就执行 set 创建
+(integer) 1
+&gt; get name
+"hellc"
+&gt; setnx name hellc1
+(integer) 0  # 因为 name 已经存在，所以 set 创建不成功
+&gt; get name
+"hellc"  # 没有改变
+</code></pre>
+
+<h2 id="">计数</h2>
+
+<p>如果 value 值是一个整数，还可以对它进行自增操作。自增是有范围的，它的范围是 signed long 的最大最小值，超过了这个值，Redis 会报错。</p>
+
+<pre><code>&gt; set age 30
+OK
+&gt; incr age
+(integer) 31
+&gt; incrby age 5
+(integer) 36
+&gt; incrby age -5
+(integer) 31
+&gt; set hellc 9223372036854775807  
+OK
+&gt; incr hellc
+(error) ERR increment or decrement would overflow
+</code></pre>
+
+<p>字符串是由多个字节组成，每个字节又是由 8 个 bit 组成，如此便可以将一个字符串看成很多 bit 的组合，这便是 bitmap「位图」数据结构，位图的具体使用会放到后面</p>
+<!-- content end -->
+</div>
+<br>
+<br>
+    <div id="disqus_thread"></div>
+	<div class="footer">
+		<p>© Copyright 2014 by Hellc, Designed by Hellc</p>
+	</div>
+</div>
+<script src="main.js"></script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ["\\(", "\\)"]], processEscapes: true}});
+</script>
+<script id="content" type="text/mustache">
+    <h1>{{title}}</h1>
+    <div class="tag">
+    {{date}}
+    {{#tags}}
+    <a href="/#/tag/{{name}}">#{{name}}</a>
+    {{/tags}}
+    </div>
+</script>
+<script id="pagesTemplate" type="text/mustache">
+    {{#pages}}
+    <li>
+        <a href="{{path}}">{{title}}</a>
+    </li>
+    {{/pages}}
+</script>
+<script>
+$(document).ready(function() {
+    $.ajax({
+        url: "main.json",
+        type: "GET",
+        dataType: "json",
+        success: function(data) {
+            $("#title").html(data.name);
+            var pagesTemplate = Hogan.compile($("#pagesTemplate").html());
+            var pagesHtml = pagesTemplate.render({"pages": data.pages});
+            $("#pages").append(pagesHtml);
+            //path
+            var path = "redis_string.html";
+            //path end
+            var now = 0;
+            for (var i = 0; i < data.posts.length; ++i)
+                if (path == data.posts[i].path)
+                    now = i;
+            var post = data.posts[now];
+            var tmp = post.tags.split(" ");
+            var tags = [];
+            for (var i = 0; i < tmp.length; ++i)
+                if (tmp[i].length > 0)
+                    tags.push({"name": tmp[i]});
+            var contentTemplate = Hogan.compile($("#content").html());
+            var contentHtml = contentTemplate.render({"title": post.title, "tags": tags, "date": post.date});
+            $("#main").prepend(contentHtml);
+            if (data.disqus_shortname.length > 0) {
+                var disqus_shortname = data.disqus_shortname;
+                (function() {
+                    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                })();
+            }
+        }
+    });
+});
+</script>
+</body>
+</html>

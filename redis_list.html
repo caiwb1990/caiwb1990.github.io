@@ -1,0 +1,255 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="Keywords" content="blog"/>
+    <meta name="Description" content="blog"/>
+    <title>Hellc</title>
+    <link rel="shortcut icon" href="/static/favicon.png"/>
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+</head>
+<body>
+<div class="main">
+    <div class="header">
+    	<ul id="pages">
+            <li><a href="/">home</a></li>
+            <li><a href="/#/tags">tags</a></li>
+            <li><a href="/#/archive">archive</a></li>
+    	</ul>
+    </div>
+	<div class="wrap-header">
+	<h1>
+    <a href="/" id="title"></a>
+	</h1>
+	</div>
+<div id="md" style="display: none;">
+<!-- markdown -->
+[Redis基础数据结构_list ](ttps://caiwb1990.iteye.com/blog/2440121 )
+
+Redis 的列表相当于 Java 语言里面的 LinkedList，注意它是链表而不是数组。这意味着 list 的插入和删除操作非常快，时间复杂度为 O(1)，但是索引定位很慢，时间复杂度为 O(n)，这点让人非常意外。 
+
+当列表弹出了最后一个元素之后，该数据结构自动被删除，内存被回收。 
+![](http://dl2.iteye.com/upload/attachment/0131/7527/91c1d706-aff2-316d-99a5-941af9ca6798.gif)
+
+Redis 的列表结构常用来做异步队列使用。将需要延后处理的任务结构体序列化成字符串塞进 Redis 的列表，另一个线程从这个列表中轮询数据进行处理。 
+
+Redis 的列表结构常用来做异步队列使用。将需要延后处理的任务结构体序列化成字符串塞进 Redis 的列表，另一个线程从这个列表中轮询数据进行处理。 
+
+##右边进左边出：队列 
+~~~~
+> rpush books python java golang  
+(integer) 3  
+> llen books  
+(integer) 3  
+> lpop books  
+"python"  
+> lpop books  
+"java"  
+> lpop books  
+"golang"  
+> lpop books  
+(nil)  
+~~~~
+
+
+##右边进右边出：栈 
+~~~~
+> rpush books python java golang  
+(integer) 3  
+> rpop books  
+"golang"  
+> rpop books  
+"java"  
+> rpop books  
+"python"  
+> rpop books  
+(nil)  
+~~~~
+
+##慢操作 
+
+lindex 相当于 Java 链表的get(int index)方法，它需要对链表进行遍历，性能随着参数index增大而变差。 
+
+ltrim 和字面上的含义不太一样，个人觉得它叫 lretain(保留) 更合适一些，因为 ltrim 跟的两个参数start_index和end_index定义了一个区间，在这个区间内的值，ltrim 要保留，区间之外统统砍掉。我们可以通过ltrim来实现一个定长的链表，这一点非常有用。 
+
+index 可以为负数，index=-1表示倒数第一个元素，同样index=-2表示倒数第二个元素。 
+~~~~
+> rpush books python java golang  
+(integer) 3  
+> lindex books 1  # O(n) 慎用  
+"java"  
+> lrange books 0 -1  # 获取所有元素，O(n) 慎用  
+1) "python"  
+2) "java"  
+3) "golang"  
+> ltrim books 1 -1 # O(n) 慎用  
+OK  
+> lrange books 0 -1  
+1) "java"  
+2) "golang"  
+> ltrim books 1 0 # 这其实是清空了整个列表，因为区间范围长度为负  
+OK  
+> llen books  
+(integer) 0  
+~~~~
+
+##快速列表 
+ ![img](http://dl2.iteye.com/upload/attachment/0131/7529/95440d98-0bb1-359f-9d64-f608e6685424.png)
+
+
+如果再深入一点，你会发现 Redis 底层存储的还不是一个简单的 linkedlist，而是称之为快速链表 quicklist 的一个结构。 
+
+首先在列表元素较少的情况下会使用一块连续的内存存储，这个结构是 ziplist，也即是压缩列表。它将所有的元素紧挨着一起存储，分配的是一块连续的内存。当数据量比较多的时候才会改成 quicklist。因为普通的链表需要的附加指针空间太大，会比较浪费空间，而且会加重内存的碎片化。比如这个列表里存的只是 int 类型的数据，结构上还需要两个额外的指针 prev 和 next 。所以 Redis 将链表和 ziplist 结合起来组成了 quicklist。也就是将多个 ziplist 使用双向指针串起来使用。这样既满足了快速的插入删除性能，又不会出现太大的空间冗余
+
+
+<!-- markdown end -->
+</div>
+<div class="entry" id="main">
+<!-- content -->
+<p><a href="ttps://caiwb1990.iteye.com/blog/2440121">Redis基础数据结构_list </a></p>
+
+<p>Redis 的列表相当于 Java 语言里面的 LinkedList，注意它是链表而不是数组。这意味着 list 的插入和删除操作非常快，时间复杂度为 O(1)，但是索引定位很慢，时间复杂度为 O(n)，这点让人非常意外。 </p>
+
+<p>当列表弹出了最后一个元素之后，该数据结构自动被删除，内存被回收。 
+<img src="http://dl2.iteye.com/upload/attachment/0131/7527/91c1d706-aff2-316d-99a5-941af9ca6798.gif" alt="" title=""></p>
+
+<p>Redis 的列表结构常用来做异步队列使用。将需要延后处理的任务结构体序列化成字符串塞进 Redis 的列表，另一个线程从这个列表中轮询数据进行处理。 </p>
+
+<p>Redis 的列表结构常用来做异步队列使用。将需要延后处理的任务结构体序列化成字符串塞进 Redis 的列表，另一个线程从这个列表中轮询数据进行处理。 </p>
+
+<h2 id="">右边进左边出：队列</h2>
+
+<pre><code>&gt; rpush books python java golang  
+(integer) 3  
+&gt; llen books  
+(integer) 3  
+&gt; lpop books  
+"python"  
+&gt; lpop books  
+"java"  
+&gt; lpop books  
+"golang"  
+&gt; lpop books  
+(nil)  
+</code></pre>
+
+<h2 id="">右边进右边出：栈</h2>
+
+<pre><code>&gt; rpush books python java golang  
+(integer) 3  
+&gt; rpop books  
+"golang"  
+&gt; rpop books  
+"java"  
+&gt; rpop books  
+"python"  
+&gt; rpop books  
+(nil)  
+</code></pre>
+
+<h2 id="">慢操作</h2>
+
+<p>lindex 相当于 Java 链表的get(int index)方法，它需要对链表进行遍历，性能随着参数index增大而变差。 </p>
+
+<p>ltrim 和字面上的含义不太一样，个人觉得它叫 lretain(保留) 更合适一些，因为 ltrim 跟的两个参数start<em>index和end</em>index定义了一个区间，在这个区间内的值，ltrim 要保留，区间之外统统砍掉。我们可以通过ltrim来实现一个定长的链表，这一点非常有用。 </p>
+
+<p>index 可以为负数，index=-1表示倒数第一个元素，同样index=-2表示倒数第二个元素。 </p>
+
+<pre><code>&gt; rpush books python java golang  
+(integer) 3  
+&gt; lindex books 1  # O(n) 慎用  
+"java"  
+&gt; lrange books 0 -1  # 获取所有元素，O(n) 慎用  
+1) "python"  
+2) "java"  
+3) "golang"  
+&gt; ltrim books 1 -1 # O(n) 慎用  
+OK  
+&gt; lrange books 0 -1  
+1) "java"  
+2) "golang"  
+&gt; ltrim books 1 0 # 这其实是清空了整个列表，因为区间范围长度为负  
+OK  
+&gt; llen books  
+(integer) 0  
+</code></pre>
+
+<h2 id="">快速列表</h2>
+
+<p><img src="http://dl2.iteye.com/upload/attachment/0131/7529/95440d98-0bb1-359f-9d64-f608e6685424.png" alt="img" title=""></p>
+
+<p>如果再深入一点，你会发现 Redis 底层存储的还不是一个简单的 linkedlist，而是称之为快速链表 quicklist 的一个结构。 </p>
+
+<p>首先在列表元素较少的情况下会使用一块连续的内存存储，这个结构是 ziplist，也即是压缩列表。它将所有的元素紧挨着一起存储，分配的是一块连续的内存。当数据量比较多的时候才会改成 quicklist。因为普通的链表需要的附加指针空间太大，会比较浪费空间，而且会加重内存的碎片化。比如这个列表里存的只是 int 类型的数据，结构上还需要两个额外的指针 prev 和 next 。所以 Redis 将链表和 ziplist 结合起来组成了 quicklist。也就是将多个 ziplist 使用双向指针串起来使用。这样既满足了快速的插入删除性能，又不会出现太大的空间冗余</p>
+<!-- content end -->
+</div>
+<br>
+<br>
+    <div id="disqus_thread"></div>
+	<div class="footer">
+		<p>© Copyright 2014 by Hellc, Designed by Hellc</p>
+	</div>
+</div>
+<script src="main.js"></script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ["\\(", "\\)"]], processEscapes: true}});
+</script>
+<script id="content" type="text/mustache">
+    <h1>{{title}}</h1>
+    <div class="tag">
+    {{date}}
+    {{#tags}}
+    <a href="/#/tag/{{name}}">#{{name}}</a>
+    {{/tags}}
+    </div>
+</script>
+<script id="pagesTemplate" type="text/mustache">
+    {{#pages}}
+    <li>
+        <a href="{{path}}">{{title}}</a>
+    </li>
+    {{/pages}}
+</script>
+<script>
+$(document).ready(function() {
+    $.ajax({
+        url: "main.json",
+        type: "GET",
+        dataType: "json",
+        success: function(data) {
+            $("#title").html(data.name);
+            var pagesTemplate = Hogan.compile($("#pagesTemplate").html());
+            var pagesHtml = pagesTemplate.render({"pages": data.pages});
+            $("#pages").append(pagesHtml);
+            //path
+            var path = "redis_list.html";
+            //path end
+            var now = 0;
+            for (var i = 0; i < data.posts.length; ++i)
+                if (path == data.posts[i].path)
+                    now = i;
+            var post = data.posts[now];
+            var tmp = post.tags.split(" ");
+            var tags = [];
+            for (var i = 0; i < tmp.length; ++i)
+                if (tmp[i].length > 0)
+                    tags.push({"name": tmp[i]});
+            var contentTemplate = Hogan.compile($("#content").html());
+            var contentHtml = contentTemplate.render({"title": post.title, "tags": tags, "date": post.date});
+            $("#main").prepend(contentHtml);
+            if (data.disqus_shortname.length > 0) {
+                var disqus_shortname = data.disqus_shortname;
+                (function() {
+                    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                })();
+            }
+        }
+    });
+});
+</script>
+</body>
+</html>
